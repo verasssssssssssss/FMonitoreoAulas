@@ -15,7 +15,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let repor of reportes">
-        <th scope="row">1</th>
+        <th scope="row">{{reportes.indexOf(repor)+1}}</th>
         <td>{{repor.FechaReporte}}</td>
         <td>{{repor.NomCarrera}}</td>
         <td>{{repor.NomCurso}}</td>
