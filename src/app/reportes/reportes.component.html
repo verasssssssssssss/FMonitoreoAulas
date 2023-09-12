@@ -1,6 +1,6 @@
 <p>Listado de reprotes</p>
 <div class="container">
-<table class="table table-striped table-hover" >
+  <table class="table table-striped table-hover">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -14,45 +14,30 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr *ngFor="let repor of reportes">
         <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
+        <td>{{repor.FechaReporte}}</td>
+        <td>{{repor.NomCarrera}}</td>
+        <td>{{repor.NomCurso}}</td>
+        <td>{{repor.NomProfesor}}</td> 
+        <td>{{repor.NomAula}}</td>
+        <td>{{repor.NomUsuario}} {{repor.ApeUsuario}}</td>
         <td>
-            <button class="btn btn-primary d-inline-flex align-items-center" type="button">
-                Visualizar
-              </button>
+          <button class="btn btn-primary d-inline-flex align-items-center" type="button" (click)="abrirModal(repor.IdDatos,repor.NomAula,repor.CapturaFotografica)">
+            Visualizar
+          </button>
         </td>
       </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>            <button class="btn btn-primary d-inline-flex align-items-center" type="button">
-            Visualizar
-          </button></td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>@twitter</td>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>            <button class="btn btn-primary d-inline-flex align-items-center" type="button">
-            Visualizar
-          </button></td>
-      </tr>
-
     </tbody>
   </table>
+</div>
+
+<div id="miModal" class="modal">
+  <div class="modal-content">
+    <span class="cerrar" (click)="cerrarModal()">&times;</span>
+    <h2>Registrado en el aula {{NombreAula}} </h2>
+    <img src={{CapturaFotografica}} alt="Imagen">
+    <p>Codigo del correo: SISAULAS{{CodigoCorreo}}</p>
+    <button (click)="okClicked()">OK</button>
+  </div>
 </div>
