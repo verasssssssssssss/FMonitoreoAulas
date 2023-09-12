@@ -7,6 +7,7 @@ import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { ReportesComponent } from './reportes/reportes.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     AppComponent,
     HeaderComponent,
     LoginComponent,
-    ReportesComponent
+    ReportesComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

@@ -11,7 +11,7 @@ export class ReportesService {
   constructor(private http : HttpClient) { }
 
   getReportes():Observable<any>{
-    return this.http.get<any>('http://localhost:3000/Reporte/Listado/1');
+    return this.http.get<any>('http://localhost:3000/reporte/listado/1');
   }
 }
 
