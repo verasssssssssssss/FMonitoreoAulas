@@ -16,7 +16,7 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
   }
-  
+
   .modal-content {
     background-color: #fefefe;
     margin: 15% auto;
@@ -27,7 +27,7 @@
     position: relative;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   }
-  
+
   .cerrar {
     position: absolute;
     top: 0;
@@ -35,8 +35,11 @@
     padding: 10px;
     cursor: pointer;
   }
-  
+
   .cerrar:hover {
     color: red;
   }
-  
+
+  #tarjetaTabla{
+    margin: 5vh;
+  }
