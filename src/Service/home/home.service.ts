@@ -22,7 +22,41 @@ export class HomeService {
     return this.http.get<any>(URL_ENDPOINT+'area/listado/'+IdSede);
   }
 
-  getAulas(AreasDeTrabajo:number):Observable<any>{
-    return this.http.get<any>(URL_ENDPOINT+'aula/listado/'+AreasDeTrabajo);
+  getAulas(IdAreasDeTrabajo:number):Observable<any>{
+    return this.http.get<any>(URL_ENDPOINT+'aula/listado/'+IdAreasDeTrabajo);
+  }
+
+  asignarAreasDeTrabajo(IdAreasDeTrabajo:number,IdUsuario:number):Observable<any>{
+    const body = { IdUsuario: IdUsuario};
+    return this.http.put(URL_ENDPOINT+'area/asignar/'+IdAreasDeTrabajo,body);
+  }
+
+  delegarAreasDeTrabajo(IdAreasDeTrabajo:number):Observable<any>{
+    const body = { IdUsuario:null};
+    return this.http.put(URL_ENDPOINT+'area/delegar/'+IdAreasDeTrabajo,body);
+  }
+
+  eliminarAula(IdAula:number):Observable<any>{
+    const body = { Visible:0};
+    return this.http.put(URL_ENDPOINT+'aula/eliminar/'+IdAula,body);
+  }
+
+  eliminarAreasDeTrabajo(IdArea:number):Observable<any>{
+    const body = { Visible:0};
+    return this.http.put(URL_ENDPOINT+'area/eliminar/'+IdArea,body);
+  }
+  
+  getEncargadosSede(IdSede:number):Observable<any>{
+    return this.http.get<any>(URL_ENDPOINT+'encargado/listado/'+IdSede);
+  }
+
+ editarAula(IdAula:number,NomAula:string,CantidadAlumnos:number):Observable<any>{
+    const body = { NomAula:NomAula, CantidadAlumnos	:CantidadAlumnos};
+    return this.http.put(URL_ENDPOINT+'aula/editar/'+IdAula,body);
+  }
+
+  agregarAula(IdArea:number,NomAula:string,CantidadAlumnos:number):Observable<any>{
+    const body = { IdArea:IdArea,NomAula:NomAula, CantidadAlumnos	:CantidadAlumnos};
+    return this.http.post(URL_ENDPOINT+'aula/crear',body);
   }
 }

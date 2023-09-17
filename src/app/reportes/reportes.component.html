@@ -8,8 +8,8 @@
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
               <h5 class="card-title">Ciudad de {{ NomCiudad }}</h5>
-              <div *ngFor="let sede of sedes">
-                <button class="btn btn-primary" (click)="CambiarSede(sede.NomSede,sede.IdSede)">Sede
+              <div >
+                <button *ngFor="let sede of sedes" class="btn btn-primary" (click)="CambiarSede(sede.NomSede,sede.IdSede)">Sede
                   {{sede.NomSede}}</button>
               </div>
             </div>
@@ -60,9 +60,7 @@
                             <td>{{repor.NomAula}}</td>
                             <td>{{repor.NomUsuario}} {{repor.ApeUsuario}}</td>
                             <td>
-                              <button class="btn btn-primary d-inline-flex align-items-center" type="button" (click)="abrirModal(repor.IdDatos,repor.NomAula,repor.CapturaFotografica)">
-                                Visualizar
-                              </button>
+                              <button class="btn btn-info d-inline-flex align-items-center" type="button" (click)="abrirModal(repor.IdDatos,repor.NomAula,repor.CapturaFotografica)">Visualizar</button>
                               <button type="button" class="btn btn-danger">Eliminar</button>
                             </td>
                           </tr>
