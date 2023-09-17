@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Sedes } from 'src/Clases/Sedes';
+import { Usuarios } from 'src/Clases/Usuarios';
 import { reporte } from 'src/Clases/reportes';
+import { HomeService } from 'src/Service/home/home.service';
 import { ReportesService } from 'src/Service/reportes/reportes.service';
 
 @Component({
@@ -8,20 +11,40 @@ import { ReportesService } from 'src/Service/reportes/reportes.service';
   styleUrls: ['./reportes.component.css']
 })
 export class ReportesComponent implements OnInit {
-
+  
+  datoLocalStorage!: Usuarios;
   reportes!:reporte[];
+  sedes!: Sedes[];
   CapturaFotografica!:string;
   NombreAula!:string;
   CodigoCorreo!:number;
   modal = true;
+  NomCiudad!: string;
+  NomSedeActual!: string;
 
-  constructor(private sreportes: ReportesService){}
+  constructor(private sreportes: ReportesService,private homeService:HomeService){}
   ngOnInit() {
-    this.getRepoertes();
+    this.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
+    this.getCiudad(this.datoLocalStorage.IdCiudad);
+    this.getSedes(this.datoLocalStorage.IdCiudad);
   }
 
-  getRepoertes(){
-    this.sreportes.getReportes().subscribe(  (response) => {
+  getCiudad(IdCiudad:number){
+    this.homeService.getCiudad(IdCiudad).subscribe(  (response) => {
+      this.NomCiudad=response.data[0].NomCiudad;
+    });
+  }
+
+  getSedes(IdCiudad:number){
+    this.homeService.getSedes(IdCiudad).subscribe(  (response) => {
+      this.sedes=response.data;
+      this.NomSedeActual = this.sedes[0].NomSede;
+      this.getRepoertes(this.sedes[0].IdSede);
+    });
+  }
+
+  getRepoertes(IdSede:number){
+    this.sreportes.getReportes(IdSede).subscribe(  (response) => {
       this.reportes=response.data;
       console.log(this.reportes);
     }
@@ -46,6 +69,11 @@ export class ReportesComponent implements OnInit {
 
   okClicked() {
     this.cerrarModal();
+  }
+
+  CambiarSede(NomSede:string,IdSede:number){
+    this.NomSedeActual = NomSede;
+    this.getRepoertes(IdSede);
   }
 
 }

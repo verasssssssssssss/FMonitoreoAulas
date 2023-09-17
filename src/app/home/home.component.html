@@ -1,68 +1,91 @@
-
 <app-header></app-header>
+<div class="container pt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between">
+            <h5 class="card-title">Ciudad de {{ NomCiudad }}</h5>
+            <div *ngFor="let sede of sedes">
+              <button class="btn btn-primary" (click)="CambiarSede(sede.NomSede,sede.IdSede)">Sede {{sede.NomSede}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="encargado">
+      <h2 class="card-title">Áreas de trabajo de la sede {{NomSedeActual}}</h2>
+    </div>
+  </div>
+</div>
+
 
 <div class="container pt-4">
   <div class="row">
-    <div class="col-md-3">
-      <div class="card mb-4">
-        <img src="..." class="card-img-top" alt="...">
+    <div class="col-md-12">
+      <div class="card mb-4" *ngFor="let AreasT of AreasDeTrabajo">
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <h5 class="card-title">{{AreasT.NomArea}}</h5>
+
+          <!-- Crea una fila dentro de la tarjeta principal -->
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card mb-12">
+                <div class="card-body">
+                  <h5 class="card-title">Encargado de aula a cargo</h5>
+                  <div class="encargado">
+                    <div>
+                      <p class="card-text">{{AreasT.NomUsuario}} {{AreasT.ApeUsuario}}</p>
+                      <img src="../../assets/Imagenes/perfil.png" class="mx-auto">
+                    </div>
+                    <div>
+                      <a id="delegar" class="btn btn-danger mx-auto">Delegar</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <h5 class="card-title">Aulas dentro del área</h5>
+                  <div class="col-md-12">
+                    <table class="table table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Nombre</th>
+                          <th scope="col">Alumnos totales</th>
+                          <th scope="col">Funciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let Aulas of AreasT.Aulas">
+                          <th scope="row">{{1+AreasT.Aulas.indexOf(Aulas)}}</th>
+                          <td>{{Aulas.NomAula}}</td>
+                          <td>{{Aulas.CantidadAlumnos}}</td>
+                          <td>
+                            <button type="button" class="btn btn-info">Visualizar</button>
+                            <button type="button" class="btn btn-warning">Editar</button>
+                            <button type="button" class="btn btn-danger">Eliminar</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Fin de la fila de las subtarjetas -->
+
         </div>
       </div>
-
     </div>
 
-    <div class="col-md-3">
-      <div class="card mb-4">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
+    <!-- Repite este bloque para cada tarjeta adicional -->
 
-    </div>
-
-    <div class="col-md-3">
-      <div class="card mb-4">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="col-md-3">
-      <div class="card mb-4">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="col-md-3">
-      <div class="card mb-4">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-
-    </div>
-    <!-- Repite este bloque para cada tarjeta, un total de 4 por fila -->
   </div>
-  <!-- Repite la fila para las siguientes tarjetas -->
 </div>
+
