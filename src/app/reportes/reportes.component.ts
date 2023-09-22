@@ -11,7 +11,9 @@ import { ReportesService } from 'src/Service/reportes/reportes.service';
   styleUrls: ['./reportes.component.css']
 })
 export class ReportesComponent implements OnInit {
-  
+
+  p:number = 1;
+
   datoLocalStorage!: Usuarios;
   reportes!:reporte[];
   sedes!: Sedes[];
