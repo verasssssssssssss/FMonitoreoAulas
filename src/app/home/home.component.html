@@ -53,7 +53,7 @@
                       </div>
                       <div>
                         <a *ngIf="AreasT.NomUsuario!=null" class="btn btn-danger mx-auto"
-                          (click)="delegarAreasDeTrabajo(AreasT.IdArea)">Delegar</a>
+                          (click)="delegarAreasDeTrabajo(AreasT.IdArea)">Quitar</a>
                         <a *ngIf="AreasT.NomUsuario==null" class="btn btn-info"
                           (click)="abrirModalAsignar(AreasT.IdArea)">Asignar</a>
                       </div>
@@ -194,7 +194,7 @@
                       (click)="abrirModalEncargadoAE(false,encargado.IdUsuario)">Editar</button>
                       <button type="button" class="btn btn-danger"
                         (click)="eliminarEncargado(encargado.IdUsuario)">Eliminar</button>
-                    </td> 
+                    </td>
                   </tr>
                 </tbody>
               </table>
