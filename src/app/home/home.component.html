@@ -208,30 +208,30 @@
   </div>
 </div>
 
-<!-- <div id="ModalEncargadoAE" class="modal">
+<div id="ModalEncargadoAE" class="modal">
   <div class="modal-content">
-    <span class="cerrar" (click)="cerrarModalEncargadoAE()">&times;</span>
-    <h2 *ngIf="!tipoModalEncargadoAE">Editar Encargado </h2>
+    <span class="cerrar" (click)="cerrarModalEncargadoAE(false)">&times;</span>
+    <h2 *ngIf="!tipoModalEncargadoAE">Editar Encargado {{EncargadosSelecionado.NomUsuario}} {{EncargadosSelecionado.ApeUsuario}}</h2>
     <h2 *ngIf="tipoModalEncargadoAE">Agregar Encargado de aula </h2>
-    <form id="personForm">
+    <form id="personFogrm">
       <div class="form-group">
         <label for="nombre">Nombre del encargado:</label>
-        <input (input)="nombreInputChange($event)" #nombre type="text" id="nombre" name="nombre" [value]="EncargadosSelecionado.NomUsuario" required>
+        <input (input)="EncargadoInputChange(1,$event)" #nombre type="text" id="f" name="nombre" [value]="EncargadosSelecionado.NomUsuario" required>
       </div>
       <div class="form-group">
         <label for="edad">Apellido del encargado:</label>
-        <input (input)="edadInputChange($event)"  min="0" #cantidad type="number" id="a" name="cantidad" [value]="EncargadosSelecionado.ApeUsuario" required>
+        <input (input)="EncargadoInputChange(2,$event)" min="0" #cantidad type="text" id="a" name="cantidad" [value]="EncargadosSelecionado.ApeUsuario" required>
       </div>
       <div class="form-group">
         <label for="s">Mail del encargado:</label>
-        <input (input)="edadInputChange($event)"  min="0" #cantidad type="number" id="sa" name="cantidad" [value]="EncargadosSelecionado.Mail" required>
+        <input (input)="EncargadoInputChange(3,$event)" min="0" #cantidad type="text" id="sa" name="cantidad" [value]="EncargadosSelecionado.Mail" required>
       </div>
       <div class="form-group">
         <label for="d">Contraseña del encargado:</label>
-        <input (input)="edadInputChange($event)"  min="0" #cantidad type="number" id="da" name="cantidad" [value]="EncargadosSelecionado.Contrasenia" required>
+        <input (input)="EncargadoInputChange(4,$event)" min="0" #cantidad type="text" id="da" name="cantidad" [value]="EncargadosSelecionado.Contrasenia" required>
       </div>
     </form>
-    <a class="btn btn-info" (click)="cerrarModalEncargadoAE()">OK</a>
+    <a class="btn btn-info" (click)="cerrarModalEncargadoAE(true)">OK</a>
   </div>
-</div> -->
+</div> 
 
