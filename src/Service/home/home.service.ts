@@ -59,4 +59,24 @@ export class HomeService {
     const body = { IdArea:IdArea,NomAula:NomAula, CantidadAlumnos	:CantidadAlumnos};
     return this.http.post(URL_ENDPOINT+'aula/crear',body);
   }
+
+  editarAreaDeTrabajo(NomArea:string,IdArea:number):Observable<any>{
+    const body = { NomArea:NomArea};
+    return this.http.put(URL_ENDPOINT+'area/editar/'+IdArea,body);
+  }
+
+  agregarAreaDeTrabajo(IdSede:number,NomArea:string):Observable<any>{
+    const body = { IdSede:IdSede,NomArea:NomArea};
+    return this.http.post(URL_ENDPOINT+'area/crear',body);
+  }
+
+  eliminarEncargado(IdUsuario:number):Observable<any>{
+    const body = {};
+    return this.http.put(URL_ENDPOINT+'encargado/eliminar/'+IdUsuario,body);
+  }
+
+  getEncargadoObtener(IdUsuario:number):Observable<any>{
+    return this.http.get(URL_ENDPOINT+'encargado/obtener/'+IdUsuario);
+  }
 }
+

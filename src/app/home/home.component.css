@@ -13,7 +13,6 @@ img{
     height: 10vh;
   }
 
-
   .modal {
     display: none;
     position: fixed;
@@ -103,4 +102,8 @@ img{
 
 .btn-editaraula:hover {
     background-color: #0056b3;
+}
+
+span{
+  font-size: 300%;
 }

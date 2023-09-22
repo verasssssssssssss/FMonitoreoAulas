@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AreasDeTrabajo } from 'src/Clases/AreasDeTrabajo';
 import { Aulas } from 'src/Clases/Aulas';
-import { Encargado } from 'src/Clases/Encargado';
+import { Encargado, EncargadoE } from 'src/Clases/Encargado';
 import { Sedes } from 'src/Clases/Sedes';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { HomeService } from 'src/Service/home/home.service';
@@ -21,11 +21,16 @@ export class HomeComponent {
   IdSedeActual!: number;
   AreasDeTrabajo!: AreasDeTrabajo[];
   Encargados!: Encargado[];
+  EncargadosSelecionado!: EncargadoE;
   AreasDeTrabajoSeleccionado!: number;
   AulaSeleccionada: Aulas[] =[];
   nombre: string = '';
-  cantidad: number = 0;
+  nombreAreaT: string = '';
+  cantidad: number = 0; 
   tipoModalAula!: boolean;
+  tipoModalAreaDeTrabajo!: boolean;
+  tipoModalEncargadoAE!: boolean;
+  nomAreaDeTrabajoSeleccionada: string = '';
 
   constructor(private homeService:HomeService) { }
 
@@ -43,6 +48,7 @@ export class HomeComponent {
 
   getSedes(IdCiudad:number){
     this.homeService.getSedes(IdCiudad).subscribe(  (response) => {
+      console.log(response)
       this.sedes=response.data;
       this.NomSedeActual = this.sedes[0].NomSede;
       this.IdSedeActual = this.sedes[0].IdSede;
@@ -170,6 +176,89 @@ export class HomeComponent {
       }
     }
     this.cerrarModalAula();
+  }
+
+  abrirModalEncargado(){ 
+    const modal = document.getElementById('ModalEncargado');
+    if(modal != null){
+      modal.style.display = 'block';
+    }
+  }
+  cerrarModalEncargado() {
+    const modal = document.getElementById('ModalEncargado');
+    if(modal != null){
+      modal.style.display = 'none';
+    }
+  }
+
+  abrirModalAreaDeTrabajo(AreaDeTrabajo:boolean, nomAreaDeTrabajo:string,idAreaDeTrabajo:number){ 
+    this.tipoModalAreaDeTrabajo = AreaDeTrabajo; 
+    this.nomAreaDeTrabajoSeleccionada = nomAreaDeTrabajo;
+    this.AreasDeTrabajoSeleccionado =idAreaDeTrabajo;
+    const modal = document.getElementById('ModalAreaDeTrabajo');
+    if(modal != null){
+      modal.style.display = 'block';
+    }
+  }
+
+  EditarOAgregarAreaDeTrabajo() {
+    if(this.nombreAreaT!= ''){
+      if(this.tipoModalAreaDeTrabajo){
+        this.homeService.agregarAreaDeTrabajo(this.IdSedeActual,this.nombreAreaT).subscribe(  (response) => {
+          this.getAreasDeTrabajo(this.IdSedeActual);
+        });
+      }else{
+        this.homeService.editarAreaDeTrabajo(this.nombreAreaT,this.AreasDeTrabajoSeleccionado).subscribe(  (response) => {
+          this.getAreasDeTrabajo(this.IdSedeActual);
+        });
+      }
+      this.cerrarModalAreaDeTrabajo();
+    }
+  }
+
+  cerrarModalAreaDeTrabajo() {
+    const modal = document.getElementById('ModalAreaDeTrabajo');
+    if(modal != null){
+      modal.style.display = 'none';
+    } 
+    this.nomAreaDeTrabajoSeleccionada = '';
+    this.AreasDeTrabajoSeleccionado =0;
+  }
+
+  abrirModalEncargadoAE(AreaDeTrabajo:boolean,idEncargado:number){ 
+    this.tipoModalEncargadoAE = AreaDeTrabajo; 
+    if(!this.tipoModalEncargadoAE){
+      this.homeService.getEncargadoObtener(idEncargado).subscribe(  (response) => {
+        this.EncargadosSelecionado = response.data;
+        console.log(response.data);
+        const modal = document.getElementById('ModalEncargadoAE');
+        if(modal != null){
+          modal.style.display = 'block';
+        }
+      });
+    }
+  }
+  cerrarModalEncargadoAE() {
+    const modal = document.getElementById('ModalEncargadoAE');
+    if(modal != null){
+      modal.style.display = 'none';
+    } 
+  }
+
+
+
+
+
+  eliminarEncargado(IdUsuario:number){
+    this.homeService.eliminarEncargado(IdUsuario).subscribe(  (response) => {
+      this.getAreasDeTrabajo(this.IdSedeActual);
+      this.getEncargadosSede(this.IdSedeActual);
+    });
+  }
+
+
+  nomAreaDeTrabajoInputChange(event: any) {
+    this.nombreAreaT=event.target.value;
   }
 
   nombreInputChange(event: any) {
