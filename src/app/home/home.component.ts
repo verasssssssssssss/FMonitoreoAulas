@@ -261,7 +261,8 @@ export class HomeComponent {
   }
 
   eliminarEncargado(IdUsuario: number) {
-    this.homeService.eliminarEncargado(IdUsuario).subscribe((response) => {
+    this.homeService.eliminarEncargado(IdUsuario).subscribe();
+    this.homeService.quitarEncargado(IdUsuario).subscribe((response) => { 
       this.getAreasDeTrabajo(this.IdSedeActual);
       this.getEncargadosSede(this.IdSedeActual);
     });

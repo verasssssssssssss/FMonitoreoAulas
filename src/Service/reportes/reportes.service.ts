@@ -13,6 +13,9 @@ export class ReportesService {
   getReportes(IdSede:number):Observable<any>{
     return this.http.get<any>(URL_ENDPOINT+'reporte/listado/'+IdSede);
   }
+
+  eliminarReporte(Idreporte: number): Observable<any> {
+    const body = {};
+    return this.http.delete(URL_ENDPOINT + 'reporte/eliminar/' + Idreporte, body);
+  }
 }
-
-

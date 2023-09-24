@@ -23,6 +23,7 @@ export class ReportesComponent implements OnInit {
   modal = true;
   NomCiudad!: string;
   NomSedeActual!: string;
+  IdSedeActual!: number;
 
   constructor(private sreportes: ReportesService,private homeService:HomeService){}
   ngOnInit() {
@@ -75,7 +76,13 @@ export class ReportesComponent implements OnInit {
 
   CambiarSede(NomSede:string,IdSede:number){
     this.NomSedeActual = NomSede;
+    this.IdSedeActual = IdSede;
     this.getRepoertes(IdSede);
   }
 
+  eliminarReporte(Idreporte:number){
+    this.sreportes.eliminarReporte(Idreporte).subscribe(  (response) => {
+      this.getRepoertes(this.IdSedeActual);
+    }
+  )}
 }

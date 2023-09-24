@@ -103,4 +103,9 @@ export class HomeService {
     };
     return this.http.put(URL_ENDPOINT + 'encargado/editar/' + body.IdUsuario, body);
   }
+
+  quitarEncargado(IdUsuario: number): Observable<any> {
+    const body = {};
+    return this.http.put(URL_ENDPOINT + 'area/quitar/' + IdUsuario, body);
+  }
 }

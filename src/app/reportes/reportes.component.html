@@ -61,7 +61,7 @@
                             <td>{{repor.NomUsuario}} {{repor.ApeUsuario}}</td>
                             <td>
                               <button class="btn btn-info d-inline-flex align-items-center" type="button" (click)="abrirModal(repor.IdDatos,repor.NomAula,repor.CapturaFotografica)">Visualizar</button>
-                              <button type="button" class="btn btn-danger">Eliminar</button>
+                              <button type="button" class="btn btn-danger" (click)="eliminarReporte(repor.IdReporte)">Eliminar</button>
                             </td>
                           </tr>
                         </tbody>
