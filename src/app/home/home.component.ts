@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AreasDeTrabajo } from 'src/Clases/AreasDeTrabajo';
 import { Aulas } from 'src/Clases/Aulas';
 import { Encargado, EncargadoE } from 'src/Clases/Encargado';
@@ -21,7 +22,7 @@ export class HomeComponent {
   IdSedeActual!: number;
   AreasDeTrabajo!: AreasDeTrabajo[];
   Encargados!: Encargado[];
-  EncargadosSelecionado: EncargadoE = { IdUsuario: 0, NomUsuario: "", ApeUsuario: "", Mail: "", Contrasenia: "" };
+  EncargadosSelecionado: EncargadoE = { IdUsuario: -1, NomUsuario: "", ApeUsuario: "", Mail: "", Contrasenia: "" };
   AreasDeTrabajoSeleccionado!: number;
   AulaSeleccionada: Aulas[] = [];
   nombre: string = '';
@@ -32,7 +33,16 @@ export class HomeComponent {
   tipoModalEncargadoAE!: boolean;
   nomAreaDeTrabajoSeleccionada: string = '';
 
-  constructor(private homeService: HomeService) { }
+  formularioEncargado: FormGroup;
+
+  constructor(private fb: FormBuilder,private homeService: HomeService) { 
+    this.formularioEncargado = this.fb.group({
+      Nombre: ['', [Validators.required]],
+      Apellido: ['', [Validators.required]],
+      Mail: ['', [Validators.required, Validators.email]],
+      Contrasenia: ['', [Validators.required, Validators.minLength(8)]],
+    });
+  }
 
   ngOnInit(): void {
     this.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
@@ -229,7 +239,22 @@ export class HomeComponent {
     this.tipoModalEncargadoAE = AreaDeTrabajo;
     this.homeService.getEncargadoObtener(idEncargado).subscribe((response) => {
       this.EncargadosSelecionado = response.data[0];
-      console.log(response.data);
+      console.log(this.EncargadosSelecionado);
+      if(this.EncargadosSelecionado !=undefined) {
+        this.formularioEncargado.patchValue({
+          Nombre:this.EncargadosSelecionado.NomUsuario,
+          Apellido: this.EncargadosSelecionado.ApeUsuario,
+          Mail: this.EncargadosSelecionado.Mail,
+          Contrasenia: this.EncargadosSelecionado.Contrasenia,
+        });
+      }else{
+        this.formularioEncargado.patchValue({
+          Nombre:'',
+          Apellido: '',
+          Mail: '',
+          Contrasenia: '',
+        });
+      }
       const modal = document.getElementById('ModalEncargadoAE');
       if (modal != null) {
         modal.style.display = 'block';
@@ -238,16 +263,14 @@ export class HomeComponent {
   }
   cerrarModalEncargadoAE(accion:boolean) {
     if(accion){
-      let  Encargado = this.EncargadosSelecionado;
       if(this.tipoModalEncargadoAE){
-        if( this.EncargadosSelecionado.NomUsuario!= "" && this.EncargadosSelecionado.ApeUsuario!= "" && this.EncargadosSelecionado.Mail!= "" && this.EncargadosSelecionado.Contrasenia!="" ){
-          this.homeService.agregarEncargado(this.IdSedeActual,Encargado).subscribe((response) => {
+          this.homeService.agregarEncargado(this.formularioEncargado.get('Nombre')?.value,this.formularioEncargado.get('Apellido')?.value,this.formularioEncargado.get('Mail')?.value,this.formularioEncargado.get('Contrasenia')?.value,this.IdSedeActual).subscribe((response) => {
             console.log(response);
             this.getEncargadosSede(this.IdSedeActual);
           });
-        }
+
       }else{
-        this.homeService.editarEncargado(this.IdSedeActual,Encargado).subscribe((response) => {
+        this.homeService.editarEncargado(this.EncargadosSelecionado.IdUsuario,this.formularioEncargado.get('Nombre')?.value,this.formularioEncargado.get('Apellido')?.value,this.formularioEncargado.get('Mail')?.value,this.formularioEncargado.get('Contrasenia')?.value,this.IdSedeActual).subscribe((response) => {
           console.log(response);
           this.getEncargadosSede(this.IdSedeActual);
         });
@@ -266,23 +289,6 @@ export class HomeComponent {
       this.getAreasDeTrabajo(this.IdSedeActual);
       this.getEncargadosSede(this.IdSedeActual);
     });
-  }
-
-  EncargadoInputChange(tipo: number, event: any) {
-    switch (tipo) {
-      case 1:
-        this.EncargadosSelecionado.NomUsuario = event.target.value;
-        break;
-      case 2:
-        this.EncargadosSelecionado.ApeUsuario = event.target.value;
-        break;
-      case 3:
-        this.EncargadosSelecionado.Mail = event.target.value;
-        break;
-      case 4:
-        this.EncargadosSelecionado.Contrasenia = event.target.value;
-        break;
-    }
   }
 
   nomAreaDeTrabajoInputChange(event: any) {

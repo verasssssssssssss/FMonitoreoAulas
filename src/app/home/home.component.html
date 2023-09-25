@@ -34,7 +34,8 @@
             <div class="d-flex align-items-center justify-content-between">
               <h5 class="card-title">{{AreasT.NomArea}}</h5>
               <div>
-                <button class="btn btn-warning" (click)="abrirModalAreaDeTrabajo(false,AreasT.NomArea,AreasT.IdArea)">Editar</button>
+                <button class="btn btn-warning"
+                  (click)="abrirModalAreaDeTrabajo(false,AreasT.NomArea,AreasT.IdArea)">Editar</button>
                 <button class="btn btn-danger" (click)="eliminarAreasDeTrabajo(AreasT.IdArea)">Eliminar</button>
               </div>
             </div>
@@ -68,7 +69,8 @@
                     <div class="d-flex align-items-center justify-content-between">
                       <h5 class="card-title">Aulas dentro del área</h5>
                       <div>
-                        <button class="btn btn-info" (click)="abrirModalAula(null,false,AreasT.IdArea)">Agregar aula</button>
+                        <button class="btn btn-info" (click)="abrirModalAula(null,false,AreasT.IdArea)">Agregar
+                          aula</button>
                       </div>
                     </div>
                     <div class="col-md-12">
@@ -89,7 +91,7 @@
                             <td>
                               <button type="button" class="btn btn-info">Visualizar</button>
                               <button type="button" class="btn btn-warning"
-                              (click)="abrirModalAula(Aulas,true,1)">Editar</button>
+                                (click)="abrirModalAula(Aulas,true,1)">Editar</button>
                               <button type="button" class="btn btn-danger"
                                 (click)="eliminarAula(Aulas.IdAula)">Eliminar</button>
                             </td>
@@ -128,14 +130,15 @@
 </div>
 
 <div id="ModalAreaDeTrabajo" class="modal">
-  <div class="modal-content" >
+  <div class="modal-content">
     <span class="cerrar" (click)="cerrarModalAreaDeTrabajo()">&times;</span>
     <h2 *ngIf="tipoModalAreaDeTrabajo">Agregar área de trabajo</h2>
     <h2 *ngIf="!tipoModalAreaDeTrabajo">Editar área de trabajo {{nomAreaDeTrabajoSeleccionada}}</h2>
     <form id="personForm">
       <div class="form-group">
         <label for="nombre">Nombre del área de trabajo:</label>
-        <input (input)="nomAreaDeTrabajoInputChange($event)" #nombre type="text" id="nombre" name="nombre" [value]="nomAreaDeTrabajoSeleccionada" required>
+        <input (input)="nomAreaDeTrabajoInputChange($event)" #nombre type="text" id="nombre" name="nombre"
+          [value]="nomAreaDeTrabajoSeleccionada" required>
       </div>
     </form>
     <a class="btn btn-info" (click)="EditarOAgregarAreaDeTrabajo()">OK</a>
@@ -150,11 +153,13 @@
     <form id="personForm">
       <div class="form-group">
         <label for="nombre">Nombre del aula:</label>
-        <input (input)="nombreInputChange($event)" #nombre type="text" id="nombre" name="nombre" [value]="AulaS.NomAula" required>
+        <input (input)="nombreInputChange($event)" #nombre type="text" id="nombre" name="nombre" [value]="AulaS.NomAula"
+          required>
       </div>
       <div class="form-group">
         <label for="edad">Cantidad de alumnos:</label>
-        <input (input)="edadInputChange($event)"  min="0" #cantidad type="number" id="cantidad" name="cantidad" [value]="AulaS.CantidadAlumnos" required>
+        <input (input)="edadInputChange($event)" min="0" #cantidad type="number" id="cantidad" name="cantidad"
+          [value]="AulaS.CantidadAlumnos" required>
       </div>
     </form>
     <a class="btn btn-info" (click)="EditarOAgregarAula()">OK</a>
@@ -192,7 +197,7 @@
                     <td>{{encargado.ApeUsuario}}</td>
                     <td>
                       <button type="button" class="btn btn-warning"
-                      (click)="abrirModalEncargadoAE(false,encargado.IdUsuario)">Editar</button>
+                        (click)="abrirModalEncargadoAE(false,encargado.IdUsuario)">Editar</button>
                       <button type="button" class="btn btn-danger"
                         (click)="eliminarEncargado(encargado.IdUsuario)">Eliminar</button>
                     </td>
@@ -212,27 +217,51 @@
 <div id="ModalEncargadoAE" class="modal">
   <div class="modal-content">
     <span class="cerrar" (click)="cerrarModalEncargadoAE(false)">&times;</span>
-    <h2 *ngIf="!tipoModalEncargadoAE">Editar Encargado {{EncargadosSelecionado.NomUsuario}} {{EncargadosSelecionado.ApeUsuario}}</h2>
+    <h2 *ngIf="!tipoModalEncargadoAE">Editar Encargado {{EncargadosSelecionado.NomUsuario}}
+      {{EncargadosSelecionado.ApeUsuario}}</h2>
     <h2 *ngIf="tipoModalEncargadoAE">Agregar Encargado de aula </h2>
-    <form id="personFogrm">
-      <div class="form-group">
-        <label for="nombre">Nombre del encargado:</label>
-        <input (input)="EncargadoInputChange(1,$event)" #nombre type="text" id="f" name="nombre" [value]="EncargadosSelecionado.NomUsuario" required>
-      </div>
-      <div class="form-group">
-        <label for="edad">Apellido del encargado:</label>
-        <input (input)="EncargadoInputChange(2,$event)" min="0" #cantidad type="text" id="a" name="cantidad" [value]="EncargadosSelecionado.ApeUsuario" required>
-      </div>
-      <div class="form-group">
-        <label for="s">Mail del encargado:</label>
-        <input (input)="EncargadoInputChange(3,$event)" min="0" #cantidad type="text" id="sa" name="cantidad" [value]="EncargadosSelecionado.Mail" required>
-      </div>
-      <div class="form-group">
-        <label for="d">Contraseña del encargado:</label>
-        <input (input)="EncargadoInputChange(4,$event)" min="0" #cantidad type="text" id="da" name="cantidad" [value]="EncargadosSelecionado.Contrasenia" required>
-      </div>
-    </form>
-    <a class="btn btn-info" (click)="cerrarModalEncargadoAE(true)">OK</a>
-  </div>
-</div> 
 
+    <form [formGroup]="formularioEncargado">
+      <div class="form-group">
+        <label for="Nombre">Nombre del encargado:</label>
+        <input type="text" id="Nombre" formControlName="Nombre">
+        <div
+          *ngIf="formularioEncargado.get('Nombre')?.hasError('required') && formularioEncargado.get('Nombre')?.touched">
+          El Nombre del encargado es obligatorio.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="Apellido">Apellido del encargado:</label>
+        <input type="text" id="Apellido" formControlName="Apellido">
+        <div
+          *ngIf="formularioEncargado.get('Apellido')?.hasError('required') && formularioEncargado.get('Apellido')?.touched">
+          El Apellido del encargado es obligatorio.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="Mail">Correo Electrónico</label>
+        <input type="email" id="Mail" formControlName="Mail" class="form-control form-control-sm">
+        <div *ngIf="formularioEncargado.get('Mail')?.hasError('required') && formularioEncargado.get('Mail')?.touched">
+          El correo electrónico es obligatorio.
+        </div>
+        <div *ngIf="formularioEncargado.get('Mail')?.hasError('Mail') && formularioEncargado.get('Mail')?.touched">
+          Ingresa un correo electrónico válido.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="Contrasenia">Contraseña</label>
+        <input type="text" id="Contrasenia" formControlName="Contrasenia" class="form-control form-control-sm" >
+        <div *ngIf="formularioEncargado.get('Contrasenia')?.hasError('required') && formularioEncargado.get('Contrasenia')?.touched">
+          La contraseña es obligatoria.
+        </div>
+        <div *ngIf="formularioEncargado.get('Contrasenia')?.hasError('minlength') && formularioEncargado.get('Contrasenia')?.touched">
+          La contraseña debe tener al menos 8 caracteres.
+        </div>
+      </div>
+      <button (click)="cerrarModalEncargadoAE(true)" [disabled]="formularioEncargado.invalid" class="btn btn-info" >Iniciar Sesión</button>
+    </form>
+  </div>
+</div>

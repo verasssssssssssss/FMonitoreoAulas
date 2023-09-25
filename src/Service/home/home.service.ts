@@ -80,25 +80,24 @@ export class HomeService {
     return this.http.get(URL_ENDPOINT + 'encargado/obtener/' + IdUsuario);
   }
 
-  agregarEncargado(IdSede: number, Encargado: EncargadoE): Observable<any> {
+  agregarEncargado(NomUsuario: string,ApeUsuario: string,Mail: string,Contrasenia: string,IdSede: number): Observable<any> {
     const body = {
-      IdUsuario:Encargado.IdUsuario,
-      NomUsuario:Encargado.NomUsuario,
-      ApeUsuario:Encargado.ApeUsuario,
-      Mail:Encargado.Mail,
-      Contrasenia:Encargado.Contrasenia,
+      NomUsuario:NomUsuario,
+      ApeUsuario:ApeUsuario,
+      Mail:Mail,
+      Contrasenia:Contrasenia,
       IdSede:IdSede,
     };
     return this.http.post(URL_ENDPOINT + 'encargado/crear', body);
   }
 
-  editarEncargado(IdSede: number,Encargado: EncargadoE): Observable<any> {
+  editarEncargado(IdUsuario: number,NomUsuario: string,ApeUsuario: string,Mail: string,Contrasenia: string,IdSede: number): Observable<any> {
     const body = {
-      IdUsuario:Encargado.IdUsuario,
-      NomUsuario:Encargado.NomUsuario,
-      ApeUsuario:Encargado.ApeUsuario,
-      Mail:Encargado.Mail,
-      Contrasenia:Encargado.Contrasenia,
+      IdUsuario:IdUsuario,
+      NomUsuario:NomUsuario,
+      ApeUsuario:ApeUsuario,
+      Mail:Mail,
+      Contrasenia:Contrasenia,
       IdSede:IdSede,
     };
     return this.http.put(URL_ENDPOINT + 'encargado/editar/' + body.IdUsuario, body);
