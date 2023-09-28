@@ -4,6 +4,7 @@ import { Usuarios } from 'src/Clases/Usuarios';
 import { reporte } from 'src/Clases/reportes';
 import { HomeService } from 'src/Service/home/home.service';
 import { ReportesService } from 'src/Service/reportes/reportes.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reportes',
@@ -81,8 +82,38 @@ export class ReportesComponent implements OnInit {
   }
 
   eliminarReporte(Idreporte:number){
-    this.sreportes.eliminarReporte(Idreporte).subscribe(  (response) => {
-      this.getRepoertes(this.IdSedeActual);
-    }
-  )}
+    Swal.fire({
+      title: '¿Estas seguro de eliminar el reporte?',
+      showDenyButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: `No`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.sreportes.eliminarReporte(Idreporte).subscribe(  (response) => {
+          this.getRepoertes(this.IdSedeActual);
+        }, (error) => {
+          this.errorSwal("Ocurrio un error al intentar eliminar el reporte");
+        });
+      }
+    });
+  }
+
+  successSwal(title: string) {
+    Swal.fire({
+      icon: 'success',
+      title: title,
+      showConfirmButton: false,
+      timer: 1300
+    });
+  }
+
+  errorSwal(title: string) {
+    Swal.fire({
+      icon: 'error',
+      title: title,
+      text: 'Intenta en más tarde',
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
 }

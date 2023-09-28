@@ -36,7 +36,7 @@
               <div>
                 <button class="btn btn-warning "
                   (click)="abrirModalAreaDeTrabajo(false,AreasT.NomArea,AreasT.IdArea)">Editar</button>
-                <button class="btn btn-danger" (click)="eliminarAreasDeTrabajo(AreasT.IdArea)">Eliminar</button>
+                <button class="btn btn-danger" (click)="eliminarAreasDeTrabajo(AreasT.IdArea,AreasT.NomArea)">Eliminar</button>
               </div>
             </div>
             <!-- Crea una fila dentro de la tarjeta principal -->
@@ -93,7 +93,7 @@
                               <button type="button" class="btn btn-warning"
                                 (click)="abrirModalAula(Aulas,true,1)">Editar</button>
                               <button type="button" class="btn btn-danger"
-                                (click)="eliminarAula(Aulas.IdAula)">Eliminar</button>
+                                (click)="eliminarAula(Aulas.IdAula,Aulas.NomAula)">Eliminar</button>
                             </td>
                           </tr>
                         </tbody>
@@ -121,7 +121,7 @@
     <span class="cerrar" (click)="cerrarModalAsignar()">&times;</span>
     <h2>Seleciona al encargado</h2>
     <select #select>
-      <option value="">Selecciona una persona</option>
+      <option value="-1">Selecciona una persona</option>
       <option *ngFor="let Encargado of Encargados" [value]="Encargado.IdUsuario">{{Encargado.NomUsuario}}
         {{Encargado.ApeUsuario}}</option>
     </select>
@@ -199,7 +199,7 @@
                       <button type="button" class="btn btn-warning"
                         (click)="abrirModalEncargadoAE(false,encargado.IdUsuario)">Editar</button>
                       <button type="button" class="btn btn-danger"
-                        (click)="eliminarEncargado(encargado.IdUsuario)">Eliminar</button>
+                        (click)="eliminarEncargado(encargado.IdUsuario,encargado.NomUsuario,encargado.ApeUsuario)">Eliminar</button>
                     </td>
                   </tr>
                 </tbody>

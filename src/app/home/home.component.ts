@@ -6,6 +6,7 @@ import { Encargado, EncargadoE } from 'src/Clases/Encargado';
 import { Sedes } from 'src/Clases/Sedes';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { HomeService } from 'src/Service/home/home.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -35,7 +36,7 @@ export class HomeComponent {
 
   formularioEncargado: FormGroup;
 
-  constructor(private fb: FormBuilder,private homeService: HomeService) { 
+  constructor(private fb: FormBuilder, private homeService: HomeService) {
     this.formularioEncargado = this.fb.group({
       Nombre: ['', [Validators.required]],
       Apellido: ['', [Validators.required]],
@@ -91,26 +92,68 @@ export class HomeComponent {
 
 
   asignarAreasDeTrabajo(IdAreasDeTrabajo: number, IdUsuario: number) {
-    this.homeService.asignarAreasDeTrabajo(IdAreasDeTrabajo, IdUsuario).subscribe((response) => {
-      this.getAreasDeTrabajo(this.IdSedeActual);
-    });
+    if (IdUsuario != -1) {
+      this.homeService.asignarAreasDeTrabajo(IdAreasDeTrabajo, IdUsuario).subscribe((response) => {
+        this.successSwal("Encargado asignado Correctamente");
+        this.getAreasDeTrabajo(this.IdSedeActual);
+      }, (error) => {
+        this.errorSwal("Ocurrio un error al asignar un encargado");
+      });
+    } else {
+      this.infoSwal("Debe selecionar un encargado");
+    }
   }
 
   delegarAreasDeTrabajo(IdAreasDeTrabajo: number) {
-    this.homeService.delegarAreasDeTrabajo(IdAreasDeTrabajo).subscribe((response) => {
-      this.getAreasDeTrabajo(this.IdSedeActual);
+    Swal.fire({
+      title: '¿Estas Seguro de quitar al encargado?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: `No`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.homeService.delegarAreasDeTrabajo(IdAreasDeTrabajo).subscribe((response) => {
+          this.getAreasDeTrabajo(this.IdSedeActual);
+          this.successSwal("Área de trabajo liberada");
+        });
+      }
     });
   }
 
-  eliminarAula(IdAula: number) {
-    this.homeService.eliminarAula(IdAula).subscribe((response) => {
-      this.getAreasDeTrabajo(this.IdSedeActual);
+  eliminarAula(IdAula: number, NomAula: string) {
+    Swal.fire({
+      title: '¿Estas seguro de eliminar el aula ' + NomAula + '?',
+      showDenyButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: `No`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.homeService.eliminarAula(IdAula).subscribe((response) => {
+          this.getAreasDeTrabajo(this.IdSedeActual);
+          this.successSwal("El aula se elimino correctamente");
+        }, (error) => {
+          this.errorSwal("Ocurrio un error al intentar eliminar el aula " + this.AulaSeleccionada[0].NomAula);
+        });
+      }
     });
   }
 
-  eliminarAreasDeTrabajo(IdArea: number) {
-    this.homeService.eliminarAreasDeTrabajo(IdArea).subscribe((response) => {
-      this.getAreasDeTrabajo(this.IdSedeActual);
+  eliminarAreasDeTrabajo(IdArea: number, NomArea: string) {
+    Swal.fire({
+      title: '¿Estas seguro de eliminar el área de trabajo ' + NomArea + '?',
+      showDenyButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: `No`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.homeService.eliminarAreasDeTrabajo(IdArea).subscribe((response) => {
+          this.getAreasDeTrabajo(this.IdSedeActual);
+          this.successSwal("El Área se elimino correctamente");
+        }, (error) => {
+          this.errorSwal("Ocurrio un error al intentar eliminar el Área " + NomArea);
+        });
+      }
     });
   }
 
@@ -156,6 +199,7 @@ export class HomeComponent {
   }
 
   cerrarModalAula() {
+    console.log('cerrar modal');
     const modal = document.getElementById('ModalAula');
     if (modal != null) {
       modal.style.display = 'none';
@@ -176,16 +220,35 @@ export class HomeComponent {
         ccantidad = this.cantidad;
       }
       if (this.tipoModalAula) {
-        this.homeService.editarAula(this.AulaSeleccionada[0].IdAula, nnombre, ccantidad).subscribe((response) => {
-          this.getAreasDeTrabajo(this.IdSedeActual);
+        Swal.fire({
+          title: '¿Estas seguro de editar el aula ' + this.AulaSeleccionada[0].NomAula + '?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          denyButtonText: `No`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.homeService.editarAula(this.AulaSeleccionada[0].IdAula, nnombre, ccantidad).subscribe((response) => {
+              this.getAreasDeTrabajo(this.IdSedeActual);
+              this.successSwal("El aula se edito correctamente");
+              this.cerrarModalAula();
+            }, (error) => {
+              this.errorSwal("Ocurrio un error al intentar editar el aula " + this.AulaSeleccionada[0].NomAula);
+            });
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            this.cerrarModalAula();
+          }
         });
       } else {
         this.homeService.agregarAula(this.AreasDeTrabajoSeleccionado, nnombre, ccantidad).subscribe((response) => {
           this.getAreasDeTrabajo(this.IdSedeActual);
+          this.successSwal("El aula se creo correctamente");
+          this.cerrarModalAula();
+        }, (error) => {
+          this.errorSwal("Ocurrio un error al intentar agregar la nueva aula");
         });
       }
     }
-    this.cerrarModalAula();
   }
 
   abrirModalEncargado() {
@@ -205,6 +268,7 @@ export class HomeComponent {
     this.tipoModalAreaDeTrabajo = AreaDeTrabajo;
     this.nomAreaDeTrabajoSeleccionada = nomAreaDeTrabajo;
     this.AreasDeTrabajoSeleccionado = idAreaDeTrabajo;
+    console.log("el id es -Z " + this.AreasDeTrabajoSeleccionado);
     const modal = document.getElementById('ModalAreaDeTrabajo');
     if (modal != null) {
       modal.style.display = 'block';
@@ -213,16 +277,33 @@ export class HomeComponent {
 
   EditarOAgregarAreaDeTrabajo() {
     if (this.nombreAreaT != '') {
+      console.log(this.nombreAreaT);
       if (this.tipoModalAreaDeTrabajo) {
         this.homeService.agregarAreaDeTrabajo(this.IdSedeActual, this.nombreAreaT).subscribe((response) => {
           this.getAreasDeTrabajo(this.IdSedeActual);
+          this.successSwal("El área de trabajo se creo correctamente");
+        }, (error) => {
+          this.errorSwal("Ocurrio un error al intentar agregar la nueva área de trabajo");
         });
       } else {
-        this.homeService.editarAreaDeTrabajo(this.nombreAreaT, this.AreasDeTrabajoSeleccionado).subscribe((response) => {
-          this.getAreasDeTrabajo(this.IdSedeActual);
+        Swal.fire({
+          title: '¿Estas seguro de editar el área de trabajo ' + this.nombreAreaT + '?',
+          showDenyButton: true,
+          confirmButtonText: 'Si',
+          denyButtonText: `No`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.homeService.editarAreaDeTrabajo(this.nombreAreaT, this.AreasDeTrabajoSeleccionado).subscribe((response) => {
+              this.getAreasDeTrabajo(this.IdSedeActual);
+              this.successSwal("El área de trabajo se edito correctamente");
+              this.cerrarModalAreaDeTrabajo();
+            }, (error) => {
+              this.errorSwal("Ocurrio un error al intentar editar el el área de trabajo " + this.nombreAreaT);
+              this.cerrarModalAreaDeTrabajo();
+            });
+          }
         });
       }
-      this.cerrarModalAreaDeTrabajo();
     }
   }
 
@@ -240,16 +321,16 @@ export class HomeComponent {
     this.homeService.getEncargadoObtener(idEncargado).subscribe((response) => {
       this.EncargadosSelecionado = response.data[0];
       console.log(this.EncargadosSelecionado);
-      if(this.EncargadosSelecionado !=undefined) {
+      if (this.EncargadosSelecionado != undefined) {
         this.formularioEncargado.patchValue({
-          Nombre:this.EncargadosSelecionado.NomUsuario,
+          Nombre: this.EncargadosSelecionado.NomUsuario,
           Apellido: this.EncargadosSelecionado.ApeUsuario,
           Mail: this.EncargadosSelecionado.Mail,
           Contrasenia: this.EncargadosSelecionado.Contrasenia,
         });
-      }else{
+      } else {
         this.formularioEncargado.patchValue({
-          Nombre:'',
+          Nombre: '',
           Apellido: '',
           Mail: '',
           Contrasenia: '',
@@ -261,21 +342,44 @@ export class HomeComponent {
       }
     });
   }
-  cerrarModalEncargadoAE(accion:boolean) {
-    if(accion){
-      if(this.tipoModalEncargadoAE){
-          this.homeService.agregarEncargado(this.formularioEncargado.get('Nombre')?.value,this.formularioEncargado.get('Apellido')?.value,this.formularioEncargado.get('Mail')?.value,this.formularioEncargado.get('Contrasenia')?.value,this.IdSedeActual).subscribe((response) => {
-            console.log(response);
-            this.getEncargadosSede(this.IdSedeActual);
-          });
 
-      }else{
-        this.homeService.editarEncargado(this.EncargadosSelecionado.IdUsuario,this.formularioEncargado.get('Nombre')?.value,this.formularioEncargado.get('Apellido')?.value,this.formularioEncargado.get('Mail')?.value,this.formularioEncargado.get('Contrasenia')?.value,this.IdSedeActual).subscribe((response) => {
-          console.log(response);
+  cerrarModalEncargadoAE(accion: boolean) {
+    if (accion) {
+      if (this.tipoModalEncargadoAE) {
+        this.homeService.agregarEncargado(this.formularioEncargado.get('Nombre')?.value, this.formularioEncargado.get('Apellido')?.value, this.formularioEncargado.get('Mail')?.value, this.formularioEncargado.get('Contrasenia')?.value, this.IdSedeActual).subscribe((response) => {
+          this.successSwal("El encargado se creo correctamente");
           this.getEncargadosSede(this.IdSedeActual);
+        }, (error) => {
+          this.errorSwal("Ocurrio un error al intentar agregar a un nueva encargado para la sede " + this.NomSedeActual);
+        });
+        this.cerrarrModalEncargado();
+      } else {
+        Swal.fire({
+          title: '¿Estas seguro de editar al encargado ' + this.EncargadosSelecionado.NomUsuario + " " + this.EncargadosSelecionado.ApeUsuario + '?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          denyButtonText: `No`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.homeService.editarEncargado(this.EncargadosSelecionado.IdUsuario, this.formularioEncargado.get('Nombre')?.value, this.formularioEncargado.get('Apellido')?.value, this.formularioEncargado.get('Mail')?.value, this.formularioEncargado.get('Contrasenia')?.value, this.IdSedeActual).subscribe((response) => {
+              this.successSwal("El encargado de aula se edito correctamente");
+              this.getEncargadosSede(this.IdSedeActual);
+              this.getAreasDeTrabajo(this.IdSedeActual);
+              this.cerrarrModalEncargado();
+            }, (error) => {
+              this.errorSwal("Ocurrio un error al intentar editar el encargado de aula " + this.EncargadosSelecionado.NomUsuario + " " + this.EncargadosSelecionado.ApeUsuario);
+              this.cerrarrModalEncargado();
+            });
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            this.cerrarrModalEncargado();
+          }
         });
       }
     }
+  }
+
+  cerrarrModalEncargado() {
     const modal = document.getElementById('ModalEncargadoAE');
     if (modal != null) {
       modal.style.display = 'none';
@@ -283,11 +387,24 @@ export class HomeComponent {
     this.EncargadosSelecionado = { IdUsuario: 0, NomUsuario: "", ApeUsuario: "", Mail: "", Contrasenia: "" };
   }
 
-  eliminarEncargado(IdUsuario: number) {
-    this.homeService.eliminarEncargado(IdUsuario).subscribe();
-    this.homeService.quitarEncargado(IdUsuario).subscribe((response) => { 
-      this.getAreasDeTrabajo(this.IdSedeActual);
-      this.getEncargadosSede(this.IdSedeActual);
+  eliminarEncargado(IdUsuario: number, NomUsuario: string, Apellido: string) {
+    Swal.fire({
+      title: '¿Estas seguro de eliminar al encargado ' + NomUsuario + " " + Apellido + '?',
+      showDenyButton: true,
+      confirmButtonText: 'Si',
+      denyButtonText: `No`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.homeService.eliminarEncargado(IdUsuario).subscribe((response) => {
+          this.homeService.quitarEncargado(IdUsuario).subscribe((response) => {
+            this.getAreasDeTrabajo(this.IdSedeActual);
+            this.getEncargadosSede(this.IdSedeActual);
+          });
+          this.successSwal("El encargado " + NomUsuario + " " + Apellido + " se elimino correctamente");
+        }, (error) => {
+          this.errorSwal("Ocurrio un error al intentar eliminar al encargado");
+        });
+      }
     });
   }
 
@@ -301,5 +418,34 @@ export class HomeComponent {
 
   edadInputChange(event: any) {
     this.cantidad = parseInt(event.target.value, 10);
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  successSwal(title: string) {
+    Swal.fire({
+      icon: 'success',
+      title: title,
+      showConfirmButton: false,
+      timer: 1300
+    });
+  }
+
+  errorSwal(title: string) {
+    Swal.fire({
+      icon: 'error',
+      title: title,
+      text: 'Intenta en más tarde',
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
+
+  infoSwal(title: string) {
+    Swal.fire({
+      icon: 'info',
+      title: title,
+      showConfirmButton: false,
+      timer: 1500
+    });
   }
 }
