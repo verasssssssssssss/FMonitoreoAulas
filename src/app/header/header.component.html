@@ -1,17 +1,20 @@
 <nav class="navbar navbar-expand-lg bg-body-secondary">
   <div class="container-fluid">
-    <ul class="nav nav-pills">
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" routerLink="/home">Inicio</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" routerLink="/reportes">Listado de reportes</a>
-  </li>
-  <li class="nav-item">
-    <button class="btn btn-danger" (click)="eliminarDatoDelLocalStorage()">Cerrar sesion</button>
-  </li>
-</ul>
+    <a class="navbar-brand" routerLink="/home">
+      <img src="assets\Imagenes\isotipo.png" alt="Logo" width="75" height="100">
+    </a>
+
+    <ul class="navbar-nav me-auto nav-pills">
+      <li class="nav-item">
+        <a class="nav-link active text-white fs-4" aria-current="page" routerLink="/home">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fs-4" routerLink="/reportes">Listado de reportes</a>
+      </li>
+    </ul>
+
+    <div>
+      <button class="btn btn-danger fs-4" (click)="eliminarDatoDelLocalStorage()">Cerrar sesión</button>
+    </div>
   </div>
 </nav>
-
-

@@ -10,19 +10,24 @@ import { LoginService } from 'src/Service/login/login.service';
 })
 export class LoginComponent {
 
-  constructor(private router: Router,private loginService:LoginService){}
+  error = false;
 
-  IniciarSesion(Mail:string,Contrasenia:string){
-    if(Mail!="" && Contrasenia!=""){
+  constructor(private router: Router, private loginService: LoginService) { }
+
+  IniciarSesion(Mail: string, Contrasenia: string) {
+    if (Mail != "" && Contrasenia != "") {
       this.loginService.IniciarSesion(Mail, Contrasenia).subscribe((response) => {
-        if(response.ok){
+        if (response.ok) {
           localStorage.setItem('UsuarioLogueado', JSON.stringify(response.data))
           this.router.navigate(['/home']);
         }
-      },(error) => {
+
+
+      }, (error) => {
         console.log("Credenciales incorrectas");
+        this.error = true;
       });
-    }else{
+    } else {
       console.log("Debe ingresar las credenciales");
     }
   }

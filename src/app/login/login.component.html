@@ -14,6 +14,12 @@
         </div>
         <div class="form-check text-start my-3"></div>
         <button class="btn btn-primary w-100 py-2" type="button" (click)="IniciarSesion(email.value,password.value)">Iniciar sesión</button>
+        <div>
+          <p class="alert alert-danger" *ngIf="error">Credenciales incorrectas</p>
+        </div>
       </form>
 </div>
 </div>
+
+
+
