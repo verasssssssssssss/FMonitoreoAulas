@@ -1,6 +1,7 @@
 export class reporte{
     IdReporte!:number;
     FechaReporte!:string;
+    HoraReporte!:string;
     NomCarrera!:string;
     NomCurso!:string;
     NomProfesor!:string;

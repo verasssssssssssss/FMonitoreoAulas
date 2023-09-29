@@ -50,7 +50,9 @@ export class ReportesComponent implements OnInit {
   getRepoertes(IdSede:number){
     this.sreportes.getReportes(IdSede).subscribe(  (response) => {
       this.reportes=response.data;
-      console.log(this.reportes);
+      this.reportes.forEach(element => {
+        this.transform(element);
+      });
     }
   )}
 
@@ -115,5 +117,12 @@ export class ReportesComponent implements OnInit {
       showConfirmButton: false,
       timer: 1500
     });
+  }
+
+  transform(report:  reporte) {
+    const parts = report.FechaReporte.split('T');
+    const parts1 = parts[1].split('Z');
+    report.FechaReporte = parts[0];
+    report.HoraReporte = parts1[0].substring(0, parts1[0].length - 4);
   }
 }

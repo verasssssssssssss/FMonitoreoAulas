@@ -10,6 +10,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NotificacionComponent } from './Notificacion/notificacion/notificacion.component';
+
 
 
 @NgModule({
@@ -18,7 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     HeaderComponent,
     LoginComponent,
     ReportesComponent,
-    HomeComponent
+    HomeComponent,
+    NotificacionComponent
   ],
   imports: [
     BrowserModule,

@@ -42,6 +42,7 @@
                           <tr>
                             <th scope="col">#</th>
                             <th scope="col">Fecha</th>
+                            <th scope="col">Hora</th>
                             <th scope="col">Carrera</th>
                             <th scope="col">Curso</th>
                             <th scope="col">Docente</th>
@@ -54,6 +55,7 @@
                           <tr *ngFor="let repor of reportes | paginate: { itemsPerPage: 10, currentPage: p }" >
                             <th scope="row">{{reportes.length -reportes.indexOf(repor)}}</th>
                             <td>{{repor.FechaReporte}}</td>
+                            <td>{{repor.HoraReporte}}</td>
                             <td>{{repor.NomCarrera}}</td>
                             <td>{{repor.NomCurso}}</td>
                             <td>{{repor.NomProfesor}}</td>
