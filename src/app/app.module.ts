@@ -11,8 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NotificacionComponent } from './Notificacion/notificacion/notificacion.component';
-
-
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -30,7 +29,7 @@ import { NotificacionComponent } from './Notificacion/notificacion/notificacion.
     NgxPaginationModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

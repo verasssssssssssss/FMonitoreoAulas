@@ -1,1 +1,82 @@
-<p>notificacion works!</p>
+<div id="ModalCorreo" class="modal">
+    <div class="modal-content">
+      <span class="cerrar" (click)="cerrarrModalCorreo(false)">&times;</span>
+      <h2>Crear correo</h2>
+      <form [formGroup]="formularioCorreo">
+        <div class="form-group">
+            <label for="NomCoordinador">Nombre del Cordinador:</label>
+            <input type="text" id="NomCoordinador" formControlName="NomCoordinador">
+          </div>
+          <div class="form-group">
+            <label for="NomSede">Nombre de la sede universitaria:</label>
+            <input type="text" id="NomSede" formControlName="NomSede">
+          </div>
+          <div class="form-group">
+            <label for="NomArea">Nombre del área:</label>
+            <input type="text" id="NomArea" formControlName="NomArea">
+          </div>
+          <div class="form-group">
+            <label for="NomAula">Nombre del aula:</label>
+            <input type="text" id="NomAula" formControlName="NomAula">
+          </div>
+          <div class="form-group">
+            <label for="Fecha">Fecha:</label>
+            <input type="text" id="Fecha" formControlName="Fecha">
+          </div>
+          <div class="form-group">
+            <label for="NomCurso">Nombre del curso:</label>
+            <input type="text" id="NomCurso" formControlName="NomCurso">
+            <div
+            *ngIf="formularioCorreo.get('NomCurso')?.hasError('required') && formularioCorreo.get('NomCurso')?.touched">
+            El Nombre de la curso es obligatorio.
+          </div>
+          </div>
+          <div class="form-group">
+            <label for="NomProfesor">Nombre del profesor:</label>
+            <input type="text" id="NomProfesor" formControlName="NomProfesor">
+            <div
+            *ngIf="formularioCorreo.get('NomProfesor')?.hasError('required') && formularioCorreo.get('NomProfesor')?.touched">
+            El Nombre de la profesor es obligatorio.
+          </div>
+          </div>
+          <div class="form-group">
+            <label for="NomCarrera">Nombre de la carrera:</label>
+            <select #select (change)="carreraSInputChange($event)">
+              <option value="-1">Selecciona una carrera</option>
+              <option *ngFor="let carreras of carrerasSede" [value]="carreras.IdCarrera">{{carreras.NomCarrera}}</option>
+            </select>
+            <div
+            *ngIf="formularioCorreo.get('NomCarrera')?.hasError('required') && formularioCorreo.get('NomCarrera')?.touched">
+            El Nombre de la carrera es obligatorio.
+          </div>
+          </div>
+        <button (click)="cerrarrModalCorreo(true)" [disabled]="formularioCorreo.invalid" class="btn btn-info" >Generar correo</button>
+      </form>
+    </div>
+  </div>
+
+
+  <div id="ModalCorreoPrev" class="modal">
+    <div class="modal-content">
+      <h1 class="modal-title">Previsualización del correo</h1>
+        <div class="justificado">
+          <div class="encabezado">
+            <h1>Asunto: Reporte de Desuso de Aula de Clases</h1>
+          </div>
+          <div class="contenido">
+            <p>Estimada {{formularioCorreo.get('NomCoordinador')?.value}}</p>
+            <p>Me dirijo a usted en mi capacidad de encargado de aula de la sede {{formularioCorreo.get('NomSede')?.value}}, con el propósito de informarle sobre una situación relacionada con el uso de las instalaciones.</p>
+            <p>El motivo de mi comunicación es notificarle que el aula de clases designada con el nombre {{formularioCorreo.get('NomAula')?.value}} ha permanecido desocupada el día de la fecha, {{formularioCorreo.get('Fecha')?.value}},
+               a pesar de que había sido previamente reservada para el curso {{formularioCorreo.get('NomCurso')?.value}} impartido por el profesor {{formularioCorreo.get('NomProfesor')?.value}} de la carrera {{formularioCorreo.get('NomCarrera')?.value}}.</p>
+            <p>Adjunto a este correo, encontrará una captura fotográfica que muestra el estado actual del aula en cuestión como evidencia del desuso.</p>
+            <img class="imagen-centrada" [src]="notificacion.CapturaFotografica">
+            <p>Agradezco su atención a esta situación y quedo a la espera de sus indicaciones al respecto.</p>
+            <p class="firma">Atentamente,</p>
+            <p class="firma">{{datoLocalStorage.NomUsuario}} {{datoLocalStorage.ApeUsuario}}</p>
+            <p class="pie-pagina">Sistema de monitoreo de aulas universidad del BIO-BIO.</p>
+          </div>
+        </div>
+        <button type="button" class="btn btn-info" (click)="EnviarCorreo()">Enviar</button>
+        <button type="button" class="btn btn-danger" (click)="cerrarrModalCorreoPre()">Reeditar</button>
+    </div>
+  </div>

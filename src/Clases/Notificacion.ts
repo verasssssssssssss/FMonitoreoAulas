@@ -4,4 +4,5 @@ export class notificacion{
      NomArea!:string;
      NomAula!:string;
      CapturaFotografica!:string;
+     IdDatos!:number;
  }

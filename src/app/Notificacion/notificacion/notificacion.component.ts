@@ -1,4 +1,8 @@
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CarrerasSede } from 'src/Clases/CarrerasSede';
+import { DatosCorreo } from 'src/Clases/DatosCorreo';
 import { notificacion } from 'src/Clases/Notificacion';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { NotificacionService } from 'src/Service/Notificacion/notificacion.service';
@@ -13,21 +17,72 @@ export class NotificacionComponent {
 
   notificacion!:notificacion;
   datoLocalStorage!: Usuarios;
+  datosCorreo!: DatosCorreo;
+  fechaActual!: Date;
+  fechaFormateada!: string;
+  carrerasSede!:CarrerasSede[];
+  idCarreraSelecionada!:number;
 
-  constructor(private notificacionService:NotificacionService) { }
+  formularioCorreo: FormGroup;
+
+  recibitNotificacion: boolean = true;
+  
+  constructor(private fb: FormBuilder,private notificacionService:NotificacionService,private datePipe: DatePipe) {
+    this.fechaActual = new Date();
+    this.fechaFormateada = this.datePipe.transform(this.fechaActual, 'dd/MM/yyyy HH:mm:ss') || 'Fecha inválida';
+
+    this.formularioCorreo = this.fb.group({
+      NomCoordinador: [{ value: '', disabled: true }, [Validators.required]],
+      NomSede:  [{ value: '', disabled: true }, [Validators.required]],
+      NomArea:  [{ value: '', disabled: true }, [Validators.required]],
+      NomAula:  [{ value: '', disabled: true }, [Validators.required]],
+      Fecha:  [{ value: '', disabled: true }, [Validators.required]],
+      NomCurso:  ['', [Validators.required]],
+      NomProfesor:  ['', [Validators.required]],
+      NomCarrera:  ['', [Validators.required]],
+      
+      IdUsuario:  ['', [Validators.required]],
+    });
+   }
 
   ngOnInit(): void {
     this.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
     setInterval(() => {
-      this.miFuncion();
-    }, 50000); // 10000 milisegundos = 50 segundos
+      if(this.recibitNotificacion){
+        this.recibitNotificacion = !this.recibitNotificacion;
+        this.getNotifiacionDesuso();
+      }
+    }, 7000); // 10000 milisegundos = 10 segundos
   }
 
-  miFuncion() {
-    this.notificacionService.agregarNotifiacion(this.datoLocalStorage.IdUsuario).subscribe((response) => {
+
+  getNotifiacionDesuso() {
+    this.notificacionService.getDatosCorreo(1).subscribe((response) => {
+      this.datosCorreo = response.data[0];
+    });
+    this.notificacionService.getCarrerasSede(1).subscribe((response) => {
+      this.carrerasSede = response.data;
+    });
+    this.notificacionService.getNotifiacionDesuso(this.datoLocalStorage.IdUsuario).subscribe((response) => {
       if(response.dataLenghy!=0){
         this.notificacion = response.data[0];
+        
         this.alertaDesusoDeAula(this.notificacion.NomArea,this.notificacion.NomAula,this.notificacion.CapturaFotografica);
+      
+        this.formularioCorreo.patchValue({
+          NomCoordinador:  this.datosCorreo.NomUsuario+" "+this.datosCorreo.ApeUsuario,
+          NomSede: this.datosCorreo.NomSede,
+          NomArea:  this.notificacion.NomArea,
+          NomAula:  this.notificacion.NomAula,
+          Fecha:  this.fechaFormateada,
+
+          NomCurso:  '',
+          NomProfesor:  '',
+
+          IdUsuario:  this.datoLocalStorage.IdUsuario,
+        });
+      }else{
+        this.recibitNotificacion = !this.recibitNotificacion;
       }
     });
   }
@@ -45,10 +100,130 @@ export class NotificacionComponent {
       cancelButtonText: 'Descartar' 
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Confirmado', 'Has confirmado la acción', 'success');
+        this.abrirModalAreaDeTrabajo();
       } else if (result.isDismissed) {
         Swal.fire('Descartado', 'Has descartado la acción', 'error');
       }
+    });
+  }
+
+  cerrarrModalCorreo(PrevCorreo :boolean) {
+    if(PrevCorreo){
+      this.abrirModalCorreoPre();
+    }else{
+      const modal = document.getElementById('ModalCorreo');
+      if (modal != null) {
+        modal.style.display = 'none';
+      }
+    }
+  }
+
+  abrirModalAreaDeTrabajo() {
+    const modal = document.getElementById('ModalCorreo');
+    if (modal != null) {
+      modal.style.display = 'block';
+    }
+  }
+
+  cerrarrModalCorreoPre() {
+    const modal = document.getElementById('ModalCorreoPrev');
+    if (modal != null) {
+      modal.style.display = 'none';
+    }
+  }
+
+  abrirModalCorreoPre() {
+    const modal = document.getElementById('ModalCorreoPrev');
+    if (modal != null) {
+      modal.style.display = 'block';
+    }
+  }
+
+  carreraSInputChange(Carrera: any) {
+    if (Carrera.target.value === '-1') {
+      console.log('No se ha seleccionado ninguna carrera');
+    } else {
+      this.carrerasSede.forEach(elemento => {
+        if(elemento.IdCarrera == Carrera.target.value) { 
+          this.formularioCorreo.patchValue({
+            NomCarrera:  elemento.NomCarrera,
+          });
+          this.idCarreraSelecionada =elemento.IdCarrera;
+        }
+      });
+    }
+  }
+
+  EnviarCorreo() {
+    this.enviandoCorreo();
+    this.notificacionService.enviarCorreo(this.datosCorreo.Mail,this.datosCorreo.NomUsuario,this.datosCorreo.ApeUsuario,this.datosCorreo.NomSede,
+      this.formularioCorreo.get('NomCurso')?.value,this.formularioCorreo.get('NomProfesor')?.value,this.fechaFormateada,this.formularioCorreo.get('NomCarrera')?.value,
+      this.datoLocalStorage.NomUsuario+""+this.datoLocalStorage.ApeUsuario,this.notificacion.NomAula,this.notificacion.CapturaFotografica).subscribe((response) => {
+    }, (error) => {
+      console.log("error al enviar el correo");
+    });
+    this.notificacionService.agregarReporte(this.formularioCorreo.get('NomCurso')?.value,this.formularioCorreo.get('NomProfesor')?.value,this.fechaActual,
+    this.idCarreraSelecionada,this.formularioCorreo.get('IdUsuario')?.value,this.notificacion.IdAula,this.notificacion.IdDatos).subscribe((response) => {
+      this.cerrarrModalCorreoPre();
+      this.cerrarrModalCorreo(false);
+    }, (error) => {
+      console.log("error al generar reporte");
+    });
+  }
+  timerInterval: any;
+  enviandoCorreo(){
+    Swal.fire({
+      html: 'Enviando correo generado <b></b> milisegundos.',
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+        const b = Swal.getHtmlContainer()?.querySelector('b');
+        if (b) {
+          this.timerInterval = setInterval(() => {
+            const timerLeft = Swal.getTimerLeft();
+            if (timerLeft !== undefined) {
+              b.textContent = timerLeft.toString();
+            }
+          }, 100);
+        }
+      },
+      willClose: () => {
+        clearInterval(this.timerInterval);
+      }
+    }).then((result) => {
+      if (result.dismiss === Swal.DismissReason.timer) {
+        this.successSwal("Correo Enivado correctamente");
+      }
+    });
+  }
+
+
+  successSwal(title: string) {
+    Swal.fire({
+      icon: 'success',
+      title: title,
+      showConfirmButton: false,
+      timer: 1300
+    });
+  }
+
+  errorSwal(title: string) {
+    Swal.fire({
+      icon: 'error',
+      title: title,
+      text: 'Intenta en más tarde',
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
+
+  infoSwal(title: string) {
+    Swal.fire({
+      icon: 'info',
+      title: title,
+      showConfirmButton: false,
+      timer: 1500
     });
   }
 }

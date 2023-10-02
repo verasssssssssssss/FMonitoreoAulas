@@ -10,7 +10,46 @@ export class NotificacionService {
 
   constructor(private http: HttpClient) { }
 
-  agregarNotifiacion(IdUsuario: number): Observable<any> {
+  getNotifiacionDesuso(IdUsuario: number): Observable<any> {
     return this.http.get(URL_ENDPOINT + 'reporte/obtener/'+IdUsuario);
   }
+
+  getDatosCorreo(IdSede: number): Observable<any> {
+    return this.http.get(URL_ENDPOINT + 'correo/Obtener/'+IdSede);
+  }
+
+  getCarrerasSede(IdSede: number): Observable<any> {
+    return this.http.get(URL_ENDPOINT + 'carreras/listado/'+IdSede);
+  }
+
+  agregarReporte(NomCurso: string, NomProfesor: string, FechaReporte: Date, IdCarrera: number, IdUsuario: number, IdAula: number, IdDatos: number): Observable<any> {
+    const body = { 
+      NomCurso: NomCurso,
+      NomProfesor: NomProfesor,
+      FechaReporte: FechaReporte,
+      IdCarrera: IdCarrera,
+      IdUsuario: IdUsuario,
+      IdAula: IdAula,
+      IdDatos: IdDatos,
+    };
+    return this.http.post(URL_ENDPOINT + 'reporte/crear', body);
+  }
+
+  enviarCorreo(to:string, NomDirector: string, ApeDirector: string, NomSede: string, NomCurso:string,  NomProfesor:string, FechaReporte:string, NomCarrera:string, NomEncargado:string,NomAula:string, CapturaFotografica:string): Observable<any> {
+    const body = { 
+      to: to,
+      NomDirector:NomDirector,
+      ApeDirector:ApeDirector,
+      NomSede:NomSede,
+      NomCurso:NomCurso, 
+      NomProfesor:NomProfesor, 
+      FechaReporte:FechaReporte, 
+      NomCarrera:NomCarrera, 
+      NomEncargado:NomEncargado,
+      NomAula:NomAula, 
+      CapturaFotografica:CapturaFotografica,
+    };
+    return this.http.post(URL_ENDPOINT + 'EnviarCorreo', body);
+  }
+
 }
