@@ -260,7 +260,8 @@
           La contraseña debe tener al menos 8 caracteres.
         </div>
       </div>
-      <button (click)="cerrarModalEncargadoAE(true)" [disabled]="formularioEncargado.invalid" class="btn btn-info" >Iniciar Sesión</button>
+      <button *ngIf="!tipoModalEncargadoAE" (click)="cerrarModalEncargadoAE(true)" [disabled]="formularioEncargado.invalid" class="btn btn-info" >Editar Encargado</button>
+      <button *ngIf="tipoModalEncargadoAE" (click)="cerrarModalEncargadoAE(true)" [disabled]="formularioEncargado.invalid" class="btn btn-info" >Crear Encargado</button>
     </form>
   </div>
 </div>
