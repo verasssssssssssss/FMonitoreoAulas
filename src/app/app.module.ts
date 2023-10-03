@@ -10,7 +10,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NotificacionComponent } from './Notificacion/notificacion/notificacion.component';
+import { NotificacionComponent } from './notificacion/notificacion.component';
 import { DatePipe } from '@angular/common';
 
 @NgModule({

@@ -59,7 +59,6 @@ export class HomeComponent {
 
   getSedes(IdCiudad: number) {
     this.homeService.getSedes(IdCiudad).subscribe((response) => {
-      console.log(response)
       this.sedes = response.data;
       this.NomSedeActual = this.sedes[0].NomSede;
       this.IdSedeActual = this.sedes[0].IdSede;

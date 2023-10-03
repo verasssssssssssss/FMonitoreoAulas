@@ -23,33 +23,17 @@ export class NotificacionService {
   }
 
   agregarReporte(NomCurso: string, NomProfesor: string, FechaReporte: Date, IdCarrera: number, IdUsuario: number, IdAula: number, IdDatos: number): Observable<any> {
-    const body = { 
-      NomCurso: NomCurso,
-      NomProfesor: NomProfesor,
-      FechaReporte: FechaReporte,
-      IdCarrera: IdCarrera,
-      IdUsuario: IdUsuario,
-      IdAula: IdAula,
-      IdDatos: IdDatos,
-    };
+    const body = { NomCurso: NomCurso,NomProfesor: NomProfesor,FechaReporte: FechaReporte,IdCarrera: IdCarrera, IdUsuario: IdUsuario,IdAula: IdAula,IdDatos: IdDatos};
     return this.http.post(URL_ENDPOINT + 'reporte/crear', body);
   }
 
   enviarCorreo(to:string, NomDirector: string, ApeDirector: string, NomSede: string, NomCurso:string,  NomProfesor:string, FechaReporte:string, NomCarrera:string, NomEncargado:string,NomAula:string, CapturaFotografica:string): Observable<any> {
-    const body = { 
-      to: to,
-      NomDirector:NomDirector,
-      ApeDirector:ApeDirector,
-      NomSede:NomSede,
-      NomCurso:NomCurso, 
-      NomProfesor:NomProfesor, 
-      FechaReporte:FechaReporte, 
-      NomCarrera:NomCarrera, 
-      NomEncargado:NomEncargado,
-      NomAula:NomAula, 
-      CapturaFotografica:CapturaFotografica,
-    };
+    const body = {  to: to, NomDirector:NomDirector,ApeDirector:ApeDirector,NomSede:NomSede, NomCurso:NomCurso, NomProfesor:NomProfesor, FechaReporte:FechaReporte, NomCarrera:NomCarrera, NomEncargado:NomEncargado,NomAula:NomAula, CapturaFotografica:CapturaFotografica };
     return this.http.post(URL_ENDPOINT + 'EnviarCorreo', body);
   }
 
+  validarAlerta(IdDatos:number,validacion:number): Observable<any> {
+    const body = {  IdDatos:IdDatos, validacion:validacion };
+    return this.http.put(URL_ENDPOINT + 'alerta/validar', body);
+  }
 }

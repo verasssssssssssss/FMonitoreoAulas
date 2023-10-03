@@ -43,7 +43,8 @@ export class ReportesComponent implements OnInit {
     this.homeService.getSedes(IdCiudad).subscribe(  (response) => {
       this.sedes=response.data;
       this.NomSedeActual = this.sedes[0].NomSede;
-      this.getRepoertes(this.sedes[0].IdSede);
+      this.IdSedeActual = this.sedes[0].IdSede;
+      this.getRepoertes(this.IdSedeActual);
     });
   }
 
