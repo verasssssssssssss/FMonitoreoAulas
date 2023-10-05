@@ -53,7 +53,7 @@ export class NotificacionComponent {
           this.recibitNotificacion = !this.recibitNotificacion;
           this.getNotifiacionDesuso();
       }
-    }, 10000); // 10000 milisegundos = 10 segundos
+    }, 1000); // 10000 milisegundos = 10 segundos
   }
 
   getNotifiacionDesuso() {
@@ -66,9 +66,9 @@ export class NotificacionComponent {
     this.notificacionService.getNotifiacionDesuso(this.datoLocalStorage.IdUsuario).subscribe((response) => {
       if(response.dataLenghy!=0){
         this.notificacion = response.data[0];
-        
+
         this.alertaDesusoDeAula(this.notificacion.NomArea,this.notificacion.NomAula,this.notificacion.CapturaFotografica);
-      
+
         this.formularioCorreo.patchValue({
           NomCoordinador:  this.datosCorreo.NomUsuario+" "+this.datosCorreo.ApeUsuario,
           NomSede: this.datosCorreo.NomSede,
@@ -95,9 +95,9 @@ export class NotificacionComponent {
       imageWidth: 400,
       imageHeight: 200,
       imageAlt: 'Custom image',
-      showCancelButton: true, 
+      showCancelButton: true,
       confirmButtonText: 'Confirmar',
-      cancelButtonText: 'Descartar' 
+      cancelButtonText: 'Descartar'
     }).then((result) => {
       if (result.isConfirmed) {
         this.abrirModalAreaDeTrabajo();
@@ -207,7 +207,7 @@ export class NotificacionComponent {
       console.log('No se ha seleccionado ninguna carrera');
     } else {
       this.carrerasSede.forEach(elemento => {
-        if(elemento.IdCarrera == Carrera.target.value) { 
+        if(elemento.IdCarrera == Carrera.target.value) {
           this.formularioCorreo.patchValue({
             NomCarrera:  elemento.NomCarrera,
           });

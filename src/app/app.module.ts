@@ -9,7 +9,7 @@ import { ReportesComponent } from './reportes/reportes.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotificacionComponent } from './notificacion/notificacion.component';
 import { DatePipe } from '@angular/common';
 
@@ -24,6 +24,7 @@ import { DatePipe } from '@angular/common';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
     NgxPaginationModule,

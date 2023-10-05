@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 })
 export class ReportesComponent implements OnInit {
 
+  filtroCurso: string='';
+
   p:number = 1;
 
   datoLocalStorage!: Usuarios;
@@ -33,6 +35,11 @@ export class ReportesComponent implements OnInit {
     this.getSedes(this.datoLocalStorage.IdCiudad);
   }
 
+  onBuscarCurso() {
+    // Llama a la función que obtiene los reportes con el nuevo filtro
+    this.getRepoertes(this.IdSedeActual);
+  }
+
   getCiudad(IdCiudad:number){
     this.homeService.getCiudad(IdCiudad).subscribe(  (response) => {
       this.NomCiudad=response.data[0].NomCiudad;
@@ -48,14 +55,22 @@ export class ReportesComponent implements OnInit {
     });
   }
 
-  getRepoertes(IdSede:number){
-    this.sreportes.getReportes(IdSede).subscribe(  (response) => {
-      this.reportes=response.data;
+  getRepoertes(IdSede: number) {
+    this.sreportes.getReportes(IdSede).subscribe((response) => {
+      this.reportes = response.data;
       this.reportes.forEach(element => {
         this.transform(element);
       });
-    }
-  )}
+
+      // Aplicar el filtro por curso
+      if (this.filtroCurso) {
+        this.reportes = this.reportes.filter(reporte =>
+          reporte.NomCurso.toLowerCase().includes(this.filtroCurso.toLowerCase())
+        );
+      }
+    });
+  }
+
 
   abrirModal(iddatos: number,nomaula: string,url: string){
     this.CapturaFotografica=url;

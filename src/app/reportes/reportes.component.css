@@ -2,7 +2,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 10vh;
   }
 
 
@@ -47,9 +46,7 @@
 .tabla{
     padding-top: 2%;
 }
-.tabla1{
-  padding-top: 27em;
-}
+
 
 .center{
   text-align: center;

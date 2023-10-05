@@ -21,74 +21,83 @@
       </div>
     </div>
   </div>
+
 </div>
 
-<div class="tabla1">
-  <div class="container pt-12">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card mb-4">
-          <div class="card-body">
+<div>
+  <div class="tabla1">
+    <div class="container pt-12">
+      <div class="row">
+        <div class="form-group col-md-3">
+          <input type="text" class="form-control" [(ngModel)]="filtroCurso"  (ngModelChange)="onBuscarCurso()" placeholder="Buscar por curso">
+        </div>
+
+        <div class="col-md-12">
+          <div class="card mb-4">
+            <div class="card-body">
 
 
-            <!-- Crea una fila dentro de la tarjeta principal -->
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card mb-12">
-                  <div class="card-body">
-                    <div class="col-md-12">
-                      <table class="table table-striped table-hover">
-                        <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col">Hora</th>
-                            <th scope="col">Carrera</th>
-                            <th scope="col">Curso</th>
-                            <th scope="col">Docente</th>
-                            <th scope="col">Aula</th>
-                            <th scope="col">Realizado por</th>
-                            <th scope="col">Respaldo</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let repor of reportes | paginate: { itemsPerPage: 10, currentPage: p }" >
-                            <th scope="row">{{reportes.length -reportes.indexOf(repor)}}</th>
-                            <td>{{repor.FechaReporte}}</td>
-                            <td>{{repor.HoraReporte}}</td>
-                            <td>{{repor.NomCarrera}}</td>
-                            <td>{{repor.NomCurso}}</td>
-                            <td>{{repor.NomProfesor}}</td>
-                            <td>{{repor.NomAula}}</td>
-                            <td>{{repor.NomUsuario}} {{repor.ApeUsuario}}</td>
-                            <td>
-                              <button class="btn btn-info d-inline-flex align-items-center m-1" type="button" (click)="abrirModal(repor.IdDatos,repor.NomAula,repor.CapturaFotografica)">Visualizar</button>
-                              <button type="button" class="btn btn-danger" (click)="eliminarReporte(repor.IdReporte)">Eliminar</button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <div class="d-flex justify-content-center">
-                        <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+              <!-- Crea una fila dentro de la tarjeta principal -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card mb-12">
+                    <div class="card-body">
+                      <div class="col-md-12">
+                        <table class="table table-striped table-hover">
+                          <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Fecha</th>
+                              <th scope="col">Hora</th>
+                              <th scope="col">Carrera</th>
+                              <th scope="col">Curso</th>
+                              <th scope="col">Docente</th>
+                              <th scope="col">Aula</th>
+                              <th scope="col">Realizado por</th>
+                              <th scope="col">Respaldo</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let repor of reportes | paginate: { itemsPerPage: 10, currentPage: p }" >
+                              <th scope="row">{{reportes.length -reportes.indexOf(repor)}}</th>
+                              <td>{{repor.FechaReporte}}</td>
+                              <td>{{repor.HoraReporte}}</td>
+                              <td>{{repor.NomCarrera}}</td>
+                              <td>{{repor.NomCurso}}</td>
+                              <td>{{repor.NomProfesor}}</td>
+                              <td>{{repor.NomAula}}</td>
+                              <td>{{repor.NomUsuario}} {{repor.ApeUsuario}}</td>
+                              <td>
+                                <button class="btn btn-info d-inline-flex align-items-center m-1" type="button" (click)="abrirModal(repor.IdDatos,repor.NomAula,repor.CapturaFotografica)">Visualizar</button>
+                                <button type="button" class="btn btn-danger" (click)="eliminarReporte(repor.IdReporte)">Eliminar</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="d-flex justify-content-center">
+                          <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                        </div>
                       </div>
-                    </div>
 
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- Fin de la fila de las subtarjetas -->
+              <!-- Fin de la fila de las subtarjetas -->
 
+            </div>
           </div>
         </div>
+
+        <!-- Repite este bloque para cada tarjeta adicional -->
+
       </div>
-
-      <!-- Repite este bloque para cada tarjeta adicional -->
-
     </div>
+
   </div>
 
 </div>
+
 
 
 <div id="miModal" class="modal">
