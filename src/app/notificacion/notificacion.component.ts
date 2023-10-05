@@ -64,8 +64,12 @@ export class NotificacionComponent {
       this.carrerasSede = response.data;
     });
     this.notificacionService.getNotifiacionDesuso(this.datoLocalStorage.IdUsuario).subscribe((response) => {
+      console.log("No entra "+response.dataLenghy );
       if(response.dataLenghy!=0){
         this.notificacion = response.data[0];
+
+        console.log("entra");
+        console.log(this.notificacion );
 
         this.alertaDesusoDeAula(this.notificacion.NomArea,this.notificacion.NomAula,this.notificacion.CapturaFotografica);
 

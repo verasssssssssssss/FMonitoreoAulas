@@ -198,7 +198,6 @@ export class HomeComponent {
   }
 
   cerrarModalAula() {
-    console.log('cerrar modal');
     const modal = document.getElementById('ModalAula');
     if (modal != null) {
       modal.style.display = 'none';
@@ -267,7 +266,6 @@ export class HomeComponent {
     this.tipoModalAreaDeTrabajo = AreaDeTrabajo;
     this.nomAreaDeTrabajoSeleccionada = nomAreaDeTrabajo;
     this.AreasDeTrabajoSeleccionado = idAreaDeTrabajo;
-    console.log("el id es -Z " + this.AreasDeTrabajoSeleccionado);
     const modal = document.getElementById('ModalAreaDeTrabajo');
     if (modal != null) {
       modal.style.display = 'block';
@@ -276,11 +274,11 @@ export class HomeComponent {
 
   EditarOAgregarAreaDeTrabajo() {
     if (this.nombreAreaT != '') {
-      console.log(this.nombreAreaT);
       if (this.tipoModalAreaDeTrabajo) {
         this.homeService.agregarAreaDeTrabajo(this.IdSedeActual, this.nombreAreaT).subscribe((response) => {
           this.getAreasDeTrabajo(this.IdSedeActual);
           this.successSwal("El área de trabajo se creo correctamente");
+          this.cerrarModalAreaDeTrabajo();
         }, (error) => {
           this.errorSwal("Ocurrio un error al intentar agregar la nueva área de trabajo");
         });
@@ -295,12 +293,11 @@ export class HomeComponent {
             this.homeService.editarAreaDeTrabajo(this.nombreAreaT, this.AreasDeTrabajoSeleccionado).subscribe((response) => {
               this.getAreasDeTrabajo(this.IdSedeActual);
               this.successSwal("El área de trabajo se edito correctamente");
-              this.cerrarModalAreaDeTrabajo();
             }, (error) => {
               this.errorSwal("Ocurrio un error al intentar editar el el área de trabajo " + this.nombreAreaT);
-              this.cerrarModalAreaDeTrabajo();
             });
           }
+          this.cerrarModalAreaDeTrabajo();
         });
       }
     }
@@ -319,7 +316,6 @@ export class HomeComponent {
     this.tipoModalEncargadoAE = AreaDeTrabajo;
     this.homeService.getEncargadoObtener(idEncargado).subscribe((response) => {
       this.EncargadosSelecionado = response.data[0];
-      console.log(this.EncargadosSelecionado);
       if (this.EncargadosSelecionado != undefined) {
         this.formularioEncargado.patchValue({
           Nombre: this.EncargadosSelecionado.NomUsuario,
@@ -375,6 +371,8 @@ export class HomeComponent {
           }
         });
       }
+    }else{
+      this.cerrarrModalEncargado();
     }
   }
 

@@ -62,7 +62,6 @@ export class HomeService {
   }
 
   editarAreaDeTrabajo(NomArea: string, IdArea: number): Observable<any> {
-    console.log("el id es "+IdArea+" y el nombre es"+NomArea);
     const body = { NomArea: NomArea };
     return this.http.put(URL_ENDPOINT + 'area/editar/' + IdArea, body);
   }

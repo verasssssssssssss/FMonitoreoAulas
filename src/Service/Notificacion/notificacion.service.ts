@@ -23,6 +23,7 @@ export class NotificacionService {
   }
 
   agregarReporte(NomCurso: string, NomProfesor: string, FechaReporte: Date, IdCarrera: number, IdUsuario: number, IdAula: number, IdDatos: number): Observable<any> {
+    console.log(FechaReporte);
     const body = { NomCurso: NomCurso,NomProfesor: NomProfesor,FechaReporte: FechaReporte,IdCarrera: IdCarrera, IdUsuario: IdUsuario,IdAula: IdAula,IdDatos: IdDatos};
     return this.http.post(URL_ENDPOINT + 'reporte/crear', body);
   }
