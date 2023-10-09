@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AreasDeTrabajo } from 'src/Clases/AreasDeTrabajo';
 import { Aulas } from 'src/Clases/Aulas';
-import { Encargado, EncargadoE } from 'src/Clases/Encargado';
+import { Usuario, UsuarioE } from 'src/Clases/Encargado';
 import { Sedes } from 'src/Clases/Sedes';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { HomeService } from 'src/Service/home/home.service';
@@ -22,8 +23,8 @@ export class HomeComponent {
   NomSedeActual!: string;
   IdSedeActual!: number;
   AreasDeTrabajo!: AreasDeTrabajo[];
-  Encargados!: Encargado[];
-  EncargadosSelecionado: EncargadoE = { IdUsuario: -1, NomUsuario: "", ApeUsuario: "", Mail: "", Contrasenia: "" };
+  Encargados!:  Usuario[];
+  EncargadosSelecionado:  UsuarioE = { IdUsuario: -1, NomUsuario: "", ApeUsuario: "", Mail: "", Contrasenia: "", 	Fotografia: ""};
   AreasDeTrabajoSeleccionado!: number;
   AulaSeleccionada: Aulas[] = [];
   nombre: string = '';
@@ -33,11 +34,14 @@ export class HomeComponent {
   tipoModalAreaDeTrabajo!: boolean;
   tipoModalEncargadoAE!: boolean;
   nomAreaDeTrabajoSeleccionada: string = '';
+  imageUrl: string ='../../assets/Imagenes/perfil.png';
+  cargandoFotografia:boolean=false;
 
   formularioEncargado: FormGroup;
 
-  constructor(private fb: FormBuilder, private homeService: HomeService) {
+  constructor(private fb: FormBuilder, private homeService: HomeService,private fireStorage:AngularFireStorage) {
     this.formularioEncargado = this.fb.group({
+      Fotografia: ['', [Validators.required]],
       Nombre: ['', [Validators.required]],
       Apellido: ['', [Validators.required]],
       Mail: ['', [Validators.required, Validators.email]],
@@ -52,14 +56,14 @@ export class HomeComponent {
   }
 
   getCiudad(IdCiudad: number) {
-    this.homeService.getCiudad(IdCiudad).subscribe((response) => {
-      this.NomCiudad = response.data[0].NomCiudad;
+    this.homeService.getCiudad(IdCiudad).subscribe(async (response) => {
+      this.NomCiudad = await response.data[0].NomCiudad;
     });
   }
 
   getSedes(IdCiudad: number) {
-    this.homeService.getSedes(IdCiudad).subscribe((response) => {
-      this.sedes = response.data;
+    this.homeService.getSedes(IdCiudad).subscribe(async (response) => {
+      this.sedes =  await response.data;
       this.NomSedeActual = this.sedes[0].NomSede;
       this.IdSedeActual = this.sedes[0].IdSede;
       this.getAreasDeTrabajo(this.IdSedeActual);
@@ -68,8 +72,9 @@ export class HomeComponent {
   }
 
   getAreasDeTrabajo(IdSede: number) {
-    this.homeService.getAreasDeTrabajo(IdSede).subscribe((response) => {
-      this.AreasDeTrabajo = response.data;
+    this.homeService.getAreasDeTrabajo(IdSede).subscribe(async (response) => {
+      this.AreasDeTrabajo = await response.data;
+      console.log(this.AreasDeTrabajo);
       this.getAulas();
     });
   }
@@ -314,15 +319,21 @@ export class HomeComponent {
 
   abrirModalEncargadoAE(AreaDeTrabajo: boolean, idEncargado: number) {
     this.tipoModalEncargadoAE = AreaDeTrabajo;
-    this.homeService.getEncargadoObtener(idEncargado).subscribe((response) => {
-      this.EncargadosSelecionado = response.data[0];
+    this.homeService.getusuario(idEncargado).subscribe(async (response) => {
+      this.EncargadosSelecionado =  await response.data[0];
       if (this.EncargadosSelecionado != undefined) {
         this.formularioEncargado.patchValue({
           Nombre: this.EncargadosSelecionado.NomUsuario,
           Apellido: this.EncargadosSelecionado.ApeUsuario,
           Mail: this.EncargadosSelecionado.Mail,
           Contrasenia: this.EncargadosSelecionado.Contrasenia,
+          Fotografia: this.EncargadosSelecionado.Fotografia,
         });
+        if(this.EncargadosSelecionado.Fotografia!=null){
+          this.imageUrl=this.EncargadosSelecionado.Fotografia;
+        }else{
+          this.imageUrl='../../assets/Imagenes/perfil.png';
+        }
       } else {
         this.formularioEncargado.patchValue({
           Nombre: '',
@@ -341,7 +352,7 @@ export class HomeComponent {
   cerrarModalEncargadoAE(accion: boolean) {
     if (accion) {
       if (this.tipoModalEncargadoAE) {
-        this.homeService.agregarEncargado(this.formularioEncargado.get('Nombre')?.value, this.formularioEncargado.get('Apellido')?.value, this.formularioEncargado.get('Mail')?.value, this.formularioEncargado.get('Contrasenia')?.value, this.IdSedeActual).subscribe((response) => {
+        this.homeService.agregarEncargado(this.formularioEncargado.get('Nombre')?.value, this.formularioEncargado.get('Apellido')?.value, this.formularioEncargado.get('Mail')?.value, this.formularioEncargado.get('Contrasenia')?.value, this.formularioEncargado.get('Fotografia')?.value,this.IdSedeActual).subscribe((response) => {
           this.successSwal("El encargado se creo correctamente");
           this.getEncargadosSede(this.IdSedeActual);
         }, (error) => {
@@ -357,7 +368,7 @@ export class HomeComponent {
           denyButtonText: `No`,
         }).then((result) => {
           if (result.isConfirmed) {
-            this.homeService.editarEncargado(this.EncargadosSelecionado.IdUsuario, this.formularioEncargado.get('Nombre')?.value, this.formularioEncargado.get('Apellido')?.value, this.formularioEncargado.get('Mail')?.value, this.formularioEncargado.get('Contrasenia')?.value, this.IdSedeActual).subscribe((response) => {
+            this.homeService.editarEncargado(this.EncargadosSelecionado.IdUsuario, this.formularioEncargado.get('Nombre')?.value, this.formularioEncargado.get('Apellido')?.value, this.formularioEncargado.get('Mail')?.value, this.formularioEncargado.get('Contrasenia')?.value,this.formularioEncargado.get('Fotografia')?.value, this.IdSedeActual).subscribe((response) => {
               this.successSwal("El encargado de aula se edito correctamente");
               this.getEncargadosSede(this.IdSedeActual);
               this.getAreasDeTrabajo(this.IdSedeActual);
@@ -381,7 +392,7 @@ export class HomeComponent {
     if (modal != null) {
       modal.style.display = 'none';
     }
-    this.EncargadosSelecionado = { IdUsuario: 0, NomUsuario: "", ApeUsuario: "", Mail: "", Contrasenia: "" };
+    this.EncargadosSelecionado = { IdUsuario: 0, NomUsuario: "", ApeUsuario: "", Mail: "", Contrasenia: "", 	Fotografia: ""};
   }
 
   eliminarEncargado(IdUsuario: number, NomUsuario: string, Apellido: string) {
@@ -415,6 +426,21 @@ export class HomeComponent {
 
   edadInputChange(event: any) {
     this.cantidad = parseInt(event.target.value, 10);
+  }
+
+  async onfileChange(event:any){
+    this.cargandoFotografia=true;
+    const file = event.target.files[0];
+    if(file){
+      const path = `Referencias/${file.name}`
+      const uploadTask = await this.fireStorage.upload(path, file);
+      const url = await uploadTask.ref.getDownloadURL()
+      await this.formularioEncargado.patchValue({
+        Fotografia: url,
+      });
+      this.imageUrl = await url;
+      this.cargandoFotografia=false;
+    }
   }
 
   ////////////////////////////////////////////////////////////////////////////////

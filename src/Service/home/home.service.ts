@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EncargadoE } from 'src/Clases/Encargado';
 import { URL_ENDPOINT } from 'src/Config/config';
 
 @Injectable({
@@ -76,22 +75,23 @@ export class HomeService {
     return this.http.put(URL_ENDPOINT + 'encargado/eliminar/' + IdUsuario, body);
   }
 
-  getEncargadoObtener(IdUsuario: number): Observable<any> {
-    return this.http.get(URL_ENDPOINT + 'encargado/obtener/' + IdUsuario);
+  getusuario(IdUsuario: number): Observable<any> {
+    return this.http.get(URL_ENDPOINT + 'usuario/obtener/' + IdUsuario);
   }
 
-  agregarEncargado(NomUsuario: string,ApeUsuario: string,Mail: string,Contrasenia: string,IdSede: number): Observable<any> {
+  agregarEncargado(NomUsuario: string,ApeUsuario: string,Mail: string,Contrasenia: string,Fotografia: string,IdSede: number): Observable<any> {
     const body = {
       NomUsuario:NomUsuario,
       ApeUsuario:ApeUsuario,
       Mail:Mail,
       Contrasenia:Contrasenia,
       IdSede:IdSede,
+      Fotografia:Fotografia,
     };
     return this.http.post(URL_ENDPOINT + 'encargado/crear', body);
   }
 
-  editarEncargado(IdUsuario: number,NomUsuario: string,ApeUsuario: string,Mail: string,Contrasenia: string,IdSede: number): Observable<any> {
+  editarEncargado(IdUsuario: number,NomUsuario: string,ApeUsuario: string,Mail: string,Contrasenia: string,Fotografia: string,IdSede: number): Observable<any> {
     const body = {
       IdUsuario:IdUsuario,
       NomUsuario:NomUsuario,
@@ -99,8 +99,21 @@ export class HomeService {
       Mail:Mail,
       Contrasenia:Contrasenia,
       IdSede:IdSede,
+      Fotografia:Fotografia,
     };
     return this.http.put(URL_ENDPOINT + 'encargado/editar/' + body.IdUsuario, body);
+  }
+
+  editarUsuario(IdUsuario: number,NomUsuario: string,ApeUsuario: string,Fotografia: string,Mail: string,Contrasenia: string): Observable<any> {
+    const body = {
+      IdUsuario:IdUsuario,
+      NomUsuario:NomUsuario,
+      ApeUsuario:ApeUsuario,
+      Fotografia:Fotografia,
+      Mail:Mail,
+      Contrasenia:Contrasenia,
+    };
+    return this.http.put(URL_ENDPOINT + 'usuario/editar', body);
   }
 
   quitarEncargado(IdUsuario: number): Observable<any> {

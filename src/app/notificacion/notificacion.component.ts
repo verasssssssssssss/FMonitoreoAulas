@@ -53,7 +53,7 @@ export class NotificacionComponent {
           this.recibitNotificacion = !this.recibitNotificacion;
           this.getNotifiacionDesuso();
       }
-    }, 1000); // 10000 milisegundos = 10 segundos
+    }, 10000000); // 10000 milisegundos = 10 segundos
   }
 
   getNotifiacionDesuso() {

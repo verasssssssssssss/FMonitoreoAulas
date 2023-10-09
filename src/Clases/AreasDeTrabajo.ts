@@ -6,5 +6,6 @@ export class AreasDeTrabajo{
     IdUsuario!:number;
     NomUsuario!:string;
     ApeUsuario!:string;
+    Fotografia!:string;
     Aulas!:Aulas[];
 }

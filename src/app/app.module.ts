@@ -13,6 +13,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotificacionComponent } from './notificacion/notificacion.component';
 import { DatePipe } from '@angular/common';
 
+import {AngularFireModule} from '@angular/fire/compat'
+import {AngularFireStorageModule} from '@angular/fire/compat/storage'
+import { environment } from 'src/environments/environment';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +24,7 @@ import { DatePipe } from '@angular/common';
     LoginComponent,
     ReportesComponent,
     HomeComponent,
-    NotificacionComponent
+    NotificacionComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +32,9 @@ import { DatePipe } from '@angular/common';
     AppRoutingModule,
     HttpClientModule,
     NgxPaginationModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireStorageModule,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]
