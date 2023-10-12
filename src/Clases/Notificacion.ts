@@ -5,4 +5,8 @@ export class notificacion{
      NomAula!:string;
      CapturaFotografica!:string;
      IdDatos!:number;
+     IdCurso!:number;
+     NomCarrera!:string;
+     NomProfesor!:string;
+     NomCurso!:string;
  }

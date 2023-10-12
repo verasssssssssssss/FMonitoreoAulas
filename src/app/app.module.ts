@@ -16,6 +16,7 @@ import { DatePipe } from '@angular/common';
 import {AngularFireModule} from '@angular/fire/compat'
 import {AngularFireStorageModule} from '@angular/fire/compat/storage'
 import { environment } from 'src/environments/environment';
+import { HorarioComponent } from './horario/horario.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { environment } from 'src/environments/environment';
     ReportesComponent,
     HomeComponent,
     NotificacionComponent,
+    HorarioComponent,
   ],
   imports: [
     BrowserModule,

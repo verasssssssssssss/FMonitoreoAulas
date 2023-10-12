@@ -11,7 +11,8 @@ export class NotificacionService {
   constructor(private http: HttpClient) { }
 
   getNotifiacionDesuso(IdUsuario: number): Observable<any> {
-    return this.http.get(URL_ENDPOINT + 'reporte/obtener/'+IdUsuario);
+    const body = {  DiaClases:1, IdBloque:1 };
+    return this.http.post(URL_ENDPOINT + 'reporte/obtener/'+IdUsuario,body);
   }
 
   getDatosCorreo(IdSede: number): Observable<any> {

@@ -25,7 +25,7 @@ export class NotificacionComponent {
   img!: string;
   formularioCorreo: FormGroup;
   timerInterval: any;
-
+  option:string ="";
   recibitNotificacion: boolean = true;
 
   constructor(private fb: FormBuilder,private notificacionService:NotificacionService,private datePipe: DatePipe) {
@@ -53,7 +53,7 @@ export class NotificacionComponent {
           this.recibitNotificacion = !this.recibitNotificacion;
           this.getNotifiacionDesuso();
       }
-    }, 10000000); // 10000 milisegundos = 10 segundos
+    }, 10000); // 10000 milisegundos = 10 segundos
   }
 
   getNotifiacionDesuso() {
@@ -67,7 +67,7 @@ export class NotificacionComponent {
       console.log("No entra "+response.dataLenghy );
       if(response.dataLenghy!=0){
         this.notificacion = response.data[0];
-
+        this.option = this.notificacion.NomCarrera;
         console.log("entra");
         console.log(this.notificacion );
 
@@ -80,8 +80,8 @@ export class NotificacionComponent {
           NomAula:  this.notificacion.NomAula,
           Fecha:  this.fechaFormateada,
 
-          NomCurso:  '',
-          NomProfesor:  '',
+          NomCurso:  this.notificacion.NomCurso,
+          NomProfesor:   this.notificacion.NomCarrera,
           CapturaFotografica:  this.notificacion.CapturaFotografica,
           IdUsuario:  this.datoLocalStorage.IdUsuario,
         });

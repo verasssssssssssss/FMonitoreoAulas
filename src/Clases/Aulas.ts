@@ -5,3 +5,9 @@ export class Aulas{
     Visible!:number;
     IdArea!:number;
 }
+
+export class AulasH{
+    IdAula!:number;
+    NomAula!:string;
+}
+

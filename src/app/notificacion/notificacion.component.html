@@ -42,7 +42,7 @@
           <div class="form-group">
             <label for="NomCarrera">Nombre de la carrera:</label>
             <select #select (change)="carreraSInputChange($event)" class="custom-select form-control">
-              <option value="-1">Selecciona una carrera</option>
+              <option value="-1">{{option}}</option>
               <option *ngFor="let carreras of carrerasSede" [value]="carreras.IdCarrera">{{carreras.NomCarrera}}</option>
             </select>
             <div
