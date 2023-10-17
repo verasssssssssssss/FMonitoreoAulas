@@ -4,6 +4,7 @@ import { ReportesComponent } from './reportes/reportes.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { HorarioComponent } from './horario/horario.component';
+import { dashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'horario',
     component: HorarioComponent
+  },
+  {
+    path: 'dashboard',
+    component: dashboardComponent
   },
   {
     path: '**',

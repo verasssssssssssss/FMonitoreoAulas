@@ -15,8 +15,16 @@ import { DatePipe } from '@angular/common';
 
 import {AngularFireModule} from '@angular/fire/compat'
 import {AngularFireStorageModule} from '@angular/fire/compat/storage'
-import { environment } from 'src/environments/environment';
-import { HorarioComponent } from './horario/horario.component';
+import {environment } from 'src/environments/environment';
+import {HorarioComponent } from './horario/horario.component';
+
+import { NgApexchartsModule } from "ng-apexcharts";
+import { dashboardComponent } from './dashboard/dashboard.component';
+import { HumedadComponent } from './humedad/humedad.component';
+import { Co2Component } from './co2/co2.component';
+import { IluminicaComponent } from './iluminica/iluminica.component';
+
+
 
 @NgModule({
   declarations: [
@@ -27,6 +35,10 @@ import { HorarioComponent } from './horario/horario.component';
     HomeComponent,
     NotificacionComponent,
     HorarioComponent,
+    dashboardComponent,
+    HumedadComponent,
+    Co2Component,
+    IluminicaComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,6 +47,7 @@ import { HorarioComponent } from './horario/horario.component';
     HttpClientModule,
     NgxPaginationModule,
     ReactiveFormsModule,
+    NgApexchartsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
   ],
