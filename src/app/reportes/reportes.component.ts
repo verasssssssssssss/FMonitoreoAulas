@@ -3,6 +3,7 @@ import { Sedes } from 'src/Clases/Sedes';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { reporte } from 'src/Clases/reportes';
 import { HomeService } from 'src/Service/home/home.service';
+import { LoginService } from 'src/Service/login/login.service';
 import { ReportesService } from 'src/Service/reportes/reportes.service';
 import Swal from 'sweetalert2';
 
@@ -28,9 +29,9 @@ export class ReportesComponent implements OnInit {
   NomSedeActual!: string;
   IdSedeActual!: number;
 
-  constructor(private sreportes: ReportesService,private homeService:HomeService){}
+  constructor(private loginService: LoginService,private sreportes: ReportesService,private homeService:HomeService){}
   ngOnInit() {
-    this.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
+    this.datoLocalStorage = this.loginService.datoLocalStorage;
     this.getCiudad(this.datoLocalStorage.IdCiudad);
     this.getSedes(this.datoLocalStorage.IdCiudad);
   }

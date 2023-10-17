@@ -7,6 +7,7 @@ import { Usuario, UsuarioE } from 'src/Clases/Encargado';
 import { Sedes } from 'src/Clases/Sedes';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { HomeService } from 'src/Service/home/home.service';
+import { LoginService } from 'src/Service/login/login.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -39,7 +40,7 @@ export class HomeComponent {
 
   formularioEncargado: FormGroup;
 
-  constructor(private fb: FormBuilder, private homeService: HomeService,private fireStorage:AngularFireStorage) {
+  constructor(private loginService: LoginService,private fb: FormBuilder, private homeService: HomeService,private fireStorage:AngularFireStorage) {
     this.formularioEncargado = this.fb.group({
       Fotografia: ['', [Validators.required]],
       Nombre: ['', [Validators.required]],
@@ -50,7 +51,7 @@ export class HomeComponent {
   }
 
   ngOnInit(): void {
-    this.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
+    this.datoLocalStorage = this.loginService.datoLocalStorage;
     this.getCiudad(this.datoLocalStorage.IdCiudad);
     this.getSedes(this.datoLocalStorage.IdCiudad);
   }

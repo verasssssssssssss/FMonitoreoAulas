@@ -4,6 +4,7 @@ import { Sedes } from 'src/Clases/Sedes';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { HomeService } from 'src/Service/home/home.service';
 import { HorarioService } from 'src/Service/horario.service';
+import { LoginService } from 'src/Service/login/login.service';
 
 @Component({
   selector: 'app-horario',
@@ -19,10 +20,10 @@ export class HorarioComponent {
   IdSedeActual!: number;
   NomCiudad!: string;
 
-  constructor(private horarioService:HorarioService,private homeService:HomeService) {}
+  constructor(private loginService: LoginService,private horarioService:HorarioService,private homeService:HomeService) {}
 
   ngOnInit(): void {
-    this.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
+    this.datoLocalStorage = this.loginService.datoLocalStorage;
     this.getCiudad(this.datoLocalStorage.IdCiudad);
     this.getSedes(this.datoLocalStorage.IdCiudad);
   }

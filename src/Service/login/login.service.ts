@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Usuarios } from 'src/Clases/Usuarios';
 import { URL_ENDPOINT } from 'src/Config/config';
 
 @Injectable({
@@ -9,7 +10,9 @@ import { URL_ENDPOINT } from 'src/Config/config';
 export class LoginService {
 
   constructor(private http : HttpClient) { }
-
+  
+  datoLocalStorage!: Usuarios;
+  
   IniciarSesion(Mail:string,Contrasenia:string):Observable<any>{
     let body={
       Mail: Mail,

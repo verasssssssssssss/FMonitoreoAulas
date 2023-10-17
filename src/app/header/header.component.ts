@@ -6,6 +6,7 @@ import { HomeService } from 'src/Service/home/home.service';
 import {AngularFireStorage} from '@angular/fire/compat/storage'
 import Swal from 'sweetalert2';
 import { __await } from 'tslib';
+import { LoginService } from 'src/Service/login/login.service';
 
 @Component({
   selector: 'app-header',
@@ -22,7 +23,7 @@ export class HeaderComponent {
 
   imageUrl!: string; 
 
-  constructor(private fb: FormBuilder, private router: Router, private homeService: HomeService,private fireStorage:AngularFireStorage) {
+  constructor(private loginService: LoginService,private fb: FormBuilder, private router: Router, private homeService: HomeService,private fireStorage:AngularFireStorage) {
     this.formularioUsuario = this.fb.group({
       Nombre: ['', [Validators.required]],
       Apellido: ['', [Validators.required]],
@@ -33,7 +34,7 @@ export class HeaderComponent {
   }
 
   ngOnInit(): void {
-    this.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
+    this.datoLocalStorage = this.loginService.datoLocalStorage;
     this.imageUrl = this.formularioUsuario.get('Fotografia')?.value;
     this.obtenerDatos();
   }

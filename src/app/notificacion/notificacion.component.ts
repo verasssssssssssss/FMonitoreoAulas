@@ -6,6 +6,7 @@ import { DatosCorreo } from 'src/Clases/DatosCorreo';
 import { notificacion } from 'src/Clases/Notificacion';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { NotificacionService } from 'src/Service/Notificacion/notificacion.service';
+import { LoginService } from 'src/Service/login/login.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -28,7 +29,7 @@ export class NotificacionComponent {
   option:string ="";
   recibitNotificacion: boolean = true;
 
-  constructor(private fb: FormBuilder,private notificacionService:NotificacionService,private datePipe: DatePipe) {
+  constructor(private loginService: LoginService,private fb: FormBuilder,private notificacionService:NotificacionService,private datePipe: DatePipe) {
     this.fechaActual = new Date();
     this.fechaFormateada = this.datePipe.transform(this.fechaActual, 'dd/MM/yyyy HH:mm:ss') || 'Fecha inválida';
 
@@ -47,7 +48,7 @@ export class NotificacionComponent {
    }
 
    ngOnInit(): void {
-    this.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
+    this.datoLocalStorage = this.loginService.datoLocalStorage;
     setInterval(() => {
       if(this.recibitNotificacion){
           this.recibitNotificacion = !this.recibitNotificacion;
