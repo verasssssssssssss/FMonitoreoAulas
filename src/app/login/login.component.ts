@@ -19,6 +19,7 @@ export class LoginComponent {
       this.loginService.IniciarSesion(Mail, Contrasenia).subscribe((response) => {
         if (response.ok) {
           this.loginService.datoLocalStorage = response.data[0];
+          localStorage.setItem('UsuarioLogueado', JSON.stringify(this.loginService.datoLocalStorage))
           console.log(this.loginService.datoLocalStorage);
           this.router.navigate(['/home']);
         }
