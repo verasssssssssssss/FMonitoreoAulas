@@ -20,15 +20,12 @@ export class LoginComponent {
         if (response.ok) {
           this.loginService.datoLocalStorage = response.data[0];
           localStorage.setItem('UsuarioLogueado', JSON.stringify(this.loginService.datoLocalStorage))
-          console.log(this.loginService.datoLocalStorage);
           this.router.navigate(['/home']);
         }
       }, (error) => {
-        console.log("Credenciales incorrectas");
         this.error = true;
       });
     } else {
-      console.log("Debe ingresar las credenciales");
     }
   }
 }

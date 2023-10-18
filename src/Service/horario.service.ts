@@ -13,4 +13,13 @@ export class HorarioService {
   getAulas(IdSede: number): Observable<any> {
     return this.http.get<any>(URL_ENDPOINT + 'aula/listado/sede/' + IdSede);
   }
+
+  getReservas(IdAula: number): Observable<any> {
+    return this.http.get<any>(URL_ENDPOINT + 'reserva/obtener/poraula/' + IdAula);
+  }
+
+  getBloques(IdReserva: number): Observable<any> {
+    return this.http.get<any>(URL_ENDPOINT + 'bloque/obtener/' + IdReserva);
+  }
+
 }

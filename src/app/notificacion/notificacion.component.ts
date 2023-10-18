@@ -65,12 +65,10 @@ export class NotificacionComponent {
       this.carrerasSede = response.data;
     });
     this.notificacionService.getNotifiacionDesuso(this.datoLocalStorage.IdUsuario).subscribe((response) => {
-      console.log("No entra "+response.dataLenghy );
       if(response.dataLenghy!=0){
         this.notificacion = response.data[0];
+        console.log(response.data[0]);
         this.option = this.notificacion.NomCarrera;
-        console.log("entra");
-        console.log(this.notificacion );
 
         this.alertaDesusoDeAula(this.notificacion.NomArea,this.notificacion.NomAula,this.notificacion.CapturaFotografica);
 
@@ -82,7 +80,7 @@ export class NotificacionComponent {
           Fecha:  this.fechaFormateada,
 
           NomCurso:  this.notificacion.NomCurso,
-          NomProfesor:   this.notificacion.NomCarrera,
+          NomProfesor:   this.notificacion.NomProfesor,
           CapturaFotografica:  this.notificacion.CapturaFotografica,
           IdUsuario:  this.datoLocalStorage.IdUsuario,
         });
@@ -133,7 +131,7 @@ export class NotificacionComponent {
     }, (error) => {
       console.log("error al enviar el correo");
     });
-    this.notificacionService.agregarReporte(this.formularioCorreo.get('NomCurso')?.value,this.formularioCorreo.get('NomProfesor')?.value,this.fechaActual,
+    this.notificacionService.agregarReporte(this.notificacion.IdCurso,this.fechaActual,
     this.idCarreraSelecionada,this.formularioCorreo.get('IdUsuario')?.value,this.notificacion.IdAula,this.notificacion.IdDatos).subscribe((response) => {
       this.cerrarrModalCorreoPre();
       this.cerrarrModalCorreo(false,true);
@@ -209,7 +207,6 @@ export class NotificacionComponent {
 
   carreraSInputChange(Carrera: any) {
     if (Carrera.target.value === '-1') {
-      console.log('No se ha seleccionado ninguna carrera');
     } else {
       this.carrerasSede.forEach(elemento => {
         if(elemento.IdCarrera == Carrera.target.value) {

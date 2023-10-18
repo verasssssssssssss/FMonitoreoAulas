@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { forkJoin } from 'rxjs';
 import { AulasH } from 'src/Clases/Aulas';
+import { DatosReserva } from 'src/Clases/Horario';
 import { Sedes } from 'src/Clases/Sedes';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { HomeService } from 'src/Service/home/home.service';
@@ -20,12 +22,21 @@ export class HorarioComponent {
   IdSedeActual!: number;
   NomCiudad!: string;
 
+  reserva:DatosReserva[] =[];
+
+  Nomaula: string = "...";
+  Idaula: number = 2;
+  prueba: string = "...";
+
   constructor(private loginService: LoginService,private horarioService:HorarioService,private homeService:HomeService) {}
 
   ngOnInit(): void {
     this.datoLocalStorage = this.loginService.datoLocalStorage;
+    this.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
+    this.loginService.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
     this.getCiudad(this.datoLocalStorage.IdCiudad);
     this.getSedes(this.datoLocalStorage.IdCiudad);
+
   }
 
   getAulas(IdSede: number) {
@@ -50,8 +61,27 @@ export class HorarioComponent {
   }
 
   getCiudad(IdCiudad: number) {
+    this.getReservas();
     this.homeService.getCiudad(IdCiudad).subscribe(async (response) => {
       this.NomCiudad = await response.data[0].NomCiudad;
+    });
+  }
+
+  selecionarAula(nom:string,id:number){
+    this.Nomaula=nom;
+    this.Idaula=id;
+    this.getReservas();
+  }
+
+
+  getReservas() {
+    this.horarioService.getReservas(this.Idaula).subscribe(async (response) => {
+      this.reserva= await response.data;
+      this.reserva.forEach((item) => {
+        this.horarioService.getBloques(item.IdReserva).subscribe(async (response) => {
+          item.nBloques = await response.data;
+        });
+      });
     });
   }
 }

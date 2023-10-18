@@ -29,7 +29,7 @@
                         <div class="card-body">
                             <div>
                                 <div style="display: flex; align-items: center; justify-content: center;">
-                                    <button *ngFor="let aula of Aulas" class="btn btn-info fs-4 m-1">
+                                    <button *ngFor="let aula of Aulas" class="btn btn-info fs-4 m-1" (click)="selecionarAula(aula.NomAula,aula.IdAula)">
                                         {{ aula.NomAula }}
                                     </button>
                                 </div>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="encargado">
-                    <h2 class="card-title mb-4">Horario del aula ... </h2>
+                    <h2 class="card-title mb-4">Horario del aula A4</h2>
                 </div>
             </div>
         </div>
@@ -62,135 +62,144 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="date-column">08:10 08:50</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">08:10 08:50</td>
+                                          <td id="11"></td>
+                                          <td id="12"></td>
+                                          <td id="13" style="background-color: rgb(117, 236, 251);">
+                                            <p>ARQUITECTURA DE SOFTWARE</p>
+                                          </td>
+                                          <td id="14" ></td>
+                                          <td id="15"></td>
                                         </tr>
                                         <tr>
-                                            <td class="date-column">08:50 09:30</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">08:50 09:30</td>
+                                          <td id="21"></td>
+                                          <td id="22"></td>
+                                          <td id="23" style="background-color: rgb(117, 236, 251);">
+                                            <p>ARQUITECTURA DE SOFTWARE</p>
+                                          </td>
+                                          <td id="24"></td>
+                                          <td id="25"></td>
+                                        </tr>
+                                        <tr>     
+                                          <td class="date-column">09:40 10:20</td>
+                                          <td id="31"></td>
+                                          <td id="32"></td>
+                                          <td id="33"></td>
+                                          <td id="34"></td>
+                                          <td id="35"></td>
                                         </tr>
                                         <tr>
-                                            <td class="date-column">09:40 10:20</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">10:20 11:00</td>
+                                          <td id="41"></td>
+                                          <td id="42"></td>
+                                          <td id="43"></td>
+                                          <td id="44"></td>
+                                          <td id="45"></td>
                                         </tr>
                                         <tr>
-                                            <td class="date-column">10:20 11:00</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">11:10 11:50</td>
+                                          <td id="51"></td>
+                                          <td id="52"></td>
+                                          <td id="53"></td>
+                                          <td id="54"></td>
+                                          <td id="55"></td>
                                         </tr>
                                         <tr>
-                                            <td class="date-column">11:10 11:50</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">11:50 12:30</td>
+                                          <td id="61"></td>
+                                          <td id="62"></td>
+                                          <td id="63"></td>
+                                          <td id="64"></td>
+                                          <td id="65" style="background-color: rgb(250, 199, 90);">
+                                            <p>COMUNICACIÓN DE DATOS Y REDES</p>
                                         </tr>
                                         <tr>
-                                            <td class="date-column">11:50 12:30</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">12:40 13:20</td>
+                                          <td id="71"></td>
+                                          <td id="72"></td>
+                                          <td id="73"></td>
+                                          <td id="74"></td>
+                                          <td id="75" style="background-color: rgb(250, 199, 90);">
+                                            <p>COMUNICACIÓN DE DATOS Y REDES</p>
                                         </tr>
                                         <tr>
-                                            <td class="date-column">12:40 13:20</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">13:20 14:00</td>
+                                          <td id="81"></td>
+                                          <td id="82"></td>
+                                          <td id="83"></td>
+                                          <td id="84"></td>
+                                          <td id="85"></td>
+                                        </tr>
+                                        <br>   
+                                        <tr>
+                                          <td class="date-column">14:10 14:50</td>
+                                          <td id="91"></td>
+                                          <td id="92"></td>
+                                          <td id="93"></td>
+                                          <td id="94"></td>
+                                          <td id="95"></td>
                                         </tr>
                                         <tr>
-                                            <td class="date-column">13:20 14:00</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <br>
-                                        <tr>
-                                            <td class="date-column">14:10 14:50</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">14:50 15:30</td>
+                                          <td id="101"></td>
+                                          <td id="102"></td>
+                                          <td id="103"></td>
+                                          <td id="104"></td>
+                                          <td id="105"></td>
                                         </tr>
                                         <tr>
-                                            <td class="date-column">14:50 15:30</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">15:40 16:20</td>
+                                          <td id="111" style="background-color: rgb(184, 255, 165);">
+                                            <p>INVESTIGACIÓN DE OPERACIONES</p>
+                                          <td id="112"></td>
+                                          <td id="113"></td>
+                                          <td id="114"></td>
+                                          <td id="115"></td>
                                         </tr>
                                         <tr>
-                                            <td class="date-column">15:40 16:20</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">16:20 17:00</td>
+                                          <td id="121"  style="background-color: rgb(184, 255, 165);">
+                                            <p>INVESTIGACIÓN DE OPERACIONES</p> 
+                                          <td id="122"></td>
+                                          <td id="123"></td>
+                                          <td id="124"></td>
+                                          <td id="125"></td>
                                         </tr>
                                         <tr>
-                                            <td class="date-column">16:20 17:00</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">17:10 17:50</td>
+                                          <td id="131"   style="background-color: rgb(184, 255, 165);">
+                                            <p>INVESTIGACIÓN DE OPERACIONES</p> 
+                                          <td id="132"></td>
+                                          <td id="133"></td>
+                                          <td id="134"></td>
+                                          <td id="135"></td>
                                         </tr>
                                         <tr>
-                                            <td class="date-column">17:10 17:50</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">17:50 18:30</td>
+                                          <td id="141"></td>
+                                          <td id="142"></td>
+                                          <td id="143"></td>
+                                          <td id="144"></td>
+                                          <td id="145"></td>
                                         </tr>
                                         <tr>
-                                            <td class="date-column">17:50 18:30</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">18:40 19:20</td>
+                                          <td id="151"></td>
+                                          <td id="152"></td>
+                                          <td id="153"></td>
+                                          <td id="154"></td>
+                                          <td id="155"></td>
                                         </tr>
                                         <tr>
-                                            <td class="date-column">18:40 19:20</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                          <td class="date-column">19:20 20:00</td>
+                                          <td id="161"></td>
+                                          <td id="162"></td>
+                                          <td id="163"></td>
+                                          <td id="164"></td>
+                                          <td id="165"></td>
                                         </tr>
-                                        <tr>
-                                            <td class="date-column">19:20 20:00</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
+                                      </tbody>
                                 </table>
                                 <div>
                                 </div>

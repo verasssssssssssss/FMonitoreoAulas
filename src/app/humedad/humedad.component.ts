@@ -38,11 +38,6 @@ export class HumedadComponent {
   getTempHumedad(){
     this.humedadService.getTempHumedad().subscribe(async (response) => {
         this.Datos = await response.data;
-        console.log("es");
-        console.log(this.Datos);
-        console.log(this.Datos[0].Fecha);
-        console.log(this.Datos[0].Temperatura);
-        console.log(this.Datos[0].Humedad);
         this.chart.updateOptions({
           xaxis: {
             type: "datetime",
