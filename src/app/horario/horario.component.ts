@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { forkJoin } from 'rxjs';
 import { AulasH } from 'src/Clases/Aulas';
 import { DatosReserva } from 'src/Clases/Horario';
 import { Sedes } from 'src/Clases/Sedes';
