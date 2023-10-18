@@ -22,8 +22,6 @@ export class LoginComponent {
           console.log(this.loginService.datoLocalStorage);
           this.router.navigate(['/home']);
         }
-
-
       }, (error) => {
         console.log("Credenciales incorrectas");
         this.error = true;
