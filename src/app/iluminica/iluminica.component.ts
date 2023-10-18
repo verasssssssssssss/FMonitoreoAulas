@@ -38,8 +38,8 @@ export class IluminicaComponent {
     this.chartOptions = {
       series: [
         {
-          name: "Servings",
-          data: [44, 55, 41, 67, 22, 43, 21, 33, 45, 31, 87, 65, 35]
+          name: "Lux",
+          data: [440, 550, 410, 670, 220, 430, 210, 330, 450, 310]
         }
       ],
       chart: {
@@ -60,33 +60,19 @@ export class IluminicaComponent {
 
       grid: {
         row: {
-          colors: ["#fff", "#f2f2f2"]
-        }
+          colors: ["#fff", "#838b8e"]
+        },
       },
       xaxis: {
         labels: {
           rotate: -45
         },
-        categories: [
-          "Apples",
-          "Oranges",
-          "Strawberries",
-          "Pineapples",
-          "Mangoes",
-          "Bananas",
-          "Blackberries",
-          "Pears",
-          "Watermelons",
-          "Cherries",
-          "Pomegranates",
-          "Tangerines",
-          "Papayas"
-        ],
+        categories: ['06:47:21','06:47:21','06:47:21','06:47:21','06:47:21','06:47:21','06:47:21','06:47:21','06:47:21','06:47:21'],
         tickPlacement: "on"
       },
       yaxis: {
         title: {
-          text: "Servings"
+          text: "Lux"
         }
       },
       fill: {
@@ -96,7 +82,7 @@ export class IluminicaComponent {
           type: "horizontal",
           shadeIntensity: 0.25,
           gradientToColors: undefined,
-          inverseColors: true,
+          inverseColors: false,
           opacityFrom: 0.85,
           opacityTo: 0.85,
           stops: [50, 0, 100]
