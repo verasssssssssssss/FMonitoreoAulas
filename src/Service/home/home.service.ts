@@ -8,6 +8,8 @@ import { URL_ENDPOINT } from 'src/Config/config';
 })
 export class HomeService {
 
+  IdSede!: number;
+
   constructor(private http: HttpClient) { }
 
   getCiudad(IdCiudad: number): Observable<any> {
@@ -26,16 +28,6 @@ export class HomeService {
     return this.http.get<any>(URL_ENDPOINT + 'aula/listado/' + IdAreasDeTrabajo);
   }
 
-  asignarAreasDeTrabajo(IdAreasDeTrabajo: number, IdUsuario: number): Observable<any> {
-    const body = { IdUsuario: IdUsuario };
-    return this.http.put(URL_ENDPOINT + 'area/asignar/' + IdAreasDeTrabajo, body);
-  }
-
-  delegarAreasDeTrabajo(IdAreasDeTrabajo: number): Observable<any> {
-    const body = { IdUsuario: null };
-    return this.http.put(URL_ENDPOINT + 'area/delegar/' + IdAreasDeTrabajo, body);
-  }
-
   eliminarAula(IdAula: number): Observable<any> {
     const body = { Visible: 0 };
     return this.http.put(URL_ENDPOINT + 'aula/eliminar/' + IdAula, body);
@@ -46,8 +38,8 @@ export class HomeService {
     return this.http.put(URL_ENDPOINT + 'area/eliminar/' + IdArea, body);
   }
 
-  getEncargadosSede(IdSede: number): Observable<any> {
-    return this.http.get<any>(URL_ENDPOINT + 'encargado/listado/' + IdSede);
+  getEncargadosSede(): Observable<any> {
+    return this.http.get<any>(URL_ENDPOINT + 'encargado/listado/');
   }
 
   editarAula(IdAula: number, NomAula: string, CantidadAlumnos: number): Observable<any> {
@@ -119,5 +111,13 @@ export class HomeService {
   quitarEncargado(IdUsuario: number): Observable<any> {
     const body = {};
     return this.http.put(URL_ENDPOINT + 'area/quitar/' + IdUsuario, body);
+  }
+
+  cambiarSedeEncargado(IdUsuario: number,IdSede: number): Observable<any> {
+    const body = {
+      IdUsuario:IdUsuario,
+      IdSede:IdSede
+    };
+    return this.http.put(URL_ENDPOINT + 'usuario/cambiar/sede', body);
   }
 }

@@ -6,6 +6,7 @@ import { DatosCorreo } from 'src/Clases/DatosCorreo';
 import { notificacion } from 'src/Clases/Notificacion';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { NotificacionService } from 'src/Service/Notificacion/notificacion.service';
+import { HomeService } from 'src/Service/home/home.service';
 import { LoginService } from 'src/Service/login/login.service';
 import Swal from 'sweetalert2';
 
@@ -16,43 +17,43 @@ import Swal from 'sweetalert2';
 })
 export class NotificacionComponent {
 
-  notificacion!:notificacion;
+  notificacion!: notificacion;
   datoLocalStorage!: Usuarios;
   datosCorreo!: DatosCorreo;
   fechaActual!: Date;
   fechaFormateada!: string;
-  carrerasSede!:CarrerasSede[];
-  idCarreraSelecionada!:number;
+  carrerasSede!: CarrerasSede[];
+  idCarreraSelecionada!: number;
   img!: string;
   formularioCorreo: FormGroup;
   timerInterval: any;
-  option:string ="";
+  option: string = "";
   recibitNotificacion: boolean = true;
 
-  constructor(private loginService: LoginService,private fb: FormBuilder,private notificacionService:NotificacionService,private datePipe: DatePipe) {
+  constructor(private homeService: HomeService, private loginService: LoginService, private fb: FormBuilder, private notificacionService: NotificacionService, private datePipe: DatePipe) {
     this.fechaActual = new Date();
     this.fechaFormateada = this.datePipe.transform(this.fechaActual, 'dd/MM/yyyy HH:mm:ss') || 'Fecha inválida';
 
     this.formularioCorreo = this.fb.group({
       NomCoordinador: [{ value: '', disabled: true }, [Validators.required]],
-      NomSede:  [{ value: '', disabled: true }, [Validators.required]],
-      NomArea:  [{ value: '', disabled: true }, [Validators.required]],
-      NomAula:  [{ value: '', disabled: true }, [Validators.required]],
-      Fecha:  [{ value: '', disabled: true }, [Validators.required]],
-      NomCurso:  ['', [Validators.required]],
-      NomProfesor:  ['', [Validators.required]],
-      NomCarrera:  ['', [Validators.required]],
-      CapturaFotografica:  ['', [Validators.required]],
-      IdUsuario:  ['', [Validators.required]],
+      NomSede: [{ value: '', disabled: true }, [Validators.required]],
+      NomAula: [{ value: '', disabled: true }, [Validators.required]],
+      Fecha: [{ value: '', disabled: true }, [Validators.required]],
+      Codigo: ['', [Validators.required]],
+      NomProfesor: ['', [Validators.required]],
+      NomCurso: ['', [Validators.required]],
+      NomCarrera: ['', [Validators.required]],
+      CapturaFotografica: ['', [Validators.required]],
+      IdUsuario: ['', [Validators.required]],
     });
-   }
+  }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.datoLocalStorage = this.loginService.datoLocalStorage;
     setInterval(() => {
-      if(this.recibitNotificacion){
-          this.recibitNotificacion = !this.recibitNotificacion;
-          this.getNotifiacionDesuso();
+      if (this.recibitNotificacion) {
+        this.recibitNotificacion = !this.recibitNotificacion;
+        this.getNotifiacionDesuso();
       }
     }, 10000); // 10000 milisegundos = 10 segundos
   }
@@ -64,36 +65,36 @@ export class NotificacionComponent {
     this.notificacionService.getCarrerasSede(1).subscribe((response) => {
       this.carrerasSede = response.data;
     });
-    this.notificacionService.getNotifiacionDesuso(this.datoLocalStorage.IdUsuario).subscribe((response) => {
-      if(response.dataLenghy!=0){
+    this.notificacionService.getNotifiacionDesuso(this.homeService.IdSede).subscribe((response) => {
+      if (response.dataLenghy != 0) {
         this.notificacion = response.data[0];
         console.log(response.data[0]);
         this.option = this.notificacion.NomCarrera;
 
-        this.alertaDesusoDeAula(this.notificacion.NomArea,this.notificacion.NomAula,this.notificacion.CapturaFotografica);
+        this.alertaDesusoDeAula(this.notificacion.NomArea, this.notificacion.NomAula, this.notificacion.CapturaFotografica);
 
         this.formularioCorreo.patchValue({
-          NomCoordinador:  this.datosCorreo.NomUsuario+" "+this.datosCorreo.ApeUsuario,
+          NomCoordinador: this.datosCorreo.NomUsuario + " " + this.datosCorreo.ApeUsuario,
           NomSede: this.datosCorreo.NomSede,
-          NomArea:  this.notificacion.NomArea,
-          NomAula:  this.notificacion.NomAula,
-          Fecha:  this.fechaFormateada,
-
-          NomCurso:  this.notificacion.NomCurso,
-          NomProfesor:   this.notificacion.NomProfesor,
-          CapturaFotografica:  this.notificacion.CapturaFotografica,
-          IdUsuario:  this.datoLocalStorage.IdUsuario,
+          NomAula: this.notificacion.NomAula,
+          Fecha: this.fechaFormateada,
+          Codigo: this.notificacion.Codigo,
+          NomProfesor:this.notificacion.NomProfesor,
+          NomCurso: this.notificacion.NomCurso,
+          NomCarrera:this.notificacion.NomCarrera,
+          CapturaFotografica: this.notificacion.CapturaFotografica,
+          IdUsuario: this.datoLocalStorage.IdUsuario,
         });
-      }else{
+      } else {
         this.recibitNotificacion = !this.recibitNotificacion;
       }
     });
   }
 
-  alertaDesusoDeAula(NomArea:string,NomAula:string,fotografia:string){
+  alertaDesusoDeAula(NomArea: string, NomAula: string, fotografia: string) {
     Swal.fire({
       title: 'Posible desuso de aula',
-      text: 'En el aula '+NomAula+' del área '+NomArea,
+      text: 'En el aula ' + NomAula + ' del área ' + NomArea,
       imageUrl: fotografia,
       imageWidth: 400,
       imageHeight: 200,
@@ -114,9 +115,9 @@ export class NotificacionComponent {
           if (result.isConfirmed) {
             this.successSwal('Has descartado el posible desuso de aula');
             this.recibitNotificacion = !this.recibitNotificacion;
-            this.notificacionService.validarAlerta(this.notificacion.IdDatos,0).subscribe();
-          }else{
-            this.alertaDesusoDeAula(NomArea,NomAula,fotografia);
+            this.notificacionService.validarAlerta(this.notificacion.IdDatos, 0).subscribe();
+          } else {
+            this.alertaDesusoDeAula(NomArea, NomAula, fotografia);
           }
         });
       }
@@ -125,22 +126,22 @@ export class NotificacionComponent {
 
   EnviarCorreo() {
     this.enviandoCorreo();
-    this.notificacionService.enviarCorreo(this.datosCorreo.Mail,this.datosCorreo.NomUsuario,this.datosCorreo.ApeUsuario,this.datosCorreo.NomSede,
-      this.formularioCorreo.get('NomCurso')?.value,this.formularioCorreo.get('NomProfesor')?.value,this.fechaFormateada,this.formularioCorreo.get('NomCarrera')?.value,
-      this.datoLocalStorage.NomUsuario+""+this.datoLocalStorage.ApeUsuario,this.notificacion.NomAula,this.notificacion.CapturaFotografica).subscribe((response) => {
-    }, (error) => {
-      console.log("error al enviar el correo");
-    });
-    this.notificacionService.agregarReporte(this.notificacion.IdCurso,this.fechaActual,
-    this.idCarreraSelecionada,this.formularioCorreo.get('IdUsuario')?.value,this.notificacion.IdAula,this.notificacion.IdDatos).subscribe((response) => {
-      this.cerrarrModalCorreoPre();
-      this.cerrarrModalCorreo(false,true);
-    }, (error) => {
-      console.log("error al generar reporte");
-    });
+    this.notificacionService.enviarCorreo(this.datosCorreo.Mail, this.datosCorreo.NomUsuario, this.datosCorreo.ApeUsuario, this.datosCorreo.NomSede,
+      this.formularioCorreo.get('NomCurso')?.value, this.formularioCorreo.get('Codigo')?.value, this.fechaFormateada, this.formularioCorreo.get('NomCarrera')?.value,
+      this.datoLocalStorage.NomUsuario + "" + this.datoLocalStorage.ApeUsuario, this.notificacion.NomAula, this.notificacion.CapturaFotografica).subscribe((response) => {
+      }, (error) => {
+        console.log("error al enviar el correo");
+      });
+    this.notificacionService.agregarReporte(this.notificacion.IdCurso, this.fechaActual,
+      this.idCarreraSelecionada, this.formularioCorreo.get('IdUsuario')?.value, this.notificacion.IdAula, this.notificacion.IdDatos).subscribe((response) => {
+        this.cerrarrModalCorreoPre();
+        this.cerrarrModalCorreo(false, true);
+      }, (error) => {
+        console.log("error al generar reporte");
+      });
   }
 
-  enviandoCorreo(){
+  enviandoCorreo() {
     Swal.fire({
       html: 'Enviando correo generado <b></b> milisegundos.',
       timer: 2000,
@@ -167,15 +168,15 @@ export class NotificacionComponent {
     });
   }
 
-  cerrarrModalCorreo(PrevCorreo :boolean,enviado :boolean) {
-    if(PrevCorreo){
+  cerrarrModalCorreo(PrevCorreo: boolean, enviado: boolean) {
+    if (PrevCorreo) {
       this.abrirModalCorreoPre();
-    }else{
-      if(!enviado){
-        this.alertaDesusoDeAula(this.notificacion.NomArea,this.notificacion.NomAula,this.notificacion.CapturaFotografica);
-      }else{
+    } else {
+      if (!enviado) {
+        this.alertaDesusoDeAula(this.notificacion.NomArea, this.notificacion.NomAula, this.notificacion.CapturaFotografica);
+      } else {
         this.recibitNotificacion = !this.recibitNotificacion;
-        this.notificacionService.validarAlerta(this.notificacion.IdDatos,1).subscribe();
+        this.notificacionService.validarAlerta(this.notificacion.IdDatos, 1).subscribe();
       }
       const modal = document.getElementById('ModalCorreo');
       if (modal != null) {
@@ -206,17 +207,14 @@ export class NotificacionComponent {
   }
 
   carreraSInputChange(Carrera: any) {
-    if (Carrera.target.value === '-1') {
-    } else {
-      this.carrerasSede.forEach(elemento => {
-        if(elemento.IdCarrera == Carrera.target.value) {
-          this.formularioCorreo.patchValue({
-            NomCarrera:  elemento.NomCarrera,
-          });
-          this.idCarreraSelecionada =elemento.IdCarrera;
-        }
-      });
-    }
+    this.carrerasSede.forEach(elemento => {
+      if (elemento.IdCarrera == Carrera.target.value) {
+        this.formularioCorreo.patchValue({
+          NomCarrera: elemento.NomCarrera,
+        });
+        this.idCarreraSelecionada = elemento.IdCarrera;
+      }
+    });
   }
 
   successSwal(title: string) {

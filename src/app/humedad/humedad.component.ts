@@ -10,7 +10,7 @@ import {
   ApexStroke
 } from "ng-apexcharts";
 import { DatosHumedadTemperatura } from "src/Clases/Datos";
-import { HumedadService } from "src/Service/humedad/humedad.service";
+import { dashboardService } from "src/Service/dashboard/dashboard.service";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -27,13 +27,13 @@ export type ChartOptions = {
   styleUrls: ['./humedad.component.css']
 })
 export class HumedadComponent {
-
   @ViewChild("realchart") chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
 
   Datos!:DatosHumedadTemperatura[];
-
   obtener:boolean=true;
+
+  constructor(private humedadService:dashboardService) {}
 
   getTempHumedad(){
     this.humedadService.getTempHumedad().subscribe(async (response) => {
@@ -97,10 +97,7 @@ export class HumedadComponent {
     this.getTempHumedad();
     setInterval(() => {
         this.getTempHumedad();
-    }, 15000); // 300.000 milisegundos = 5 minutos
-  }
-
-  constructor(private humedadService:HumedadService) {
+    }, 300000); // 300.000 milisegundos = 5 minutos
   }
 
 }

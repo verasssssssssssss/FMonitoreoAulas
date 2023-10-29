@@ -11,6 +11,8 @@ import {
   ApexStroke,
   ApexGrid
 } from "ng-apexcharts";
+import { DatosIntensidadLuminica } from "src/Clases/Datos";
+import { dashboardService } from "src/Service/dashboard/dashboard.service";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -32,14 +34,35 @@ export type ChartOptions = {
 })
 export class IluminicaComponent {
   @ViewChild("chart") chart!: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
+  public chartOptions!: Partial<ChartOptions>;
 
-  constructor() {
+  Datos!:DatosIntensidadLuminica[];
+  Lux:number[]=[0,0,0,0,0,0,0,0,0,0];
+  Fechas:string[]=["1","2","3","4","5","6","7","8","9","10"];
+  obtener:boolean=true;
+  
+  constructor(private LuzService:dashboardService) {}
+
+  ngOnInit(): void {
+    this.getLux();
+  }
+
+  getLux(){
+    this.LuzService.getIntensidadLuminica().subscribe((response) => {
+        this.Datos = response.data;
+        this.transform();
+        this.Fechas= [this.Datos[0].Fecha,this.Datos[1].Fecha,this.Datos[2].Fecha,this.Datos[3].Fecha,this.Datos[4].Fecha,this.Datos[5].Fecha,this.Datos[6].Fecha,this.Datos[7].Fecha,this.Datos[8].Fecha,this.Datos[9].Fecha];
+        this.Lux=[this.Datos[0].IntensidadLuminica,this.Datos[1].IntensidadLuminica,this.Datos[2].IntensidadLuminica,this.Datos[3].IntensidadLuminica,this.Datos[4].IntensidadLuminica,this.Datos[5].IntensidadLuminica,this.Datos[6].IntensidadLuminica,this.Datos[7].IntensidadLuminica,this.Datos[8].IntensidadLuminica,this.Datos[9].IntensidadLuminica];
+        this.crearchar();
+      });
+  }
+
+  crearchar(){
     this.chartOptions = {
       series: [
         {
           name: "Lux",
-          data: [440, 550, 410, 670, 220, 430, 210, 330, 450, 310]
+          data: this.Lux
         }
       ],
       chart: {
@@ -67,7 +90,7 @@ export class IluminicaComponent {
         labels: {
           rotate: -45
         },
-        categories: ['06:47:21','06:47:21','06:47:21','06:47:21','06:47:21','06:47:21','06:47:21','06:47:21','06:47:21','06:47:21'],
+        categories: this.Fechas,
         tickPlacement: "on"
       },
       yaxis: {
@@ -89,5 +112,18 @@ export class IluminicaComponent {
         }
       }
     };
+    setInterval(() => {
+        this.getLux();
+    }, 300000); // 300.000 milisegundos = 5 minutos
+  }
+
+
+
+
+  transform() {
+    this.Datos.forEach(element => {
+      const parts = element.Fecha.split('T');
+      element.Fecha=parts[1].slice(0, -5);
+    });
   }
 }

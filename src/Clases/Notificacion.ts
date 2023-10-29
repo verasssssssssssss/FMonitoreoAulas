@@ -9,4 +9,5 @@ export class notificacion{
      NomCarrera!:string;
      NomProfesor!:string;
      NomCurso!:string;
+     Codigo!:string;
  }

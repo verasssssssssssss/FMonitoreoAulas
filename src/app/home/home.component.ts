@@ -21,8 +21,10 @@ export class HomeComponent {
   datoLocalStorage!: Usuarios;
   sedes!: Sedes[];
   NomCiudad!: string;
+
   NomSedeActual!: string;
-  IdSedeActual!: number;
+  AcroSedeActual!: string;
+
   AreasDeTrabajo!: AreasDeTrabajo[];
   Encargados!:  Usuario[];
   EncargadosSelecionado:  UsuarioE = { IdUsuario: -1, NomUsuario: "", ApeUsuario: "", Mail: "", Contrasenia: "", 	Fotografia: ""};
@@ -66,10 +68,15 @@ export class HomeComponent {
     this.homeService.getSedes(IdCiudad).subscribe(async (response) => {
       this.sedes =  await response.data;
       this.NomSedeActual = this.sedes[0].NomSede;
-      this.IdSedeActual = this.sedes[0].IdSede;
-      this.getAreasDeTrabajo(this.IdSedeActual);
-      this.getEncargadosSede(this.IdSedeActual);
+      this.homeService.IdSede  = this.sedes[0].IdSede;
+      this.AcroSedeActual= this.sedes[0].Acronimo;
+      this.getAreasDeTrabajo(this.homeService.IdSede);
+      this.homeService.cambiarSedeEncargado(this.datoLocalStorage.IdUsuario,this.sedes[0].IdSede).subscribe();
     });
+  }
+  
+  cambiarSedeEncargado(IdUsuario: number,IdSede: number){
+    this.homeService.cambiarSedeEncargado(IdUsuario,IdSede).subscribe((response) => {});
   }
 
   getAreasDeTrabajo(IdSede: number) {
@@ -88,40 +95,21 @@ export class HomeComponent {
     });
   }
 
-  CambiarSede(NomSede: string, IdSede: number) {
-    this.NomSedeActual = NomSede;
-    this.IdSedeActual = IdSede;
-    this.getAreasDeTrabajo(IdSede);
-    this.getEncargadosSede(IdSede);
-  }
-
-
-  asignarAreasDeTrabajo(IdAreasDeTrabajo: number, IdUsuario: number) {
-    if (IdUsuario != -1) {
-      this.homeService.asignarAreasDeTrabajo(IdAreasDeTrabajo, IdUsuario).subscribe((response) => {
-        this.successSwal("Encargado asignado Correctamente");
-        this.getAreasDeTrabajo(this.IdSedeActual);
-      }, (error) => {
-        this.errorSwal("Ocurrio un error al asignar un encargado");
-      });
-    } else {
-      this.infoSwal("Debe selecionar un encargado");
-    }
-  }
-
-  delegarAreasDeTrabajo(IdAreasDeTrabajo: number) {
+  CambiarSede(NomSede: string, IdSede: number, AcronimoSede:string) {
     Swal.fire({
-      title: '¿Estas Seguro de quitar al encargado?',
+      title: '¿Estas seguro de cambiarte de campus?',
       showDenyButton: true,
-      showCancelButton: true,
       confirmButtonText: 'Si',
       denyButtonText: `No`,
     }).then((result) => {
       if (result.isConfirmed) {
-        this.homeService.delegarAreasDeTrabajo(IdAreasDeTrabajo).subscribe((response) => {
-          this.getAreasDeTrabajo(this.IdSedeActual);
-          this.successSwal("Área de trabajo liberada");
-        });
+        this.AcroSedeActual= AcronimoSede;
+        this.NomSedeActual = NomSede;
+        this.homeService.IdSede = IdSede;
+        console.log("ess ->> "+this.homeService.IdSede);
+        this.getAreasDeTrabajo(IdSede);
+        this.getEncargadosSede();
+        this.homeService.cambiarSedeEncargado(this.datoLocalStorage.IdUsuario,this.homeService.IdSede).subscribe();
       }
     });
   }
@@ -135,7 +123,7 @@ export class HomeComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.homeService.eliminarAula(IdAula).subscribe((response) => {
-          this.getAreasDeTrabajo(this.IdSedeActual);
+          this.getAreasDeTrabajo(this.homeService.IdSede );
           this.successSwal("El aula se elimino correctamente");
         }, (error) => {
           this.errorSwal("Ocurrio un error al intentar eliminar el aula " + this.AulaSeleccionada[0].NomAula);
@@ -153,7 +141,7 @@ export class HomeComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.homeService.eliminarAreasDeTrabajo(IdArea).subscribe((response) => {
-          this.getAreasDeTrabajo(this.IdSedeActual);
+          this.getAreasDeTrabajo(this.homeService.IdSede);
           this.successSwal("El Área se elimino correctamente");
         }, (error) => {
           this.errorSwal("Ocurrio un error al intentar eliminar el Área " + NomArea);
@@ -162,38 +150,18 @@ export class HomeComponent {
     });
   }
 
-  Asignar(IdUsuario: any) {
-    this.asignarAreasDeTrabajo(this.AreasDeTrabajoSeleccionado, Number(IdUsuario));
-    this.cerrarModalAsignar();
-  }
-
-  getEncargadosSede(IdSede: number) {
-    this.homeService.getEncargadosSede(IdSede).subscribe((response) => {
+  getEncargadosSede() {
+    this.homeService.getEncargadosSede().subscribe((response) => {
       this.Encargados = response.data;
     });
   }
 
-  abrirModalAsignar(IdAreasDeTrabajo: number) {
-    this.AreasDeTrabajoSeleccionado = IdAreasDeTrabajo;
-    const modal = document.getElementById('ModalAsignar');
-    if (modal != null) {
-      modal.style.display = 'block';
-    }
-  }
-
-  cerrarModalAsignar() {
-    const modal = document.getElementById('ModalAsignar');
-    if (modal != null) {
-      modal.style.display = 'none';
-    }
-  }
-
-  abrirModalAula(Aula: any, tipoModal: boolean, IdArea: number) {
+  abrirModalAula(Aula: any, tipoModal: boolean, Area: any) {
     if (tipoModal) {
       this.AulaSeleccionada.push(Aula);
     } else {
-      this.AreasDeTrabajoSeleccionado = IdArea;
-      let Aaula: Aulas = { IdAula: 0, NomAula: "", CantidadAlumnos: 0, Visible: 1, IdArea: 0 };
+      this.AreasDeTrabajoSeleccionado = Area.IdArea;
+      let Aaula: Aulas = { IdAula: 0, NomAula: Area.NomArea, CantidadAlumnos: 0, Visible: 1, IdArea: 0 };
       this.AulaSeleccionada.push(Aaula);
     }
     this.tipoModalAula = tipoModal;
@@ -233,7 +201,7 @@ export class HomeComponent {
         }).then((result) => {
           if (result.isConfirmed) {
             this.homeService.editarAula(this.AulaSeleccionada[0].IdAula, nnombre, ccantidad).subscribe((response) => {
-              this.getAreasDeTrabajo(this.IdSedeActual);
+              this.getAreasDeTrabajo(this.homeService.IdSede);
               this.successSwal("El aula se edito correctamente");
               this.cerrarModalAula();
             }, (error) => {
@@ -245,7 +213,7 @@ export class HomeComponent {
         });
       } else {
         this.homeService.agregarAula(this.AreasDeTrabajoSeleccionado, nnombre, ccantidad).subscribe((response) => {
-          this.getAreasDeTrabajo(this.IdSedeActual);
+          this.getAreasDeTrabajo(this.homeService.IdSede);
           this.successSwal("El aula se creo correctamente");
           this.cerrarModalAula();
         }, (error) => {
@@ -270,7 +238,15 @@ export class HomeComponent {
 
   abrirModalAreaDeTrabajo(AreaDeTrabajo: boolean, nomAreaDeTrabajo: string, idAreaDeTrabajo: number) {
     this.tipoModalAreaDeTrabajo = AreaDeTrabajo;
-    this.nomAreaDeTrabajoSeleccionada = nomAreaDeTrabajo;
+    if(nomAreaDeTrabajo==''){
+      if(this.AcroSedeActual=='FM MC'){
+        this.nomAreaDeTrabajoSeleccionada = 'FM';
+      }else{
+        this.nomAreaDeTrabajoSeleccionada = this.AcroSedeActual;
+      }
+    }else{
+      this.nomAreaDeTrabajoSeleccionada = nomAreaDeTrabajo;
+    }
     this.AreasDeTrabajoSeleccionado = idAreaDeTrabajo;
     const modal = document.getElementById('ModalAreaDeTrabajo');
     if (modal != null) {
@@ -281,8 +257,8 @@ export class HomeComponent {
   EditarOAgregarAreaDeTrabajo() {
     if (this.nombreAreaT != '') {
       if (this.tipoModalAreaDeTrabajo) {
-        this.homeService.agregarAreaDeTrabajo(this.IdSedeActual, this.nombreAreaT).subscribe((response) => {
-          this.getAreasDeTrabajo(this.IdSedeActual);
+        this.homeService.agregarAreaDeTrabajo(this.homeService.IdSede, this.nombreAreaT).subscribe((response) => {
+          this.getAreasDeTrabajo(this.homeService.IdSede);
           this.successSwal("El área de trabajo se creo correctamente");
           this.cerrarModalAreaDeTrabajo();
         }, (error) => {
@@ -297,7 +273,7 @@ export class HomeComponent {
         }).then((result) => {
           if (result.isConfirmed) {
             this.homeService.editarAreaDeTrabajo(this.nombreAreaT, this.AreasDeTrabajoSeleccionado).subscribe((response) => {
-              this.getAreasDeTrabajo(this.IdSedeActual);
+              this.getAreasDeTrabajo(this.homeService.IdSede);
               this.successSwal("El área de trabajo se edito correctamente");
             }, (error) => {
               this.errorSwal("Ocurrio un error al intentar editar el el área de trabajo " + this.nombreAreaT);
@@ -353,9 +329,9 @@ export class HomeComponent {
   cerrarModalEncargadoAE(accion: boolean) {
     if (accion) {
       if (this.tipoModalEncargadoAE) {
-        this.homeService.agregarEncargado(this.formularioEncargado.get('Nombre')?.value, this.formularioEncargado.get('Apellido')?.value, this.formularioEncargado.get('Mail')?.value, this.formularioEncargado.get('Contrasenia')?.value, this.formularioEncargado.get('Fotografia')?.value,this.IdSedeActual).subscribe((response) => {
+        this.homeService.agregarEncargado(this.formularioEncargado.get('Nombre')?.value, this.formularioEncargado.get('Apellido')?.value, this.formularioEncargado.get('Mail')?.value, this.formularioEncargado.get('Contrasenia')?.value, this.formularioEncargado.get('Fotografia')?.value,this.homeService.IdSede).subscribe((response) => {
           this.successSwal("El encargado se creo correctamente");
-          this.getEncargadosSede(this.IdSedeActual);
+          this.getEncargadosSede();
         }, (error) => {
           this.errorSwal("Ocurrio un error al intentar agregar a un nueva encargado para la sede " + this.NomSedeActual);
         });
@@ -369,10 +345,10 @@ export class HomeComponent {
           denyButtonText: `No`,
         }).then((result) => {
           if (result.isConfirmed) {
-            this.homeService.editarEncargado(this.EncargadosSelecionado.IdUsuario, this.formularioEncargado.get('Nombre')?.value, this.formularioEncargado.get('Apellido')?.value, this.formularioEncargado.get('Mail')?.value, this.formularioEncargado.get('Contrasenia')?.value,this.formularioEncargado.get('Fotografia')?.value, this.IdSedeActual).subscribe((response) => {
+            this.homeService.editarEncargado(this.EncargadosSelecionado.IdUsuario, this.formularioEncargado.get('Nombre')?.value, this.formularioEncargado.get('Apellido')?.value, this.formularioEncargado.get('Mail')?.value, this.formularioEncargado.get('Contrasenia')?.value,this.formularioEncargado.get('Fotografia')?.value, this.homeService.IdSede).subscribe((response) => {
               this.successSwal("El encargado de aula se edito correctamente");
-              this.getEncargadosSede(this.IdSedeActual);
-              this.getAreasDeTrabajo(this.IdSedeActual);
+              this.getEncargadosSede();
+              this.getAreasDeTrabajo(this.homeService.IdSede);
               this.cerrarrModalEncargado();
             }, (error) => {
               this.errorSwal("Ocurrio un error al intentar editar el encargado de aula " + this.EncargadosSelecionado.NomUsuario + " " + this.EncargadosSelecionado.ApeUsuario);
@@ -406,8 +382,8 @@ export class HomeComponent {
       if (result.isConfirmed) {
         this.homeService.eliminarEncargado(IdUsuario).subscribe((response) => {
           this.homeService.quitarEncargado(IdUsuario).subscribe((response) => {
-            this.getAreasDeTrabajo(this.IdSedeActual);
-            this.getEncargadosSede(this.IdSedeActual);
+            this.getAreasDeTrabajo(this.homeService.IdSede);
+            this.getEncargadosSede();
           });
           this.successSwal("El encargado " + NomUsuario + " " + Apellido + " se elimino correctamente");
         }, (error) => {
