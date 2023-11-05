@@ -10,6 +10,7 @@ import {
   ApexTooltip,
   ApexStroke
 } from "ng-apexcharts";
+import { timer } from "rxjs";
 import { DatosCo2Tvoc } from "src/Clases/Datos";
 import { dashboardService } from "src/Service/dashboard/dashboard.service";
 
@@ -52,7 +53,6 @@ export class Co2Component {
   getCt(){
     this.co2tvocService.getco2tvoc().subscribe((response) => {
         this.Datos = response.data;
-        console.log(this.Datos);
         this.chart1Data = [
           [this.Datos[0].Fecha, this.Datos[0].NivelesDeCO2],
           [this.Datos[1].Fecha, this.Datos[1].NivelesDeCO2],
@@ -125,6 +125,12 @@ export class Co2Component {
         }
       }
     };
+    
+    timer(300000).subscribe(() => {
+      this.chart1options = {};
+      this.chart2options = {};
+      this.getCt();
+    });
   }
 
   public commonOptions: Partial<ChartOptions> = {

@@ -12,6 +12,8 @@ export class LoginComponent {
 
   error = false;
 
+  hoverColor: string = 'black';
+
   constructor(private router: Router, private loginService: LoginService) { }
 
   IniciarSesion(Mail: string, Contrasenia: string) {
@@ -25,7 +27,30 @@ export class LoginComponent {
       }, (error) => {
         this.error = true;
       });
-    } else {
     }
   }
+
+  verDashBoard() {
+    this.loginService.datoLocalStorage = {
+      IdUsuario:0,
+      NomUsuario:"0",
+      ApeUsuario:"0",
+      Mail:"0",
+      IdRol:0,
+      IdSede:0,
+      IdCarrera:0,
+      IdCiudad:0
+  }
+    localStorage.setItem('UsuarioLogueado', JSON.stringify(this.loginService.datoLocalStorage))
+    this.router.navigate(['/dashboard']);
+  }
+
+  onMouseEnter() {
+    this.hoverColor = 'green'; 
+  }
+
+  onMouseLeave() {
+    this.hoverColor = 'black'; 
+  }
+
 }

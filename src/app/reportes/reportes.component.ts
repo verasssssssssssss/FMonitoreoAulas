@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Sedes } from 'src/Clases/Sedes';
-import { Usuarios } from 'src/Clases/Usuarios';
 import { reporte } from 'src/Clases/reportes';
+import { CampusService } from 'src/Service/campus/campus.service';
 import { HomeService } from 'src/Service/home/home.service';
-import { LoginService } from 'src/Service/login/login.service';
 import { ReportesService } from 'src/Service/reportes/reportes.service';
 import Swal from 'sweetalert2';
 
@@ -18,43 +17,28 @@ export class ReportesComponent implements OnInit {
 
   p:number = 1;
 
-  datoLocalStorage!: Usuarios;
   reportes!:reporte[];
   sedes!: Sedes[];
   CapturaFotografica!:string;
   NombreAula!:string;
   CodigoCorreo!:number;
   modal = true;
-  NomCiudad!: string;
-  NomSedeActual!: string;
-  IdSedeActual!: number;
 
-  constructor(private loginService: LoginService,private sreportes: ReportesService,private homeService:HomeService){}
+
+
+  constructor(public campusService: CampusService,private sreportes: ReportesService,public homeService:HomeService){}
   ngOnInit() {
-    this.datoLocalStorage = this.loginService.datoLocalStorage;
-    this.getCiudad(this.datoLocalStorage.IdCiudad);
-    this.getSedes(this.datoLocalStorage.IdCiudad);
+    this.homeService.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
+    this.getRepoertes(this.homeService.datoLocalStorage.IdSede);
+    this.campusService.triggerMethod$.subscribe(() => {
+      this.getRepoertes(this.campusService.IdSede);
+    });
   }
 
   onBuscarCurso() {
-    // Llama a la función que obtiene los reportes con el nuevo filtro
-    this.getRepoertes(this.IdSedeActual);
+    this.getRepoertes(this.campusService.IdSede);
   }
 
-  getCiudad(IdCiudad:number){
-    this.homeService.getCiudad(IdCiudad).subscribe(  (response) => {
-      this.NomCiudad=response.data[0].NomCiudad;
-    });
-  }
-
-  getSedes(IdCiudad:number){
-    this.homeService.getSedes(IdCiudad).subscribe(  (response) => {
-      this.sedes=response.data;
-      this.NomSedeActual = this.sedes[0].NomSede;
-      this.IdSedeActual = this.sedes[0].IdSede;
-      this.getRepoertes(this.IdSedeActual);
-    });
-  }
 
   getRepoertes(IdSede: number) {
     this.sreportes.getReportes(IdSede).subscribe((response) => {
@@ -94,11 +78,6 @@ export class ReportesComponent implements OnInit {
     this.cerrarModal();
   }
 
-  CambiarSede(NomSede:string,IdSede:number){
-    this.NomSedeActual = NomSede;
-    this.IdSedeActual = IdSede;
-    this.getRepoertes(IdSede);
-  }
 
   eliminarReporte(Idreporte:number){
     Swal.fire({
@@ -109,7 +88,7 @@ export class ReportesComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.sreportes.eliminarReporte(Idreporte).subscribe(  (response) => {
-          this.getRepoertes(this.IdSedeActual);
+          this.getRepoertes(this.homeService.datoLocalStorage.IdSede);
         }, (error) => {
           this.errorSwal("Ocurrio un error al intentar eliminar el reporte");
         });

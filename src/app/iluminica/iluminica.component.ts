@@ -11,6 +11,7 @@ import {
   ApexStroke,
   ApexGrid
 } from "ng-apexcharts";
+import { timer } from "rxjs";
 import { DatosIntensidadLuminica } from "src/Clases/Datos";
 import { dashboardService } from "src/Service/dashboard/dashboard.service";
 
@@ -112,9 +113,10 @@ export class IluminicaComponent {
         }
       }
     };
-    setInterval(() => {
-        this.getLux();
-    }, 300000); // 300.000 milisegundos = 5 minutos
+    timer(300000).subscribe(() => {
+      this.chartOptions={};
+      this.getLux();
+    });
   }
 
 

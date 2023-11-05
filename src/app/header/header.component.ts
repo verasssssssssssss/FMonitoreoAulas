@@ -15,15 +15,13 @@ import { LoginService } from 'src/Service/login/login.service';
 })
 export class HeaderComponent {
 
-  datoLocalStorage!: Usuarios;
-
   formularioUsuario: FormGroup;
 
   cargandoFotografia:boolean=false;
 
   imageUrl!: string; 
 
-  constructor(private loginService: LoginService,private fb: FormBuilder, private router: Router, private homeService: HomeService,private fireStorage:AngularFireStorage) {
+  constructor(private fb: FormBuilder, private router: Router, public homeService: HomeService,private fireStorage:AngularFireStorage) {
     this.formularioUsuario = this.fb.group({
       Nombre: ['', [Validators.required]],
       Apellido: ['', [Validators.required]],
@@ -33,8 +31,8 @@ export class HeaderComponent {
     });
   }
 
-  ngOnInit(): void {
-    this.datoLocalStorage = this.loginService.datoLocalStorage;
+  async ngOnInit(): Promise<void> {
+    this.homeService.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
     this.imageUrl = this.formularioUsuario.get('Fotografia')?.value;
     this.obtenerDatos();
   }
@@ -45,7 +43,7 @@ export class HeaderComponent {
   }
 
   obtenerDatos(){
-    this.homeService.getusuario(this.datoLocalStorage.IdUsuario).subscribe((response) => {
+    this.homeService.getusuario(this.homeService.datoLocalStorage.IdUsuario).subscribe((response) => {
       if (response.data[0] != undefined) {
         if(response.data[0].Fotografia!=undefined && response.data[0].Fotografia!=null) {
           this.formularioUsuario.patchValue({
@@ -73,7 +71,7 @@ export class HeaderComponent {
         denyButtonText: `No`,
       }).then((result) => {
         if (result.isConfirmed) {
-          this.homeService.editarUsuario(this.datoLocalStorage.IdUsuario, this.formularioUsuario.get('Nombre')?.value, this.formularioUsuario.get('Apellido')?.value,this.formularioUsuario.get('Fotografia')?.value, this.formularioUsuario.get('Mail')?.value, this.formularioUsuario.get('Contrasenia')?.value).subscribe((response) => {
+          this.homeService.editarUsuario(this.homeService.datoLocalStorage.IdUsuario, this.formularioUsuario.get('Nombre')?.value, this.formularioUsuario.get('Apellido')?.value,this.formularioUsuario.get('Fotografia')?.value, this.formularioUsuario.get('Mail')?.value, this.formularioUsuario.get('Contrasenia')?.value).subscribe((response) => {
             this.successSwal("Los datos de tu cuenta fueron actualizados correctamente");
             const modal = document.getElementById('ModalAdministrarCuenta');
             if (modal != null) {

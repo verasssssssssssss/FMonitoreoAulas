@@ -3,4 +3,6 @@ export class Sedes{
     NomSede!:string;
     NomCiudad!:string;
     Acronimo!:string;
+    Activa!:number;
+    FechaActivacion!:string;
 }

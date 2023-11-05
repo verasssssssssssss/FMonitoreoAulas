@@ -5,6 +5,10 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { HorarioComponent } from './horario/horario.component';
 import { dashboardComponent } from './dashboard/dashboard.component';
+import { HeaderComponent } from './header/header.component';
+
+
+
 
 const routes: Routes = [
   {

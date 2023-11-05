@@ -53,7 +53,7 @@
           reservada para la clase {{formularioCorreo.get('NomCurso')?.value}} con código {{formularioCorreo.get('Codigo')?.value}} 
           de la carrera {{formularioCorreo.get('NomCarrera')?.value}} se encontró desocupada durante horarios de clases el 
           {{formularioCorreo.get('Fecha')?.value}}.</p>
-        <p>Esta información fue ratificada por el encargado de aula {{datoLocalStorage.NomUsuario}} {{datoLocalStorage.ApeUsuario}}, 
+        <p>Esta información fue ratificada por el encargado de aula {{this.homeService.datoLocalStorage.NomUsuario}} {{this.homeService.datoLocalStorage.ApeUsuario}}, 
           se adjunta captura fotográfica del aula en el momento de desusos como evidencia.</p>
         <img class="imagen-centrada" [src]="formularioCorreo.get('CapturaFotografica')?.value">
         <p class="pie-pagina">Sistema de monitoreo de aulas universidad del BIO-BIO.</p>

@@ -6,6 +6,7 @@ export class reporte{
     NomCurso!:string;
     NomProfesor!:string;
     NomAula!:string;
+    IdUsuario!:number;
     NomUsuario!:string;
     ApeUsuario!:string;
     CapturaFotografica!:string;

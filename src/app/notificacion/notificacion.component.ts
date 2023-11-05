@@ -6,6 +6,7 @@ import { DatosCorreo } from 'src/Clases/DatosCorreo';
 import { notificacion } from 'src/Clases/Notificacion';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { NotificacionService } from 'src/Service/Notificacion/notificacion.service';
+import { CampusService } from 'src/Service/campus/campus.service';
 import { HomeService } from 'src/Service/home/home.service';
 import { LoginService } from 'src/Service/login/login.service';
 import Swal from 'sweetalert2';
@@ -18,7 +19,6 @@ import Swal from 'sweetalert2';
 export class NotificacionComponent {
 
   notificacion!: notificacion;
-  datoLocalStorage!: Usuarios;
   datosCorreo!: DatosCorreo;
   fechaActual!: Date;
   fechaFormateada!: string;
@@ -30,7 +30,7 @@ export class NotificacionComponent {
   option: string = "";
   recibitNotificacion: boolean = true;
 
-  constructor(private homeService: HomeService, private loginService: LoginService, private fb: FormBuilder, private notificacionService: NotificacionService, private datePipe: DatePipe) {
+  constructor(public campusService: CampusService,public homeService: HomeService, private fb: FormBuilder, private notificacionService: NotificacionService, private datePipe: DatePipe) {
     this.fechaActual = new Date();
     this.fechaFormateada = this.datePipe.transform(this.fechaActual, 'dd/MM/yyyy HH:mm:ss') || 'Fecha inválida';
 
@@ -49,9 +49,8 @@ export class NotificacionComponent {
   }
 
   ngOnInit(): void {
-    this.datoLocalStorage = this.loginService.datoLocalStorage;
     setInterval(() => {
-      if (this.recibitNotificacion) {
+      if (this.recibitNotificacion && this.homeService.datoLocalStorage.IdRol==2) {
         this.recibitNotificacion = !this.recibitNotificacion;
         this.getNotifiacionDesuso();
       }
@@ -65,7 +64,7 @@ export class NotificacionComponent {
     this.notificacionService.getCarrerasSede(1).subscribe((response) => {
       this.carrerasSede = response.data;
     });
-    this.notificacionService.getNotifiacionDesuso(this.homeService.IdSede).subscribe((response) => {
+    this.notificacionService.getNotifiacionDesuso(this.homeService.datoLocalStorage.IdSede).subscribe((response) => {
       if (response.dataLenghy != 0) {
         this.notificacion = response.data[0];
         console.log(response.data[0]);
@@ -83,7 +82,7 @@ export class NotificacionComponent {
           NomCurso: this.notificacion.NomCurso,
           NomCarrera:this.notificacion.NomCarrera,
           CapturaFotografica: this.notificacion.CapturaFotografica,
-          IdUsuario: this.datoLocalStorage.IdUsuario,
+          IdUsuario: this.homeService.datoLocalStorage.IdUsuario,
         });
       } else {
         this.recibitNotificacion = !this.recibitNotificacion;
@@ -128,7 +127,7 @@ export class NotificacionComponent {
     this.enviandoCorreo();
     this.notificacionService.enviarCorreo(this.datosCorreo.Mail, this.datosCorreo.NomUsuario, this.datosCorreo.ApeUsuario, this.datosCorreo.NomSede,
       this.formularioCorreo.get('NomCurso')?.value, this.formularioCorreo.get('Codigo')?.value, this.fechaFormateada, this.formularioCorreo.get('NomCarrera')?.value,
-      this.datoLocalStorage.NomUsuario + "" + this.datoLocalStorage.ApeUsuario, this.notificacion.NomAula, this.notificacion.CapturaFotografica).subscribe((response) => {
+      this.homeService.datoLocalStorage.NomUsuario + "" + this.homeService.datoLocalStorage.ApeUsuario, this.notificacion.NomAula, this.notificacion.CapturaFotografica).subscribe((response) => {
       }, (error) => {
         console.log("error al enviar el correo");
       });

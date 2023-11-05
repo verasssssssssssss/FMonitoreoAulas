@@ -1,23 +1,11 @@
 <app-header></app-header>
+<app-campus></app-campus>
 
 <div class="tabla">
   <div class="container pt-4">
     <div class="row">
-      <div class="col-md-12">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-              <h5 class="card-title">Ciudad de {{ NomCiudad }}</h5>
-              <div >
-                <button *ngFor="let sede of sedes" class="btn btn-primary m-1" (click)="CambiarSede(sede.NomSede,sede.IdSede)">Sede
-                  {{sede.NomSede}}</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="center">
-        <h2 class="card-title">Listados de reportes de la sede {{NomSedeActual}}</h2>
+        <h2 class="card-title">Listados de reportes de la sede {{this.campusService.NomSedeActual}}</h2>
       </div>
     </div>
   </div>
@@ -69,8 +57,10 @@
                               <td>{{repor.NomUsuario}} {{repor.ApeUsuario}}</td>
                               <td>
                                 <button class="btn btn-info d-inline-flex align-items-center m-1" type="button" (click)="abrirModal(repor.IdDatos,repor.NomAula,repor.CapturaFotografica)">Visualizar</button>
-                                <button type="button" class="btn btn-primary" >Reenviar</button>
-                                <button type="button" class="btn btn-danger" (click)="eliminarReporte(repor.IdReporte)">Eliminar</button>
+                                <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button" class="btn btn-primary"
+                                >Reenviar</button>
+                                <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button" class="btn btn-danger"
+                                 (click)="eliminarReporte(repor.IdReporte)">Eliminar</button>
                               </td>
                             </tr>
                           </tbody>

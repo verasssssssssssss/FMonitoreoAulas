@@ -1,24 +1,12 @@
 <app-header></app-header>
+<app-campus></app-campus>
 <div class="contiene">
   <div class="container pt-4">
     <div class="row">
-      <div class="col-md-12">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-              <h5 class="card-title">Sede de {{ NomCiudad }}</h5>
-              <div>
-                <button *ngFor="let sede of sedes" class="btn btn-primary m-1"
-                  (click)="CambiarSede(sede.NomSede,sede.IdSede,sede.Acronimo)">Campus {{sede.Acronimo}}</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="encargado">
-        <h2 class="card-title mb-4">Áreas de trabajo del campus {{NomSedeActual}}</h2>
-        <button class="btn btn-info m-2" (click)="abrirModalAreaDeTrabajo(true,'',0)">Agregar áreas de trabajo</button>
-        <button class="btn btn-secondary" (click)="abrirModalEncargado()">Administrar Encargados</button>
+        <h2 class="card-title mb-4">Áreas de trabajo del campus {{this.campusService.NomSedeActual}}</h2>
+        <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-info m-2" (click)="abrirModalAreaDeTrabajo(true,'',0)">Agregar áreas de trabajo</button>
+        <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-secondary" (click)="abrirModalEncargado()">Administrar Encargados</button>
       </div>
     </div>
   </div>
@@ -32,9 +20,9 @@
             <div class="d-flex align-items-center justify-content-between">
               <h5 class="card-title">{{AreasT.NomArea}}</h5>
               <div>
-                <button class="btn btn-warning m-2"
+                <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-warning m-2"
                   (click)="abrirModalAreaDeTrabajo(false,AreasT.NomArea,AreasT.IdArea)">Editar</button>
-                <button class="btn btn-danger"
+                <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-danger"
                   (click)="eliminarAreasDeTrabajo(AreasT.IdArea,AreasT.NomArea)">Eliminar</button>
               </div>
             </div>
@@ -46,8 +34,8 @@
                     <div class="d-flex align-items-center justify-content-between">
                       <h5 class="card-title">Aulas dentro del área</h5>
                       <div>
-                        <button class="btn btn-info" (click)="abrirModalAula(null,false,AreasT)">Agregar
-                          aula</button>
+                        <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-info" 
+                        (click)="abrirModalAula(null,false,AreasT)">Agregar aula</button>
                       </div>
                     </div>
                     <div class="col-md-12">
@@ -67,10 +55,10 @@
                             <td>{{Aulas.CantidadAlumnos}}</td>
                             <td>
                               <button type="button" class="btn btn-info m-1">Visualizar</button>
-                              <button type="button" class="btn btn-warning m-1"
-                                (click)="abrirModalAula(Aulas,true,AreasT)">Editar</button>
-                              <button type="button" class="btn btn-danger"
-                                (click)="eliminarAula(Aulas.IdAula,Aulas.NomAula)">Eliminar</button>
+                              <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button" 
+                              class="btn btn-warning m-1" (click)="abrirModalAula(Aulas,true,AreasT)">Editar</button>
+                              <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button" 
+                              class="btn btn-danger" (click)="eliminarAula(Aulas.IdAula,Aulas.NomAula)">Eliminar</button>
                             </td>
                           </tr>
                         </tbody>
@@ -132,7 +120,7 @@
         <div class="card mb-4">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
-              <h5 class="card-title">Encargados de la sede {{NomSedeActual}}</h5>
+              <h5 class="card-title">Encargados de la sede {{this.campusService.NomSedeActual}}</h5>
               <div>
                 <button class="btn btn-info" (click)="abrirModalEncargadoAE(true,-1)">Agregar encargado</button>
               </div>

@@ -17,6 +17,12 @@
         <div>
           <p class="alert alert-danger" *ngIf="error">Credenciales incorrectas</p>
         </div>
+        <br>
+        <ul class="navbar-nav me-auto nav-pills">
+          <li class="nav-item">
+            <a class="nav-link fs-4" (click)="verDashBoard()"><h6 [ngStyle]="{'color': hoverColor}">Dashboard</h6></a>
+          </li>
+        </ul>
       </form>
 </div>
 </div>

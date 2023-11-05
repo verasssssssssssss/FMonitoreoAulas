@@ -1,0 +1,20 @@
+<div class="contiene">
+  <div class="container pt-4">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+              <h5 class="card-title">Sede de {{ this.campusService.NomCiudad}}</h5>
+              <div>
+                <button *ngFor="let sede of this.campusService.sedes" class="btn btn-primary m-1"
+                  (click)="CambiarSede(sede.NomSede,sede.IdSede,sede.Acronimo)">Campus {{sede.Acronimo}}</button>
+                  <button class="btn btn-primary m-1"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

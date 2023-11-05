@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Usuarios } from 'src/Clases/Usuarios';
 import { URL_ENDPOINT } from 'src/Config/config';
 
 @Injectable({
@@ -8,8 +9,8 @@ import { URL_ENDPOINT } from 'src/Config/config';
 })
 export class HomeService {
 
-  IdSede!: number;
-
+  datoLocalStorage!: Usuarios;
+  
   constructor(private http: HttpClient) { }
 
   getCiudad(IdCiudad: number): Observable<any> {
@@ -36,10 +37,6 @@ export class HomeService {
   eliminarAreasDeTrabajo(IdArea: number): Observable<any> {
     const body = { Visible: 0 };
     return this.http.put(URL_ENDPOINT + 'area/eliminar/' + IdArea, body);
-  }
-
-  getEncargadosSede(): Observable<any> {
-    return this.http.get<any>(URL_ENDPOINT + 'encargado/listado/');
   }
 
   editarAula(IdAula: number, NomAula: string, CantidadAlumnos: number): Observable<any> {
