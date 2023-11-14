@@ -44,4 +44,22 @@ export class CampusService {
     };
     return this.http.put(URL_ENDPOINT + 'usuario/cambiar/sede', body);
   }
+
+  campusActivar(IdCampus: number): Observable<any> {
+    const body = {
+      id:IdCampus
+    };
+    return this.http.put(URL_ENDPOINT + 'campus/activar', body);
+  }
+
+  campusDesactivar(IdCampus: number): Observable<any> {
+    const body = {
+      id:IdCampus,
+    };
+    return this.http.put(URL_ENDPOINT + 'campus/desactivar', body);
+  }
+
+  getEstado(IdCampus: number): Observable<any> {
+    return this.http.get<any>(URL_ENDPOINT + 'campus/Obtener/Estado/' + IdCampus);
+  }
 }

@@ -43,6 +43,7 @@ export class ReportesComponent implements OnInit {
   getRepoertes(IdSede: number) {
     this.sreportes.getReportes(IdSede).subscribe((response) => {
       this.reportes = response.data;
+      console.log(this.reportes);
       this.reportes.forEach(element => {
         this.transform(element);
       });

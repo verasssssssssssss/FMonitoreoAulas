@@ -113,7 +113,7 @@ export class IluminicaComponent {
         }
       }
     };
-    timer(300000).subscribe(() => {
+    timer(8000).subscribe(() => {
       this.chartOptions={};
       this.getLux();
     });

@@ -23,9 +23,8 @@ export class NotificacionService {
     return this.http.get(URL_ENDPOINT + 'carreras/listado/'+IdSede);
   }
 
-  agregarReporte(IdCurso: number,FechaReporte: Date, IdCarrera: number, IdUsuario: number, IdAula: number, IdDatos: number): Observable<any> {
-    console.log(FechaReporte);
-    const body = { IdCurso:IdCurso,FechaReporte: FechaReporte,IdCarrera: IdCarrera, IdUsuario: IdUsuario,IdAula: IdAula,IdDatos: IdDatos};
+  agregarReporte(IdCurso: number, IdCarrera: number, IdUsuario: number, IdAula: number, IdDatos: number): Observable<any> {
+    const body = { IdCurso:IdCurso,IdCarrera: IdCarrera, IdUsuario: IdUsuario,IdAula: IdAula,IdDatos: IdDatos};
     return this.http.post(URL_ENDPOINT + 'reporte/crear', body);
   }
   

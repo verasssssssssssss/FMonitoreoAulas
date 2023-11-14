@@ -7,6 +7,8 @@ import {AngularFireStorage} from '@angular/fire/compat/storage'
 import Swal from 'sweetalert2';
 import { __await } from 'tslib';
 import { LoginService } from 'src/Service/login/login.service';
+import { CampusService } from 'src/Service/campus/campus.service';
+import { Sedes } from 'src/Clases/Sedes';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +23,7 @@ export class HeaderComponent {
 
   imageUrl!: string; 
 
-  constructor(private fb: FormBuilder, private router: Router, public homeService: HomeService,private fireStorage:AngularFireStorage) {
+  constructor(private fb: FormBuilder,public campusService: CampusService, private router: Router, public homeService: HomeService,private fireStorage:AngularFireStorage) {
     this.formularioUsuario = this.fb.group({
       Nombre: ['', [Validators.required]],
       Apellido: ['', [Validators.required]],
@@ -37,8 +39,11 @@ export class HeaderComponent {
     this.obtenerDatos();
   }
 
-  eliminarDatoDelLocalStorage() {
-    localStorage.removeItem('UsuarioLogueado');
+  eliminarDatoDelLocalStorage(cerrar:boolean) {
+    if(cerrar){
+      localStorage.removeItem('UsuarioLogueado');
+      this.homeService.datoLocalStorage={IdUsuario:0,NomUsuario:"0",ApeUsuario:"0",Mail:"0",IdRol:0,IdSede:0,IdCarrera:0,IdCiudad:0};
+    }
     this.router.navigate(['/login']);
   }
 
@@ -90,6 +95,47 @@ export class HeaderComponent {
     }
   }
 
+  abrirModalAdministrarCampus() {
+    this.campusService.getSedes(this.homeService.datoLocalStorage.IdCiudad).subscribe((response) => {
+      console.log(response.data);
+      this.campusService.sedes= response.data;
+      this.transformm(this.campusService.sedes);
+    });
+    const modal = document.getElementById('ModalAdministrarCampus');
+    if (modal != null) {
+      modal.style.display = 'block';
+    }
+  }
+
+  cerrarModalAdministrarCampus(accion: boolean) {
+    if (accion) {
+      Swal.fire({
+        title: '¿Estas seguro de editar los datos de tu cuenta?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        denyButtonText: `No`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.homeService.editarUsuario(this.homeService.datoLocalStorage.IdUsuario, this.formularioUsuario.get('Nombre')?.value, this.formularioUsuario.get('Apellido')?.value,this.formularioUsuario.get('Fotografia')?.value, this.formularioUsuario.get('Mail')?.value, this.formularioUsuario.get('Contrasenia')?.value).subscribe((response) => {
+            this.successSwal("Los datos de tu cuenta fueron actualizados correctamente");
+            const modal = document.getElementById('ModalAdministrarCuenta');
+            if (modal != null) {
+              modal.style.display = 'none';
+            }
+          }, (error) => {
+            this.errorSwal("Ocurrio un error al intentar editar los datos de tu cuenta fueron actualizado");
+          });
+        }
+      });
+    } else {
+      const modal = document.getElementById('ModalAdministrarCampus');
+      if (modal != null) {
+        modal.style.display = 'none';
+      }
+    }
+  }
+
   abrirModalAdministrarCuenta() {
     const modal = document.getElementById('ModalAdministrarCuenta');
     if (modal != null) {
@@ -97,6 +143,48 @@ export class HeaderComponent {
     }
   }
 
+  editarCampus(tipo:boolean, idCampus:number,nomCampus:string) {
+    if(tipo){
+      this.campusService.campusActivar(idCampus).subscribe(() => {
+        this.campusService.getSedes(this.homeService.datoLocalStorage.IdCiudad).subscribe((response) => {
+          this.campusService.sedes= response.data;
+          this.transformm(this.campusService.sedes);
+        });
+      });
+    }else{
+      Swal.fire({
+        title: '¿Estas seguro de desactivar las notificaciones del campus '+nomCampus+' ?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        denyButtonText: `No`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.campusService.campusDesactivar(idCampus).subscribe(() => {
+            this.campusService.getSedes(this.homeService.datoLocalStorage.IdCiudad).subscribe((response) => {
+              this.successSwal('las notificaciones del campus '+nomCampus+' fue desactivada correctamente');
+              this.campusService.sedes= response.data;
+              this.transformm(this.campusService.sedes);
+            });
+          });
+        }
+      });
+    }
+  }
+
+  transformm(sede:  Sedes[]) {
+    sede.forEach(element => {
+      this.transform(element);
+    });
+  }
+
+  transform(sede:  Sedes) {
+    if(sede.FechaActivacion!=null){
+      const parts = sede.FechaActivacion.split('T');
+      const parts1 = parts[1].split('Z');
+      sede.FechaActivacion = parts[0] +" "+ parts1[0].substring(0, parts1[0].length - 4);
+    }
+  }
 
   async onfileChange(event:any){
     this.cargandoFotografia=true;

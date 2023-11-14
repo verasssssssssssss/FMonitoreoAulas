@@ -126,7 +126,7 @@ export class Co2Component {
       }
     };
     
-    timer(300000).subscribe(() => {
+    timer(8000).subscribe(() => {
       this.chart1options = {};
       this.chart2options = {};
       this.getCt();

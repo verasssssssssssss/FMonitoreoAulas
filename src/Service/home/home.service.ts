@@ -68,13 +68,17 @@ export class HomeService {
     return this.http.get(URL_ENDPOINT + 'usuario/obtener/' + IdUsuario);
   }
 
-  agregarEncargado(NomUsuario: string,ApeUsuario: string,Mail: string,Contrasenia: string,Fotografia: string,IdSede: number): Observable<any> {
+  getEncargado(IdCiudad: number): Observable<any> {
+    return this.http.get(URL_ENDPOINT + 'encargado/obtener/' + IdCiudad);
+  }
+
+  agregarEncargado(NomUsuario: string,ApeUsuario: string,Mail: string,Contrasenia: string,Fotografia: string,IdCiudad : number): Observable<any> {
     const body = {
       NomUsuario:NomUsuario,
       ApeUsuario:ApeUsuario,
       Mail:Mail,
       Contrasenia:Contrasenia,
-      IdSede:IdSede,
+      IdCiudad:IdCiudad,
       Fotografia:Fotografia,
     };
     return this.http.post(URL_ENDPOINT + 'encargado/crear', body);
@@ -103,11 +107,6 @@ export class HomeService {
       Contrasenia:Contrasenia,
     };
     return this.http.put(URL_ENDPOINT + 'usuario/editar', body);
-  }
-
-  quitarEncargado(IdUsuario: number): Observable<any> {
-    const body = {};
-    return this.http.put(URL_ENDPOINT + 'area/quitar/' + IdUsuario, body);
   }
 
   cambiarSedeEncargado(IdUsuario: number,IdSede: number): Observable<any> {

@@ -1,0 +1,12 @@
+.container{
+    background-color: #E9ECEF
+}
+
+.vinculos{
+    color: rgb(76, 76, 76);
+    transition: color 0.3s ease; 
+  }
+
+.vinculos:hover {
+    color: rgb(0, 0, 0);
+}

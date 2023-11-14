@@ -38,9 +38,9 @@ export class HomeComponent {
 
   formularioEncargado: FormGroup;
 
-  constructor(public campusService: CampusService,private loginService: LoginService,private fb: FormBuilder, public homeService: HomeService,private fireStorage:AngularFireStorage) {
+  constructor(public campusService: CampusService,private fb: FormBuilder, public homeService: HomeService,private fireStorage:AngularFireStorage) {
     this.formularioEncargado = this.fb.group({
-      Fotografia: ['', [Validators.required]],
+      Fotografia: ['',],
       Nombre: ['', [Validators.required]],
       Apellido: ['', [Validators.required]],
       Mail: ['', [Validators.required, Validators.email]],
@@ -64,6 +64,13 @@ export class HomeComponent {
     this.homeService.getAreasDeTrabajo(IdSede).subscribe(async (response) => {
       this.AreasDeTrabajo = await response.data;
       this.getAulas();
+      this.getEncargados(this.homeService.datoLocalStorage.IdCiudad);
+    });
+  }
+
+  getEncargados(IdCiudad: number) {
+    this.homeService.getEncargado(IdCiudad).subscribe(async (response) => {
+      this.Encargados=  await response.data;
     });
   }
 
@@ -302,8 +309,9 @@ export class HomeComponent {
   cerrarModalEncargadoAE(accion: boolean) {
     if (accion) {
       if (this.tipoModalEncargadoAE) {
-        this.homeService.agregarEncargado(this.formularioEncargado.get('Nombre')?.value, this.formularioEncargado.get('Apellido')?.value, this.formularioEncargado.get('Mail')?.value, this.formularioEncargado.get('Contrasenia')?.value, this.formularioEncargado.get('Fotografia')?.value,this.campusService.IdSede).subscribe((response) => {
+        this.homeService.agregarEncargado(this.formularioEncargado.get('Nombre')?.value, this.formularioEncargado.get('Apellido')?.value, this.formularioEncargado.get('Mail')?.value, this.formularioEncargado.get('Contrasenia')?.value, this.formularioEncargado.get('Fotografia')?.value,this.homeService.datoLocalStorage.IdCiudad).subscribe((response) => {
           this.successSwal("El encargado se creo correctamente");
+          this.getEncargados(this.homeService.datoLocalStorage.IdCiudad);
         }, (error) => {
           this.errorSwal("Ocurrio un error al intentar agregar a un nueva encargado para la sede " + this.campusService.NomSedeActual);
         });
@@ -319,8 +327,8 @@ export class HomeComponent {
           if (result.isConfirmed) {
             this.homeService.editarEncargado(this.EncargadosSelecionado.IdUsuario, this.formularioEncargado.get('Nombre')?.value, this.formularioEncargado.get('Apellido')?.value, this.formularioEncargado.get('Mail')?.value, this.formularioEncargado.get('Contrasenia')?.value,this.formularioEncargado.get('Fotografia')?.value, this.campusService.IdSede).subscribe((response) => {
               this.successSwal("El encargado de aula se edito correctamente");
-              this.getAreasDeTrabajo(this.campusService.IdSede);
               this.cerrarrModalEncargado();
+              this.getEncargados(this.homeService.datoLocalStorage.IdCiudad);
             }, (error) => {
               this.errorSwal("Ocurrio un error al intentar editar el encargado de aula " + this.EncargadosSelecionado.NomUsuario + " " + this.EncargadosSelecionado.ApeUsuario);
               this.cerrarrModalEncargado();
@@ -352,9 +360,7 @@ export class HomeComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.homeService.eliminarEncargado(IdUsuario).subscribe((response) => {
-          this.homeService.quitarEncargado(IdUsuario).subscribe((response) => {
-            this.getAreasDeTrabajo(this.campusService.IdSede);
-          });
+          this.getEncargados(this.homeService.datoLocalStorage.IdCiudad);
           this.successSwal("El encargado " + NomUsuario + " " + Apellido + " se elimino correctamente");
         }, (error) => {
           this.errorSwal("Ocurrio un error al intentar eliminar al encargado");

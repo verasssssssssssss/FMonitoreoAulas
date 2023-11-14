@@ -97,7 +97,7 @@ export class HumedadComponent {
     this.getTempHumedad();
     setInterval(() => {
         this.getTempHumedad();
-    }, 300000); // 300.000 milisegundos = 5 minutos
+    }, 8000); // 300.000 milisegundos = 5 minutos
   }
 
 }
