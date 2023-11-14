@@ -130,14 +130,12 @@ export class NotificacionComponent {
 
   EnviarCorreo() {
     this.enviandoCorreo();
-    /*
         this.notificacionService.enviarCorreo(this.datosCorreo.Mail, this.datosCorreo.NomUsuario, this.datosCorreo.ApeUsuario, this.datosCorreo.NomSede,
       this.formularioCorreo.get('NomCurso')?.value, this.formularioCorreo.get('Codigo')?.value, this.fechaFormateada, this.formularioCorreo.get('NomCarrera')?.value,
       this.homeService.datoLocalStorage.NomUsuario + "" + this.homeService.datoLocalStorage.ApeUsuario, this.notificacion.NomAula, this.notificacion.CapturaFotografica).subscribe((response) => {
       }, (error) => {
         console.log("error al enviar el correo");
       });
-    */
     this.notificacionService.agregarReporte(this.notificacion.IdCurso, this.idCarreraSelecionada, this.formularioCorreo.get('IdUsuario')?.value, this.notificacion.IdAula, this.notificacion.IdDatos).subscribe((response) => {
         this.cerrarrModalCorreoPre();
         this.cerrarrModalCorreo(false, true);
