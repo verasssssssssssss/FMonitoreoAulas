@@ -21,6 +21,8 @@ export class LoginComponent {
       this.loginService.IniciarSesion(Mail, Contrasenia).subscribe((response) => {
         if (response.ok) {
           this.loginService.datoLocalStorage = response.data[0];
+          this.loginService.datoLocalStorage.token = response.token;
+          console.log(this.loginService.datoLocalStorage);
           localStorage.setItem('UsuarioLogueado', JSON.stringify(this.loginService.datoLocalStorage))
           this.router.navigate(['/home']);
         }
@@ -39,7 +41,8 @@ export class LoginComponent {
       IdRol:0,
       IdSede:0,
       IdCarrera:0,
-      IdCiudad:0
+      IdCiudad:0,
+      token:"0",
   }
     localStorage.setItem('UsuarioLogueado', JSON.stringify(this.loginService.datoLocalStorage))
     this.router.navigate(['/dashboard']);

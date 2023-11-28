@@ -80,7 +80,12 @@
     <h2 *ngIf="tipoModalAreaDeTrabajo">Agregar área de trabajo</h2>
     <h2 *ngIf="!tipoModalAreaDeTrabajo">Editar área de trabajo {{nomAreaDeTrabajoSeleccionada}}</h2>
     <form id="personForm">
-      <div class="form-group">
+      <div *ngIf="tipoModalAreaDeTrabajo" class="form-group" style="width: 100%;">
+        <label for="nombre" style="width: 60%;">Nombre del área de trabajo:</label>
+        <input style="width: 60%;" (input)="nomAreaDeTrabajoInputChange($event)" #nombre type="text" id="nombre" name="nombre"> +{{this.campusService.AcroSedeActual}}
+      </div>
+
+      <div *ngIf="!tipoModalAreaDeTrabajo" class="form-group" style="width: 100%;">
         <label for="nombre">Nombre del área de trabajo:</label>
         <input (input)="nomAreaDeTrabajoInputChange($event)" #nombre type="text" id="nombre" name="nombre"
           [value]="nomAreaDeTrabajoSeleccionada" required>
@@ -96,9 +101,13 @@
     <h2 *ngIf="tipoModalAula">Editar el Aula {{AulaS.NomAula}}</h2>
     <h2 *ngIf="!tipoModalAula">Agregar Aula </h2>
     <form id="personForm">
-      <div class="form-group">
+      <div *ngIf="!tipoModalAula" class="form-group">
+        <label for="nombre">Número del aula:</label>
+        <input (input)="nombreInputChange1($event)" #nombre type="text" id="nombre" name="nombre">
+      </div>
+      <div *ngIf="tipoModalAula" class="form-group">
         <label for="nombre">Nombre del aula:</label>
-        <input (input)="nombreInputChange($event)" #nombre type="text" id="nombre" name="nombre" [value]="AulaS.NomAula"
+        <input (input)="nombreInputChange2($event)" #nombre type="text" id="nombre" name="nombre" [value]="AulaS.NomAula"
           required>
       </div>
       <div class="form-group">

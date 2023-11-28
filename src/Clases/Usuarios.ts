@@ -7,4 +7,5 @@ export class Usuarios{
     IdSede!:number;
     IdCarrera!:number;
     IdCiudad!:number;
+    token!:string;
 }

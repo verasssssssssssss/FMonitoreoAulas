@@ -42,7 +42,7 @@ export class HeaderComponent {
   eliminarDatoDelLocalStorage(cerrar:boolean) {
     if(cerrar){
       localStorage.removeItem('UsuarioLogueado');
-      this.homeService.datoLocalStorage={IdUsuario:0,NomUsuario:"0",ApeUsuario:"0",Mail:"0",IdRol:0,IdSede:0,IdCarrera:0,IdCiudad:0};
+      this.homeService.datoLocalStorage={IdUsuario:0,NomUsuario:"0",ApeUsuario:"0",Mail:"0",IdRol:0,IdSede:0,IdCarrera:0,IdCiudad:0,token:"0"};
     }
     this.router.navigate(['/login']);
   }

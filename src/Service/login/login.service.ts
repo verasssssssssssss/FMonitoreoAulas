@@ -18,6 +18,7 @@ export class LoginService {
       Mail: Mail,
       Contrasenia : Contrasenia,
     };
+    console.log( body);
     return this.http.post<any>(URL_ENDPOINT+'usuario/session',body);
   }
 }

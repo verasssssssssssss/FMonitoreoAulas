@@ -6,9 +6,9 @@ export class DatosReserva{
     FechaLimite!:string;
     NomCurso!:string;
     NomProfesor!:string;
-    nBloques!:Datosbloque[]
+    bloque!:Datosbloque[];
 }
 
 export class Datosbloque{
-    Idbloque!:number;
+    IdBloque!:number[];
 }

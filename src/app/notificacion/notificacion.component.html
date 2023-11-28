@@ -49,10 +49,9 @@
       </div>
       <div class="contenido">
         <p>Estimada {{formularioCorreo.get('NomCoordinador')?.value}}</p>
-        <p>Le notifico que en el campus {{formularioCorreo.get('NomSede')?.value}}, el aula {{formularioCorreo.get('NomAula')?.value}} 
-          reservada para la clase {{formularioCorreo.get('NomCurso')?.value}} con código {{formularioCorreo.get('Codigo')?.value}} 
-          de la carrera {{formularioCorreo.get('NomCarrera')?.value}} se encontró desocupada durante horarios de clases el 
-          {{formularioCorreo.get('Fecha')?.value}}.</p>
+        <p>Se notifica que en la sala {{formularioCorreo.get('NomAula')?.value}} del el campus {{formularioCorreo.get('NomSede')?.value}}, 
+          reservada para {{formularioCorreo.get('NomCurso')?.value}} ({{formularioCorreo.get('Codigo')?.value}})
+          de la carrera {{formularioCorreo.get('NomCarrera')?.value}}, no se registro asistencia el {{formularioCorreo.get('Fecha')?.value}}.</p>
         <p>Esta información fue ratificada por el encargado de aula {{this.homeService.datoLocalStorage.NomUsuario}} {{this.homeService.datoLocalStorage.ApeUsuario}}, 
           se adjunta captura fotográfica del aula en el momento de desusos como evidencia.</p>
         <img class="imagen-centrada" [src]="formularioCorreo.get('CapturaFotografica')?.value">

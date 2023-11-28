@@ -10,7 +10,7 @@ export class dashboardService {
   
   constructor(private http: HttpClient) { }
 
-  getTempHumedad(): Observable<any> {
+  getTempHumedad(token:string): Observable<any> {
     return this.http.get<any>(URL_ENDPOINT + 'datos/tempHumedad');
   }
 

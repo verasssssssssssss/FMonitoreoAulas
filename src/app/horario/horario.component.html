@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="encargado">
-                    <h2 class="card-title mb-4">Horario del aula A4</h2>
+                    <h2 class="card-title mb-4">Horario del aula {{Nomaula}}</h2>
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between">
-                                <table>
+                                <table id="tabla"  #tabla>
                                     <thead>
                                         <tr>
                                             <th class="date-column"></th>
@@ -43,21 +43,17 @@
                                     <tbody>
                                         <tr>
                                           <td class="date-column">08:10 08:50</td>
-                                          <td id="11"></td>
-                                          <td id="12"></td>
-                                          <td id="13" style="background-color: rgb(117, 236, 251);">
-                                            <p>ARQUITECTURA DE SOFTWARE</p>
-                                          </td>
-                                          <td id="14" ></td>
-                                          <td id="15"></td>
+                                          <td class="dato" id="11">2</td>
+                                          <td class="dato"id="12"></td>
+                                          <td class="dato" id="13"></td>
+                                          <td class="dato" id="14"></td>
+                                          <td class="dato" id="15"></td>
                                         </tr>
                                         <tr>
                                           <td class="date-column">08:50 09:30</td>
                                           <td id="21"></td>
                                           <td id="22"></td>
-                                          <td id="23" style="background-color: rgb(117, 236, 251);">
-                                            <p>ARQUITECTURA DE SOFTWARE</p>
-                                          </td>
+                                          <td id="23"></td>
                                           <td id="24"></td>
                                           <td id="25"></td>
                                         </tr>
@@ -91,8 +87,7 @@
                                           <td id="62"></td>
                                           <td id="63"></td>
                                           <td id="64"></td>
-                                          <td id="65" style="background-color: rgb(250, 199, 90);">
-                                            <p>COMUNICACIÓN DE DATOS Y REDES</p>
+                                          <td id="65"></td>
                                         </tr>
                                         <tr>
                                           <td class="date-column">12:40 13:20</td>
@@ -100,8 +95,7 @@
                                           <td id="72"></td>
                                           <td id="73"></td>
                                           <td id="74"></td>
-                                          <td id="75" style="background-color: rgb(250, 199, 90);">
-                                            <p>COMUNICACIÓN DE DATOS Y REDES</p>
+                                          <td id="75"></td>
                                         </tr>
                                         <tr>
                                           <td class="date-column">13:20 14:00</td>
@@ -130,8 +124,7 @@
                                         </tr>
                                         <tr>
                                           <td class="date-column">15:40 16:20</td>
-                                          <td id="111" style="background-color: rgb(184, 255, 165);">
-                                            <p>INVESTIGACIÓN DE OPERACIONES</p>
+                                          <td id="111"></td>
                                           <td id="112"></td>
                                           <td id="113"></td>
                                           <td id="114"></td>
@@ -139,8 +132,7 @@
                                         </tr>
                                         <tr>
                                           <td class="date-column">16:20 17:00</td>
-                                          <td id="121"  style="background-color: rgb(184, 255, 165);">
-                                            <p>INVESTIGACIÓN DE OPERACIONES</p> 
+                                          <td id="121"></td>
                                           <td id="122"></td>
                                           <td id="123"></td>
                                           <td id="124"></td>
@@ -148,8 +140,7 @@
                                         </tr>
                                         <tr>
                                           <td class="date-column">17:10 17:50</td>
-                                          <td id="131"   style="background-color: rgb(184, 255, 165);">
-                                            <p>INVESTIGACIÓN DE OPERACIONES</p> 
+                                          <td id="131"></td>
                                           <td id="132"></td>
                                           <td id="133"></td>
                                           <td id="134"></td>

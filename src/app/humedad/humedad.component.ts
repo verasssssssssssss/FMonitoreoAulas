@@ -11,6 +11,7 @@ import {
 } from "ng-apexcharts";
 import { DatosHumedadTemperatura } from "src/Clases/Datos";
 import { dashboardService } from "src/Service/dashboard/dashboard.service";
+import { LoginService } from "src/Service/login/login.service";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -33,10 +34,10 @@ export class HumedadComponent {
   Datos!:DatosHumedadTemperatura[];
   obtener:boolean=true;
 
-  constructor(private humedadService:dashboardService) {}
+  constructor(private humedadService:dashboardService, private loginService:LoginService) {}
 
   getTempHumedad(){
-    this.humedadService.getTempHumedad().subscribe(async (response) => {
+    this.humedadService.getTempHumedad(this.loginService.datoLocalStorage.token).subscribe(async (response) => {
         this.Datos = await response.data;
         this.chart.updateOptions({
           xaxis: {

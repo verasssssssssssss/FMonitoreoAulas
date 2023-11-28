@@ -370,11 +370,15 @@ export class HomeComponent {
   }
 
   nomAreaDeTrabajoInputChange(event: any) {
-    this.nombreAreaT = event.target.value;
+    this.nombreAreaT = event.target.value + this.campusService.AcroSedeActual;
   }
 
-  nombreInputChange(event: any) {
-    this.nombre = event.target.value;
+  nombreInputChange1(event: any) {
+      this.nombre = event.target.value + this.campusService.AcroSedeActual;
+  }
+
+  nombreInputChange2(event: any) {
+      this.nombre = event.target.value;
   }
 
   edadInputChange(event: any) {
