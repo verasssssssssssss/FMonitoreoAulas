@@ -14,11 +14,7 @@ export class LoginService {
   datoLocalStorage!: Usuarios;
   
   IniciarSesion(Mail:string,Contrasenia:string):Observable<any>{
-    let body={
-      Mail: Mail,
-      Contrasenia : Contrasenia,
-    };
-    console.log( body);
+    let body={ Mail: Mail, Contrasenia : Contrasenia};
     return this.http.post<any>(URL_ENDPOINT+'usuario/session',body);
   }
 }

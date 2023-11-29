@@ -19,9 +19,6 @@
       <li class="nav-item">
         <a class="nav-link fs-4" routerLink="/horario">Horario</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link fs-4" routerLink="/dashboard">Dashboard</a>
-      </li>
     </ul>
     <div *ngIf="this.homeService.datoLocalStorage.IdRol==1">
       <button class="btn btn-primary fs-4 m-1" (click)="abrirModalAdministrarCampus()">Administrar Campus</button>

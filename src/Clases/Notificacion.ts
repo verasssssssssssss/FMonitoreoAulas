@@ -10,4 +10,5 @@ export class notificacion{
      NomProfesor!:string;
      NomCurso!:string;
      Codigo!:string;
+     IdCarrera!:number;
  }

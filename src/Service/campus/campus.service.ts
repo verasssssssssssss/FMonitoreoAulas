@@ -61,7 +61,7 @@ export class CampusService {
   }
 
   getEstado(IdCampus: number): Observable<any> {
-    const body = { IdCiudad:IdCampus };
+    const body = { IdCampus:IdCampus };
     return this.http.get<any>(URL_ENDPOINT + 'campus/Obtener/Estado/?token='+this.loginService.datoLocalStorage.token,{params:body});
   }
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { LoginService } from 'src/Service/login/login.service';
+import {dashboardService} from 'src/Service/dashboard/dashboard.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginComponent {
 
   hoverColor: string = 'black';
 
-  constructor(private router: Router, private loginService: LoginService) { }
+  constructor(private router: Router, private loginService: LoginService,private dashboardService: dashboardService) { }
 
   IniciarSesion(Mail: string, Contrasenia: string) {
     if (Mail != "" && Contrasenia != "") {
@@ -22,7 +23,6 @@ export class LoginComponent {
         if (response.ok) {
           this.loginService.datoLocalStorage = response.data[0];
           this.loginService.datoLocalStorage.token = response.token;
-          console.log(this.loginService.datoLocalStorage);
           localStorage.setItem('UsuarioLogueado', JSON.stringify(this.loginService.datoLocalStorage))
           this.router.navigate(['/home']);
         }
@@ -44,6 +44,8 @@ export class LoginComponent {
       IdCiudad:0,
       token:"0",
   }
+    this.dashboardService.idAula=33;
+    this.dashboardService.NomAula="D1FM"
     localStorage.setItem('UsuarioLogueado', JSON.stringify(this.loginService.datoLocalStorage))
     this.router.navigate(['/dashboard']);
   }

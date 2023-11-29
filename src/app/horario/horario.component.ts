@@ -22,7 +22,7 @@ export class HorarioComponent {
   bloque!:Datosbloque[];
 
   Nomaula: string = "...";
-  Idaula: number = 2;
+  Idaula: number = -1;
   prueba: string = "...";
   color!: string;
 
@@ -47,21 +47,19 @@ export class HorarioComponent {
     this.Nomaula=nom;
     this.Idaula=id;
     this.getReservas();
-    timer(2000).subscribe(() => {
+    timer(1000).subscribe(() => {
       this.limpiarContenidosTabla();
       this.reserva.forEach((item) => {
         this.color = this.obtenerColorFondoClaro();
         item.bloque.forEach((item1) => {
-          this.modificarContenido(item1.IdBloque+''+item.DiaClases,item.NomCurso);
+          this.modificarContenido(item1.IdBloque+''+item.DiaClases,item.NomCurso,item.Codigo);
         });
       });
     });
   }
 
-
   getReservas() {
     this.horarioService.getReservas(this.Idaula).subscribe( (response) => {
-      console.log(response.data)
       this.reserva= response.data;
       this.reserva.forEach((item) => {
         this.horarioService.getBloques(item.IdReserva).subscribe( (responsee) => {
@@ -71,10 +69,14 @@ export class HorarioComponent {
     });
   }
 
-  modificarContenido(id: string, nuevoContenido: string) {
+  modificarContenido(id: string, nuevoContenido: string, codigo: string) {
     const elemento = document.getElementById(id);
     if (elemento) {
-      elemento.textContent = nuevoContenido;
+      if(codigo=='000000'){
+        elemento.textContent = nuevoContenido;
+      }else{
+        elemento.textContent = nuevoContenido +" ("+codigo+")"; 
+      }
       elemento.style.backgroundColor = this.color;
     }
   }

@@ -18,7 +18,8 @@
                     </div>
                 </div>
                 <div class="encargado">
-                    <h2 class="card-title mb-4">Horario del aula {{Nomaula}}</h2>
+                    <h2 *ngIf="Idaula==-1" class="card-title mb-4" >Selecione un aula</h2>
+                    <h2 *ngIf="Idaula!=-1" class="card-title mb-4">Horario del aula {{Nomaula}}</h2>
                 </div>
             </div>
         </div>
@@ -43,7 +44,7 @@
                                     <tbody>
                                         <tr>
                                           <td class="date-column">08:10 08:50</td>
-                                          <td class="dato" id="11">2</td>
+                                          <td class="dato" id="11"></td>
                                           <td class="dato"id="12"></td>
                                           <td class="dato" id="13"></td>
                                           <td class="dato" id="14"></td>

@@ -10,15 +10,18 @@ export class dashboardService {
   
   constructor(private http: HttpClient) { }
 
-  getTempHumedad(token:string): Observable<any> {
-    return this.http.get<any>(URL_ENDPOINT + 'datos/tempHumedad');
+  idAula!:number;
+  NomAula!:string;
+
+  getTempHumedad(): Observable<any> {
+    return this.http.get<any>(URL_ENDPOINT + 'datos/tempHumedad/'+this.idAula);
   }
 
   getco2tvoc(): Observable<any> {
-    return this.http.get<any>(URL_ENDPOINT + 'datos/co2tvoc');
+    return this.http.get<any>(URL_ENDPOINT + 'datos/co2tvoc/'+this.idAula);
   }
 
   getIntensidadLuminica(): Observable<any> {
-    return this.http.get<any>(URL_ENDPOINT + 'datos/inteisdadluminica');
+    return this.http.get<any>(URL_ENDPOINT + 'datos/inteisdadluminica/'+this.idAula);
   }
 }

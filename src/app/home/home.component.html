@@ -54,7 +54,7 @@
                             <td>{{Aulas.NomAula}}</td>
                             <td>{{Aulas.CantidadAlumnos}}</td>
                             <td>
-                              <button type="button" class="btn btn-info m-1">Visualizar</button>
+                              <button *ngIf="Aulas.IdArea == 28" type="button" class="btn btn-info m-1" (click)="Visualizar(Aulas.IdAula,Aulas.NomAula)">Visualizar</button>
                               <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button" 
                               class="btn btn-warning m-1" (click)="abrirModalAula(Aulas,true,AreasT)">Editar</button>
                               <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button" 

@@ -37,7 +37,7 @@ export class HumedadComponent {
   constructor(private humedadService:dashboardService, private loginService:LoginService) {}
 
   getTempHumedad(){
-    this.humedadService.getTempHumedad(this.loginService.datoLocalStorage.token).subscribe(async (response) => {
+    this.humedadService.getTempHumedad().subscribe(async (response) => {
         this.Datos = await response.data;
         this.chart.updateOptions({
           xaxis: {

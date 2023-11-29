@@ -51,3 +51,6 @@ table {
 .button-container,.encargado{
   text-align: center;
 }
+td{
+    font-weight: bold;
+}

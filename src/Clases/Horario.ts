@@ -6,6 +6,7 @@ export class DatosReserva{
     FechaLimite!:string;
     NomCurso!:string;
     NomProfesor!:string;
+    Codigo!:string;
     bloque!:Datosbloque[];
 }
 

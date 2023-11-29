@@ -9,7 +9,10 @@ import { Usuarios } from 'src/Clases/Usuarios';
 import { CampusService } from 'src/Service/campus/campus.service';
 import { HomeService } from 'src/Service/home/home.service';
 import { LoginService } from 'src/Service/login/login.service';
+
+import {dashboardService} from 'src/Service/dashboard/dashboard.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -38,7 +41,7 @@ export class HomeComponent {
 
   formularioEncargado: FormGroup;
 
-  constructor(public campusService: CampusService,private fb: FormBuilder, public homeService: HomeService,private fireStorage:AngularFireStorage) {
+  constructor(private loginService: LoginService,private router: Router,private dashboardService: dashboardService,public campusService: CampusService,private fb: FormBuilder, public homeService: HomeService,private fireStorage:AngularFireStorage) {
     this.formularioEncargado = this.fb.group({
       Fotografia: ['',],
       Nombre: ['', [Validators.required]],
@@ -53,8 +56,6 @@ export class HomeComponent {
       this.getAreasDeTrabajo(this.campusService.IdSede);
     });
   }
-
-
   
   cambiarSedeEncargado(IdUsuario: number,IdSede: number){
     this.homeService.cambiarSedeEncargado(IdUsuario,IdSede).subscribe((response) => {});
@@ -400,6 +401,11 @@ export class HomeComponent {
     }
   }
 
+  Visualizar(  idAula:number, NomAula:string){
+    this.dashboardService.idAula=idAula;
+    this.dashboardService.NomAula=NomAula;
+    this.router.navigate(['/dashboard']);
+  }
 
   ////////////////////////////////////////////////////////////////////////////////
   successSwal(title: string) {

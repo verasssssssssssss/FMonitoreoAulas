@@ -25,9 +25,7 @@
       </div>
       <div class="form-group">
         <label for="NomCarrera">Nombre de la carrera:</label>
-        <select #select (change)="carreraSInputChange($event)" class="custom-select form-control">
-          <option *ngFor="let carreras of carrerasSede" [value]="carreras.IdCarrera">{{carreras.NomCarrera}}</option>
-        </select>
+        <input type="text" id="NomCurso" formControlName="NomCarrera">
         <div
           *ngIf="formularioCorreo.get('NomCarrera')?.hasError('required') && formularioCorreo.get('NomCarrera')?.touched">
           El Nombre de la carrera es obligatorio.

@@ -23,7 +23,7 @@ export class HeaderComponent {
 
   imageUrl!: string; 
 
-  constructor(private fb: FormBuilder,public campusService: CampusService, private router: Router, public homeService: HomeService,private fireStorage:AngularFireStorage) {
+  constructor(private loginService: LoginService,private fb: FormBuilder,public campusService: CampusService, private router: Router, public homeService: HomeService,private fireStorage:AngularFireStorage) {
     this.formularioUsuario = this.fb.group({
       Nombre: ['', [Validators.required]],
       Apellido: ['', [Validators.required]],
@@ -31,6 +31,11 @@ export class HeaderComponent {
       Fotografia: ['../../assets/Imagenes/perfil.png', [Validators.required]],
       Contrasenia: ['', [Validators.required, Validators.minLength(8)]],
     });
+    const objetoAlmacenado = localStorage.getItem('UsuarioLogueado');
+
+    if (objetoAlmacenado) {
+      this.loginService.datoLocalStorage = JSON.parse(objetoAlmacenado);
+    } 
   }
 
   async ngOnInit(): Promise<void> {

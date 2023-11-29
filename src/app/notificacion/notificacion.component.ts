@@ -30,7 +30,7 @@ export class NotificacionComponent {
   option: string = "";
   recibitNotificacion: boolean = true;
   
-  constructor(public campusService: CampusService,public homeService: HomeService, private fb: FormBuilder, private notificacionService: NotificacionService, private datePipe: DatePipe) {
+  constructor(private loginService: LoginService,public campusService: CampusService,public homeService: HomeService, private fb: FormBuilder, private notificacionService: NotificacionService, private datePipe: DatePipe) {
     this.fechaActual = new Date();
     this.fechaFormateada = this.datePipe.transform(this.fechaActual, 'dd/MM/yyyy HH:mm:ss') || 'Fecha inválida';
 
@@ -52,7 +52,7 @@ export class NotificacionComponent {
     setInterval(() => {
       if (this.recibitNotificacion && this.homeService.datoLocalStorage.IdRol==2) {
         this.campusService.getEstado(this.homeService.datoLocalStorage.IdSede).subscribe((response) => {
-          if(response.data[0].Activa==1){
+          if(response.data[0].Activa==1 && this.recibitNotificacion){
             this.recibitNotificacion = !this.recibitNotificacion;
             this.getNotifiacionDesuso();
           }
@@ -62,18 +62,22 @@ export class NotificacionComponent {
   }
 
   getNotifiacionDesuso() {
-    this.notificacionService.getDatosCorreo(1).subscribe((response) => {
+    this.notificacionService.getDatosCorreo(this.loginService.datoLocalStorage.IdSede).subscribe((response) => {
       this.datosCorreo = response.data[0];
     });
-    this.notificacionService.getCarrerasSede(1).subscribe((response) => {
+    this.notificacionService.getCarrerasSede(this.loginService.datoLocalStorage.IdSede).subscribe((response) => {
       this.carrerasSede = response.data;
     });
     this.notificacionService.getNotifiacionDesuso(this.homeService.datoLocalStorage.IdSede).subscribe((response) => {
       if (response.dataLenghy != 0) {
         this.notificacion = response.data[0];
-        console.log(response.data[0]);
-        this.option = this.notificacion.NomCarrera;
 
+        let index = this.carrerasSede.findIndex(objeto => objeto.NomCarrera === this.notificacion.NomCarrera);
+        let objetoMovido = this.carrerasSede.splice(index, 1)[0];
+        this.carrerasSede.unshift(objetoMovido);
+        console.log(this.carrerasSede);
+        this.option = this.notificacion.NomCarrera;
+        console.log(this.notificacion.NomCarrera);
         this.alertaDesusoDeAula(this.notificacion.NomArea, this.notificacion.NomAula, this.notificacion.CapturaFotografica);
 
         this.formularioCorreo.patchValue({
@@ -98,7 +102,7 @@ export class NotificacionComponent {
   alertaDesusoDeAula(NomArea: string, NomAula: string, fotografia: string) {
     Swal.fire({
       title: 'Posible desuso de aula',
-      text: 'En el aula ' + NomAula + ' del área ' + NomArea,
+      text: 'En el aula ' + NomAula,
       imageUrl: fotografia,
       imageWidth: 400,
       imageHeight: 200,
@@ -133,10 +137,8 @@ export class NotificacionComponent {
         this.notificacionService.enviarCorreo(this.datosCorreo.Mail, this.datosCorreo.NomUsuario, this.datosCorreo.ApeUsuario, this.datosCorreo.NomSede,
       this.formularioCorreo.get('NomCurso')?.value, this.formularioCorreo.get('Codigo')?.value, this.fechaFormateada, this.formularioCorreo.get('NomCarrera')?.value,
       this.homeService.datoLocalStorage.NomUsuario + "" + this.homeService.datoLocalStorage.ApeUsuario, this.notificacion.NomAula, this.notificacion.CapturaFotografica).subscribe((response) => {
-      }, (error) => {
-        console.log("error al enviar el correo");
       });
-    this.notificacionService.agregarReporte(this.notificacion.IdCurso, this.idCarreraSelecionada, this.formularioCorreo.get('IdUsuario')?.value, this.notificacion.IdAula, this.notificacion.IdDatos).subscribe((response) => {
+    this.notificacionService.agregarReporte(this.notificacion.IdCurso, this.notificacion.IdCarrera, this.homeService.datoLocalStorage.IdUsuario, this.notificacion.IdAula, this.notificacion.IdDatos).subscribe((response) => {
         this.cerrarrModalCorreoPre();
         this.cerrarrModalCorreo(false, true);
       }, (error) => {
