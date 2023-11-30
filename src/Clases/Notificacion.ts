@@ -1,14 +1,15 @@
 export class notificacion{
-     IdArea!:number;
      IdAula!:number;
-     NomArea!:string;
      NomAula!:string;
      CapturaFotografica!:string;
      IdDatos!:number;
-     IdCurso!:number;
-     NomCarrera!:string;
-     NomProfesor!:string;
-     NomCurso!:string;
-     Codigo!:string;
-     IdCarrera!:number;
+     Fecha!:string;
+ }
+
+ export class reserva{
+    IdCurso!:number;
+    NomCurso!:string;
+    Codigo!:string;
+    IdCarrera!:number;
+    NomCarrera!:string;
  }

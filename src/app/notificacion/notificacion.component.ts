@@ -1,9 +1,10 @@
 import { DatePipe } from '@angular/common';
+import { ReturnStatement } from '@angular/compiler';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CarrerasSede } from 'src/Clases/CarrerasSede';
 import { DatosCorreo } from 'src/Clases/DatosCorreo';
-import { notificacion } from 'src/Clases/Notificacion';
+import { notificacion, reserva } from 'src/Clases/Notificacion';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { NotificacionService } from 'src/Service/Notificacion/notificacion.service';
 import { CampusService } from 'src/Service/campus/campus.service';
@@ -23,14 +24,45 @@ export class NotificacionComponent {
   fechaActual!: Date;
   fechaFormateada!: string;
   carrerasSede!: CarrerasSede[];
+  reserva!: reserva;
   idCarreraSelecionada!: number;
+  bloque!: number;
+  fecha!: number;
   img!: string;
   formularioCorreo: FormGroup;
   timerInterval: any;
   option: string = "";
   recibitNotificacion: boolean = true;
-  
-  constructor(private loginService: LoginService,public campusService: CampusService,public homeService: HomeService, private fb: FormBuilder, private notificacionService: NotificacionService, private datePipe: DatePipe) {
+  rangosDeTiempo = [
+    { inicio: 8.10, fin: 8.50 },
+    { inicio: 8.50, fin: 9.30 },
+
+    { inicio: 9.40, fin: 10.20 },
+    { inicio: 10.20, fin: 11.00 },
+
+    { inicio: 11.10, fin: 11.50 },
+    { inicio: 11.50, fin: 12.30 },
+
+    { inicio: 12.40, fin: 13.20 },
+    { inicio: 13.20, fin: 14.00 },
+
+    { inicio: 14.10, fin: 14.50 },
+    { inicio: 14.50, fin: 15.30 },
+
+    { inicio: 15.40, fin: 16.20 },
+    { inicio: 16.20, fin: 15.30 },
+
+    { inicio: 15.40, fin: 16.20 },
+    { inicio: 16.20, fin: 17.00 },
+
+    { inicio: 17.10, fin: 17.50 },
+    { inicio: 17.50, fin: 18.30 },
+
+    { inicio: 18.40, fin: 19.20 },
+    { inicio: 19.20, fin: 20.00 },
+  ];
+
+  constructor(private loginService: LoginService, public campusService: CampusService, public homeService: HomeService, private fb: FormBuilder, private notificacionService: NotificacionService, private datePipe: DatePipe) {
     this.fechaActual = new Date();
     this.fechaFormateada = this.datePipe.transform(this.fechaActual, 'dd/MM/yyyy HH:mm:ss') || 'Fecha inválida';
 
@@ -40,7 +72,6 @@ export class NotificacionComponent {
       NomAula: [{ value: '', disabled: true }, [Validators.required]],
       Fecha: [{ value: '', disabled: true }, [Validators.required]],
       Codigo: ['', [Validators.required]],
-      NomProfesor: ['', [Validators.required]],
       NomCurso: ['', [Validators.required]],
       NomCarrera: ['', [Validators.required]],
       CapturaFotografica: ['', [Validators.required]],
@@ -50,15 +81,15 @@ export class NotificacionComponent {
 
   ngOnInit(): void {
     setInterval(() => {
-      if (this.recibitNotificacion && this.homeService.datoLocalStorage.IdRol==2) {
+      if (this.recibitNotificacion && this.homeService.datoLocalStorage.IdRol == 2) {
         this.campusService.getEstado(this.homeService.datoLocalStorage.IdSede).subscribe((response) => {
-          if(response.data[0].Activa==1 && this.recibitNotificacion){
+          if (response.data[0].Activa == 1 && this.recibitNotificacion) {
             this.recibitNotificacion = !this.recibitNotificacion;
             this.getNotifiacionDesuso();
           }
         });
       }
-    }, 10000); // 10000 milisegundos = 10 segundos
+    }, 6000); // 10000 milisegundos = 10 segundos
   }
 
   getNotifiacionDesuso() {
@@ -71,35 +102,46 @@ export class NotificacionComponent {
     this.notificacionService.getNotifiacionDesuso(this.homeService.datoLocalStorage.IdSede).subscribe((response) => {
       if (response.dataLenghy != 0) {
         this.notificacion = response.data[0];
-
-        let index = this.carrerasSede.findIndex(objeto => objeto.NomCarrera === this.notificacion.NomCarrera);
-        let objetoMovido = this.carrerasSede.splice(index, 1)[0];
-        this.carrerasSede.unshift(objetoMovido);
-        console.log(this.carrerasSede);
-        this.option = this.notificacion.NomCarrera;
-        console.log(this.notificacion.NomCarrera);
-        this.alertaDesusoDeAula(this.notificacion.NomArea, this.notificacion.NomAula, this.notificacion.CapturaFotografica);
-
-        this.formularioCorreo.patchValue({
-          NomCoordinador: this.datosCorreo.NomUsuario + " " + this.datosCorreo.ApeUsuario,
-          NomSede: this.datosCorreo.NomSede,
-          NomAula: this.notificacion.NomAula,
-          Fecha: this.fechaFormateada,
-          Codigo: this.notificacion.Codigo,
-          NomProfesor:this.notificacion.NomProfesor,
-          NomCurso: this.notificacion.NomCurso,
-          NomCarrera:this.notificacion.NomCarrera,
-          CapturaFotografica: this.notificacion.CapturaFotografica,
-          IdUsuario: this.homeService.datoLocalStorage.IdUsuario,
-        });
-        this.idCarreraSelecionada = this.notificacion.IdAula;
+        this.obtenerBloque(this.notificacion.Fecha);
       } else {
         this.recibitNotificacion = !this.recibitNotificacion;
       }
     });
   }
 
-  alertaDesusoDeAula(NomArea: string, NomAula: string, fotografia: string) {
+  obtenerBloque(fecha: string) {
+    const fechaHora = new Date(fecha);
+    const horas = fechaHora.getUTCHours();
+    const minutos = fechaHora.getUTCMinutes();
+    this.obtenerRangoTiempo(horas, minutos);
+  }
+
+  obtenerRangoTiempo(hora: number, minuto: number) {
+    this.fecha = (hora - 3) + (minuto / 100);
+    for (let i = 0; i < this.rangosDeTiempo.length; i++) {
+      if (this.rangosDeTiempo[i].inicio <= this.fecha && this.fecha < this.rangosDeTiempo[i].fin) {
+        i + 1;
+        this.notificacionService.getDatosAulaDesuso(1, this.notificacion.IdAula, (i + 1)).subscribe((response) => {
+          this.reserva = response.data[0];
+          this.formularioCorreo.patchValue({
+            NomCoordinador: this.datosCorreo.NomUsuario + " " + this.datosCorreo.ApeUsuario,
+            NomSede: this.datosCorreo.NomSede,
+            NomAula: this.notificacion.NomAula,
+            Fecha: this.fechaFormateada,
+            Codigo: this.reserva.Codigo,
+            NomCurso: this.reserva.NomCurso,
+            NomCarrera: this.reserva.NomCarrera,
+            CapturaFotografica: this.notificacion.CapturaFotografica,
+            IdUsuario: this.homeService.datoLocalStorage.IdUsuario,
+          });
+        });
+        i = this.rangosDeTiempo.length;
+        this.alertaDesusoDeAula(this.notificacion.NomAula, this.notificacion.CapturaFotografica);
+      }
+    }
+  }
+
+  alertaDesusoDeAula(NomAula: string, fotografia: string) {
     Swal.fire({
       title: 'Posible desuso de aula',
       text: 'En el aula ' + NomAula,
@@ -125,28 +167,30 @@ export class NotificacionComponent {
             this.recibitNotificacion = !this.recibitNotificacion;
             this.notificacionService.validarAlerta(this.notificacion.IdDatos, 0).subscribe();
           } else {
-            this.alertaDesusoDeAula(NomArea, NomAula, fotografia);
+            this.alertaDesusoDeAula(NomAula, fotografia);
           }
         });
       }
     });
   }
 
+
   EnviarCorreo() {
     this.enviandoCorreo();
-        this.notificacionService.enviarCorreo(this.datosCorreo.Mail, this.datosCorreo.NomUsuario, this.datosCorreo.ApeUsuario, this.datosCorreo.NomSede,
+    this.notificacionService.enviarCorreo(this.datosCorreo.Mail, this.datosCorreo.NomUsuario, this.datosCorreo.ApeUsuario, this.datosCorreo.NomSede,
       this.formularioCorreo.get('NomCurso')?.value, this.formularioCorreo.get('Codigo')?.value, this.fechaFormateada, this.formularioCorreo.get('NomCarrera')?.value,
       this.homeService.datoLocalStorage.NomUsuario + "" + this.homeService.datoLocalStorage.ApeUsuario, this.notificacion.NomAula, this.notificacion.CapturaFotografica).subscribe((response) => {
       });
-    this.notificacionService.agregarReporte(this.notificacion.IdCurso, this.notificacion.IdCarrera, this.homeService.datoLocalStorage.IdUsuario, this.notificacion.IdAula, this.notificacion.IdDatos).subscribe((response) => {
-        this.cerrarrModalCorreoPre();
-        this.cerrarrModalCorreo(false, true);
-      }, (error) => {
-        console.log("error al generar reporte");
-      });
+    this.notificacionService.agregarReporte(this.reserva.IdCurso, this.reserva.IdCarrera, this.homeService.datoLocalStorage.IdUsuario, this.notificacion.IdAula, this.notificacion.IdDatos).subscribe((response) => {
+      this.cerrarrModalCorreoPre();
+      this.cerrarrModalCorreo(false, true);
+    }, (error) => {
+      console.log("error al generar reporte");
+    });
   }
 
   enviandoCorreo() {
+
     Swal.fire({
       html: 'Enviando correo generado <b></b> milisegundos.',
       timer: 2000,
@@ -171,14 +215,16 @@ export class NotificacionComponent {
         this.successSwal("Correo Enivado correctamente");
       }
     });
+
   }
 
   cerrarrModalCorreo(PrevCorreo: boolean, enviado: boolean) {
+
     if (PrevCorreo) {
       this.abrirModalCorreoPre();
     } else {
       if (!enviado) {
-        this.alertaDesusoDeAula(this.notificacion.NomArea, this.notificacion.NomAula, this.notificacion.CapturaFotografica);
+        this.alertaDesusoDeAula(this.notificacion.NomAula, this.notificacion.CapturaFotografica);
       } else {
         this.recibitNotificacion = !this.recibitNotificacion;
         this.notificacionService.validarAlerta(this.notificacion.IdDatos, 1).subscribe();
@@ -188,6 +234,7 @@ export class NotificacionComponent {
         modal.style.display = 'none';
       }
     }
+
   }
 
   abrirModalAreaDeTrabajo() {
