@@ -121,7 +121,7 @@ export class NotificacionComponent {
     this.fecha = (hora - 3) + (minuto / 100);
     for (i = 0; i < this.rangosDeTiempo.length; i++) {
       if (this.rangosDeTiempo[i].inicio <= this.fecha && this.fecha < this.rangosDeTiempo[i].fin) {
-        this.notificacionService.getDatosAulaDesuso(1, this.notificacion.IdAula, (i + 1)).subscribe((response) => {
+        this.notificacionService.getDatosAulaDesuso(new Date().getDay(), this.notificacion.IdAula, (i + 1)).subscribe((response) => {
           if(response.dataLenghy>=1){
             this.reserva = response.data[0];
             this.formularioCorreo.patchValue({
