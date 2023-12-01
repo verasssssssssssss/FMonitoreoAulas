@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-secondary">
+<nav class="navbar navbar-expand-lg backgroundcolor">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/home" *ngIf="this.homeService.datoLocalStorage.IdRol!=0">
       <img src="assets\Imagenes\isotipo.png" alt="Logo" width="75" height="100">
@@ -38,66 +38,73 @@
 <div id="ModalAdministrarCuenta" class="modal">
   <div class="modal-content">
     <span class="cerrar" (click)="cerrarModalAdministrarCuenta(false)">&times;</span>
-    <div class="row" >
-      <div class="col-md-10" >
+    <div class="row">
+      <div class="col-md-10">
         <div class="card mb-4">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
               <div>
                 <form [formGroup]="formularioUsuario">
-                  <div class="form-group" id="fotoM" style="display: flex; align-items: center; justify-content: center;">
+                  <div class="form-group" id="fotoM"
+                    style="display: flex; align-items: center; justify-content: center;">
                     <label for="Nombre">Foto de perfil:</label>
                     <div class="cargando" *ngIf="cargandoFotografia">
-                      <span class="loader"></span>  
+                      <span class="loader"></span>
                     </div>
-                    <img  *ngIf="!cargandoFotografia" id="foto" src={{imageUrl}} class="mx-auto">
+                    <img *ngIf="!cargandoFotografia" id="foto" src={{imageUrl}} class="mx-auto">
                     <div id="fotoS">
                       <input type="file" (change)="onfileChange($event)" class="btn btn-warning">
                     </div>
                   </div>
-                    <div class="form-group">
-                      <label for="Nombre">Nombre:</label>
-                      <input type="text" id="Nombre" formControlName="Nombre">
-                      <div
-                        *ngIf="formularioUsuario.get('Nombre')?.hasError('required') && formularioUsuario.get('Nombre')?.touched">
-                        El Nombre es obligatorio.
-                      </div>
+                  <div class="form-group">
+                    <label for="Nombre">Nombre:</label>
+                    <input type="text" id="Nombre" formControlName="Nombre">
+                    <div
+                      *ngIf="formularioUsuario.get('Nombre')?.hasError('required') && formularioUsuario.get('Nombre')?.touched">
+                      El Nombre es obligatorio.
                     </div>
-              
-                    <div class="form-group">
-                      <label for="Apellido">Apellido:</label>
-                      <input type="text" id="Apellido" formControlName="Apellido">
-                      <div
-                        *ngIf="formularioUsuario.get('Apellido')?.hasError('required') && formularioUsuario.get('Apellido')?.touched">
-                        El Apellido es obligatorio.
-                      </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="Apellido">Apellido:</label>
+                    <input type="text" id="Apellido" formControlName="Apellido">
+                    <div
+                      *ngIf="formularioUsuario.get('Apellido')?.hasError('required') && formularioUsuario.get('Apellido')?.touched">
+                      El Apellido es obligatorio.
                     </div>
-              
-                    <div class="form-group">
-                      <label for="Mail">Correo Electrónico:</label>
-                      <input type="email" id="Mail" formControlName="Mail" class="form-control form-control-sm">
-                      <div *ngIf="formularioUsuario.get('Mail')?.hasError('required') && formularioUsuario.get('Mail')?.touched">
-                        El correo electrónico es obligatorio.
-                      </div>
-                      <div *ngIf="formularioUsuario.get('Mail')?.hasError('Mail') && formularioUsuario.get('Mail')?.touched">
-                        Ingresa un correo electrónico válido.
-                      </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="Mail">Correo Electrónico:</label>
+                    <input type="email" id="Mail" formControlName="Mail" class="form-control form-control-sm">
+                    <div
+                      *ngIf="formularioUsuario.get('Mail')?.hasError('required') && formularioUsuario.get('Mail')?.touched">
+                      El correo electrónico es obligatorio.
                     </div>
-              
-                    <div class="form-group">
-                      <label for="Contrasenia">Contraseña:</label>
-                      <input type="text" id="Contrasenia" formControlName="Contrasenia" class="form-control form-control-sm" >
-                      <div *ngIf="formularioUsuario.get('Contrasenia')?.hasError('required') && formularioUsuario.get('Contrasenia')?.touched">
-                        La contraseña es obligatoria.
-                      </div>
-                      <div *ngIf="formularioUsuario.get('Contrasenia')?.hasError('minlength') && formularioUsuario.get('Contrasenia')?.touched">
-                        La contraseña debe tener al menos 8 caracteres.
-                      </div>
+                    <div
+                      *ngIf="formularioUsuario.get('Mail')?.hasError('Mail') && formularioUsuario.get('Mail')?.touched">
+                      Ingresa un correo electrónico válido.
                     </div>
-                    <div id="editar">
-                      <button [disabled]="formularioUsuario.invalid" class="btn btn-info" id="editar" (click)="cerrarModalAdministrarCuenta(true)">Editar datos</button>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="Contrasenia">Contraseña:</label>
+                    <input type="text" id="Contrasenia" formControlName="Contrasenia"
+                      class="form-control form-control-sm">
+                    <div
+                      *ngIf="formularioUsuario.get('Contrasenia')?.hasError('required') && formularioUsuario.get('Contrasenia')?.touched">
+                      La contraseña es obligatoria.
                     </div>
-                  </form>
+                    <div
+                      *ngIf="formularioUsuario.get('Contrasenia')?.hasError('minlength') && formularioUsuario.get('Contrasenia')?.touched">
+                      La contraseña debe tener al menos 8 caracteres.
+                    </div>
+                  </div>
+                  <div id="editar">
+                    <button [disabled]="formularioUsuario.invalid" class="btn btn-info" id="editar"
+                      (click)="cerrarModalAdministrarCuenta(true)">Editar datos</button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -111,66 +118,73 @@
 <div id="ModalAdministrarCuenta" class="modal">
   <div class="modal-content">
     <span class="cerrar" (click)="cerrarModalAdministrarCuenta(false)">&times;</span>
-    <div class="row" >
-      <div class="col-md-10" >
+    <div class="row">
+      <div class="col-md-10">
         <div class="card mb-4">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
               <div>
                 <form [formGroup]="formularioUsuario">
-                  <div class="form-group" id="fotoM" style="display: flex; align-items: center; justify-content: center;">
+                  <div class="form-group" id="fotoM"
+                    style="display: flex; align-items: center; justify-content: center;">
                     <label for="Nombre">Foto de perfil:</label>
                     <div class="cargando" *ngIf="cargandoFotografia">
-                      <span class="loader"></span>  
+                      <span class="loader"></span>
                     </div>
-                    <img  *ngIf="!cargandoFotografia" id="foto" src={{imageUrl}} class="mx-auto">
+                    <img *ngIf="!cargandoFotografia" id="foto" src={{imageUrl}} class="mx-auto">
                     <div id="fotoS">
                       <input type="file" (change)="onfileChange($event)" class="btn btn-warning">
                     </div>
                   </div>
-                    <div class="form-group">
-                      <label for="Nombre">Nombre:</label>
-                      <input type="text" id="Nombre" formControlName="Nombre">
-                      <div
-                        *ngIf="formularioUsuario.get('Nombre')?.hasError('required') && formularioUsuario.get('Nombre')?.touched">
-                        El Nombre es obligatorio.
-                      </div>
+                  <div class="form-group">
+                    <label for="Nombre">Nombre:</label>
+                    <input type="text" id="Nombre" formControlName="Nombre">
+                    <div
+                      *ngIf="formularioUsuario.get('Nombre')?.hasError('required') && formularioUsuario.get('Nombre')?.touched">
+                      El Nombre es obligatorio.
                     </div>
-              
-                    <div class="form-group">
-                      <label for="Apellido">Apellido:</label>
-                      <input type="text" id="Apellido" formControlName="Apellido">
-                      <div
-                        *ngIf="formularioUsuario.get('Apellido')?.hasError('required') && formularioUsuario.get('Apellido')?.touched">
-                        El Apellido es obligatorio.
-                      </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="Apellido">Apellido:</label>
+                    <input type="text" id="Apellido" formControlName="Apellido">
+                    <div
+                      *ngIf="formularioUsuario.get('Apellido')?.hasError('required') && formularioUsuario.get('Apellido')?.touched">
+                      El Apellido es obligatorio.
                     </div>
-              
-                    <div class="form-group">
-                      <label for="Mail">Correo Electrónico:</label>
-                      <input type="email" id="Mail" formControlName="Mail" class="form-control form-control-sm">
-                      <div *ngIf="formularioUsuario.get('Mail')?.hasError('required') && formularioUsuario.get('Mail')?.touched">
-                        El correo electrónico es obligatorio.
-                      </div>
-                      <div *ngIf="formularioUsuario.get('Mail')?.hasError('Mail') && formularioUsuario.get('Mail')?.touched">
-                        Ingresa un correo electrónico válido.
-                      </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="Mail">Correo Electrónico:</label>
+                    <input type="email" id="Mail" formControlName="Mail" class="form-control form-control-sm">
+                    <div
+                      *ngIf="formularioUsuario.get('Mail')?.hasError('required') && formularioUsuario.get('Mail')?.touched">
+                      El correo electrónico es obligatorio.
                     </div>
-              
-                    <div class="form-group">
-                      <label for="Contrasenia">Contraseña:</label>
-                      <input type="text" id="Contrasenia" formControlName="Contrasenia" class="form-control form-control-sm" >
-                      <div *ngIf="formularioUsuario.get('Contrasenia')?.hasError('required') && formularioUsuario.get('Contrasenia')?.touched">
-                        La contraseña es obligatoria.
-                      </div>
-                      <div *ngIf="formularioUsuario.get('Contrasenia')?.hasError('minlength') && formularioUsuario.get('Contrasenia')?.touched">
-                        La contraseña debe tener al menos 8 caracteres.
-                      </div>
+                    <div
+                      *ngIf="formularioUsuario.get('Mail')?.hasError('Mail') && formularioUsuario.get('Mail')?.touched">
+                      Ingresa un correo electrónico válido.
                     </div>
-                    <div id="editar">
-                      <button [disabled]="formularioUsuario.invalid" class="btn btn-info" id="editar" (click)="cerrarModalAdministrarCuenta(true)">Editar datos</button>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="Contrasenia">Contraseña:</label>
+                    <input type="text" id="Contrasenia" formControlName="Contrasenia"
+                      class="form-control form-control-sm">
+                    <div
+                      *ngIf="formularioUsuario.get('Contrasenia')?.hasError('required') && formularioUsuario.get('Contrasenia')?.touched">
+                      La contraseña es obligatoria.
                     </div>
-                  </form>
+                    <div
+                      *ngIf="formularioUsuario.get('Contrasenia')?.hasError('minlength') && formularioUsuario.get('Contrasenia')?.touched">
+                      La contraseña debe tener al menos 8 caracteres.
+                    </div>
+                  </div>
+                  <div id="editar">
+                    <button [disabled]="formularioUsuario.invalid" class="btn btn-info" id="editar"
+                      (click)="cerrarModalAdministrarCuenta(true)">Editar datos</button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -212,9 +226,9 @@
                     <td *ngIf="campus.Activa==1">---</td>
                     <td *ngIf="campus.Activa==0">{{campus.FechaActivacion}}</td>
                     <td *ngIf="campus.Activa==1"><button type="button" class="btn btn-danger m-1"
-                      (click)="editarCampus(false,campus.IdSede,campus.NomSede)">Desactivar</button></td>
+                        (click)="editarCampus(false,campus.IdSede,campus.NomSede)">Desactivar</button></td>
                     <td *ngIf="campus.Activa==0"><button type="button" class="btn btn-warning m-1"
-                      (click)="editarCampus(true,campus.IdSede,campus.NomSede)">Activar</button></td>
+                        (click)="editarCampus(true,campus.IdSede,campus.NomSede)">Activar</button></td>
                   </tr>
                 </tbody>
               </table>

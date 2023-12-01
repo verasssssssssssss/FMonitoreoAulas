@@ -1,70 +1,79 @@
 <app-header></app-header>
-<app-campus></app-campus>
-<div class="contiene">
-  <div class="container pt-4">
-    <div class="row">
-      <div class="encargado">
-        <h2 class="card-title mb-4">Áreas de trabajo del campus {{this.campusService.NomSedeActual}}</h2>
-        <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-info m-2" (click)="abrirModalAreaDeTrabajo(true,'',0)">Agregar áreas de trabajo</button>
-        <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-secondary" (click)="abrirModalEncargado()">Administrar Encargados</button>
+
+<div class="fondocrema">
+
+  <app-campus></app-campus>
+  <div class="contiene">
+    <div class="container pt-4">
+      <div class="row">
+        <div class="encargado">
+          <h2 class="card-title mb-4">Áreas de trabajo del campus {{this.campusService.NomSedeActual}}</h2>
+          <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-info m-2"
+            (click)="abrirModalAreaDeTrabajo(true,'',0)">Agregar áreas de trabajo</button>
+          <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-secondary"
+            (click)="abrirModalEncargado()">Administrar Encargados</button>
+        </div>
       </div>
     </div>
-  </div>
 
 
-  <div class="container pt-4">
-    <div class="row">
-      <div class="col-md-6" *ngFor="let AreasT of AreasDeTrabajo">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-              <h5 class="card-title">{{AreasT.NomArea}}</h5>
-              <div>
-                <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-warning m-2"
-                  (click)="abrirModalAreaDeTrabajo(false,AreasT.NomArea,AreasT.IdArea)">Editar</button>
-                <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-danger"
-                  (click)="eliminarAreasDeTrabajo(AreasT.IdArea,AreasT.NomArea)">Eliminar</button>
+    <div class="container pt-4">
+      <div class="row">
+        <div class="col-md-6" *ngFor="let AreasT of AreasDeTrabajo">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-between">
+                <h5 class="card-title">{{AreasT.NomArea}}</h5>
+                <div>
+                  <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-warning m-2"
+                    (click)="abrirModalAreaDeTrabajo(false,AreasT.NomArea,AreasT.IdArea)">Editar</button>
+                  <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-danger"
+                    (click)="eliminarAreasDeTrabajo(AreasT.IdArea,AreasT.NomArea)">Eliminar</button>
+                </div>
               </div>
-            </div>
 
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card mb-4">
-                  <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between">
-                      <h5 class="card-title">Aulas dentro del área</h5>
-                      <div>
-                        <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-info" 
-                        (click)="abrirModalAula(null,false,AreasT)">Agregar aula</button>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="card-title">Aulas dentro del área</h5>
+                        <div>
+                          <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-info"
+                            (click)="abrirModalAula(null,false,AreasT)">Agregar aula</button>
+                        </div>
                       </div>
+                      <div class="col-md-12">
+                        <table class="table table-striped table-hover">
+                          <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Nombre</th>
+                              <th scope="col">Alumnos totales</th>
+                              <th scope="col">Funciones</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let Aulas of AreasT.Aulas">
+                              <th scope="row">{{1+AreasT.Aulas.indexOf(Aulas)}}</th>
+                              <td>{{Aulas.NomAula}}</td>
+                              <td>{{Aulas.CantidadAlumnos}}</td>
+                              <td>
+                                <button *ngIf="Aulas.IdArea == 28" type="button" class="btn btn-info m-1"
+                                  (click)="Visualizar(Aulas.IdAula,Aulas.NomAula)">Visualizar</button>
+                                <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button"
+                                  class="btn btn-warning m-1"
+                                  (click)="abrirModalAula(Aulas,true,AreasT)">Editar</button>
+                                <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button"
+                                  class="btn btn-danger"
+                                  (click)="eliminarAula(Aulas.IdAula,Aulas.NomAula)">Eliminar</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
                     </div>
-                    <div class="col-md-12">
-                      <table class="table table-striped table-hover">
-                        <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Alumnos totales</th>
-                            <th scope="col">Funciones</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let Aulas of AreasT.Aulas">
-                            <th scope="row">{{1+AreasT.Aulas.indexOf(Aulas)}}</th>
-                            <td>{{Aulas.NomAula}}</td>
-                            <td>{{Aulas.CantidadAlumnos}}</td>
-                            <td>
-                              <button *ngIf="Aulas.IdArea == 28" type="button" class="btn btn-info m-1" (click)="Visualizar(Aulas.IdAula,Aulas.NomAula)">Visualizar</button>
-                              <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button" 
-                              class="btn btn-warning m-1" (click)="abrirModalAula(Aulas,true,AreasT)">Editar</button>
-                              <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button" 
-                              class="btn btn-danger" (click)="eliminarAula(Aulas.IdAula,Aulas.NomAula)">Eliminar</button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-  
                   </div>
                 </div>
               </div>
@@ -72,183 +81,188 @@
           </div>
         </div>
       </div>
-  </div>
 
-<div id="ModalAreaDeTrabajo" class="modal">
-  <div class="modal-content">
-    <span class="cerrar" (click)="cerrarModalAreaDeTrabajo()">&times;</span>
-    <h2 *ngIf="tipoModalAreaDeTrabajo">Agregar área de trabajo</h2>
-    <h2 *ngIf="!tipoModalAreaDeTrabajo">Editar área de trabajo {{nomAreaDeTrabajoSeleccionada}}</h2>
-    <form id="personForm">
-      <div *ngIf="tipoModalAreaDeTrabajo" class="form-group" style="width: 100%;">
-        <label for="nombre" style="width: 60%;">Nombre del área de trabajo:</label>
-        <input style="width: 60%;" (input)="nomAreaDeTrabajoInputChange($event)" #nombre type="text" id="nombre" name="nombre"> +{{this.campusService.AcroSedeActual}}
-      </div>
-
-      <div *ngIf="!tipoModalAreaDeTrabajo" class="form-group" style="width: 100%;">
-        <label for="nombre">Nombre del área de trabajo:</label>
-        <input (input)="nomAreaDeTrabajoInputChange($event)" #nombre type="text" id="nombre" name="nombre"
-          [value]="nomAreaDeTrabajoSeleccionada" required>
-      </div>
-    </form>
-    <a class="btn btn-info" (click)="EditarOAgregarAreaDeTrabajo()">OK</a>
-  </div>
-</div>
-
-<div id="ModalAula" class="modal">
-  <div class="modal-content" *ngFor="let AulaS of AulaSeleccionada">
-    <span class="cerrar" (click)="cerrarModalAula()">&times;</span>
-    <h2 *ngIf="tipoModalAula">Editar el Aula {{AulaS.NomAula}}</h2>
-    <h2 *ngIf="!tipoModalAula">Agregar Aula </h2>
-    <form id="personForm">
-      <div *ngIf="!tipoModalAula" class="form-group">
-        <label for="nombre">Número del aula:</label>
-        <input (input)="nombreInputChange1($event)" #nombre type="text" id="nombre" name="nombre">
-      </div>
-      <div *ngIf="tipoModalAula" class="form-group">
-        <label for="nombre">Nombre del aula:</label>
-        <input (input)="nombreInputChange2($event)" #nombre type="text" id="nombre" name="nombre" [value]="AulaS.NomAula"
-          required>
-      </div>
-      <div class="form-group">
-        <label for="edad">Cantidad de alumnos:</label>
-        <input (input)="edadInputChange($event)" min="0" #cantidad type="number" id="cantidad" name="cantidad"
-          [value]="AulaS.CantidadAlumnos" required>
-      </div>
-    </form>
-    <a class="btn btn-info" (click)="EditarOAgregarAula()">OK</a>
-  </div>
-</div>
-
-<div id="ModalEncargado" class="modal">
-  <div class="modal-content">
-    <span class="cerrar" (click)="cerrarModalEncargado()">&times;</span>
-    <h2>Listado de encardos de aula</h2>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-              <h5 class="card-title">Encargados de la sede {{this.campusService.NomSedeActual}}</h5>
-              <div>
-                <button class="btn btn-info" (click)="abrirModalEncargadoAE(true,-1)">Agregar encargado</button>
-              </div>
+      <div id="ModalAreaDeTrabajo" class="modal">
+        <div class="modal-content">
+          <span class="cerrar" (click)="cerrarModalAreaDeTrabajo()">&times;</span>
+          <h2 *ngIf="tipoModalAreaDeTrabajo">Agregar área de trabajo</h2>
+          <h2 *ngIf="!tipoModalAreaDeTrabajo">Editar área de trabajo {{nomAreaDeTrabajoSeleccionada}}</h2>
+          <form id="personForm">
+            <div *ngIf="tipoModalAreaDeTrabajo" class="form-group" style="width: 100%;">
+              <label for="nombre" style="width: 60%;">Nombre del área de trabajo:</label>
+              <input style="width: 60%;" (input)="nomAreaDeTrabajoInputChange($event)" #nombre type="text" id="nombre"
+                name="nombre"> +{{this.campusService.AcroSedeActual}}
             </div>
+
+            <div *ngIf="!tipoModalAreaDeTrabajo" class="form-group" style="width: 100%;">
+              <label for="nombre">Nombre del área de trabajo:</label>
+              <input (input)="nomAreaDeTrabajoInputChange($event)" #nombre type="text" id="nombre" name="nombre"
+                [value]="nomAreaDeTrabajoSeleccionada" required>
+            </div>
+          </form>
+          <a class="btn btn-info" (click)="EditarOAgregarAreaDeTrabajo()">OK</a>
+        </div>
+      </div>
+
+      <div id="ModalAula" class="modal">
+        <div class="modal-content" *ngFor="let AulaS of AulaSeleccionada">
+          <span class="cerrar" (click)="cerrarModalAula()">&times;</span>
+          <h2 *ngIf="tipoModalAula">Editar el Aula {{AulaS.NomAula}}</h2>
+          <h2 *ngIf="!tipoModalAula">Agregar Aula </h2>
+          <form id="personForm">
+            <div *ngIf="!tipoModalAula" class="form-group">
+              <label for="nombre">Número del aula:</label>
+              <input (input)="nombreInputChange1($event)" #nombre type="text" id="nombre" name="nombre">
+            </div>
+            <div *ngIf="tipoModalAula" class="form-group">
+              <label for="nombre">Nombre del aula:</label>
+              <input (input)="nombreInputChange2($event)" #nombre type="text" id="nombre" name="nombre"
+                [value]="AulaS.NomAula" required>
+            </div>
+            <div class="form-group">
+              <label for="edad">Cantidad de alumnos:</label>
+              <input (input)="edadInputChange($event)" min="0" #cantidad type="number" id="cantidad" name="cantidad"
+                [value]="AulaS.CantidadAlumnos" required>
+            </div>
+          </form>
+          <a class="btn btn-info" (click)="EditarOAgregarAula()">OK</a>
+        </div>
+      </div>
+
+      <div id="ModalEncargado" class="modal">
+        <div class="modal-content">
+          <span class="cerrar" (click)="cerrarModalEncargado()">&times;</span>
+          <h2>Listado de encardos de aula</h2>
+          <div class="row">
             <div class="col-md-12">
-              <table class="table table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Apellido</th>
-                    <th scope="col">Funciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let encargado of Encargados">
-                    <th scope="row">{{1+Encargados.indexOf(encargado)}}</th>
-                    <td>{{encargado.NomUsuario}}</td>
-                    <td>{{encargado.ApeUsuario}}</td>
-                    <td>
-                      <button type="button" class="btn btn-warning m-1"
-                        (click)="abrirModalEncargadoAE(false,encargado.IdUsuario)">Editar</button>
-                      <button type="button" class="btn btn-danger"
-                        (click)="eliminarEncargado(encargado.IdUsuario,encargado.NomUsuario,encargado.ApeUsuario)">Eliminar</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <h5 class="card-title">Encargados de la sede {{this.campusService.NomSedeActual}}</h5>
+                    <div>
+                      <button class="btn btn-info" (click)="abrirModalEncargadoAE(true,-1)">Agregar encargado</button>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <table class="table table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Nombre</th>
+                          <th scope="col">Apellido</th>
+                          <th scope="col">Funciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let encargado of Encargados">
+                          <th scope="row">{{1+Encargados.indexOf(encargado)}}</th>
+                          <td>{{encargado.NomUsuario}}</td>
+                          <td>{{encargado.ApeUsuario}}</td>
+                          <td>
+                            <button type="button" class="btn btn-warning m-1"
+                              (click)="abrirModalEncargadoAE(false,encargado.IdUsuario)">Editar</button>
+                            <button type="button" class="btn btn-danger"
+                              (click)="eliminarEncargado(encargado.IdUsuario,encargado.NomUsuario,encargado.ApeUsuario)">Eliminar</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
 
+                </div>
+              </div>
+            </div>
           </div>
+          <a class="btn btn-info" (click)="cerrarModalEncargado()">OK</a>
         </div>
       </div>
-    </div>
-    <a class="btn btn-info" (click)="cerrarModalEncargado()">OK</a>
-  </div>
-</div>
 
-<div id="ModalEncargadoAE" class="modal">
-  <div class="modal-content">
-    <span class="cerrar" (click)="cerrarModalEncargadoAE(false)">&times;</span>
-    <div class="roww">
-      <div class="col-md-10">
-        <div *ngIf="!tipoModalEncargadoAE" >
-          <h1>Editar encargado de aula</h1>
-          <div style="display: flex; align-items: center; justify-content: center;">
-            <h2>{{EncargadosSelecionado.NomUsuario}} {{EncargadosSelecionado.ApeUsuario}}</h2>
-          </div> 
-        </div>
-        <div *ngIf="tipoModalEncargadoAE" >
-          <h2>Agregar Encargado de aula </h2>
-        </div>
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <form [formGroup]="formularioEncargado">
-                  <div class="form-group" id="fotoM"
-                    style="display: flex; align-items: center; justify-content: center;">
-                    <label for="Nombre">Foto de perfil:</label>
-                    <div class="cargando" *ngIf="cargandoFotografia">
-                      <span class="loader"></span>
-                    </div>
-                    <img *ngIf="!cargandoFotografia && !tipoModalEncargadoAE" id="foto" src={{imageUrl}}  class="mx-auto">
-                    <img *ngIf="!cargandoFotografia && tipoModalEncargadoAE" id="foto" src='../../assets/Imagenes/perfil.png' class="mx-auto">
-                    <div id="fotoS">
-                      <input type="file" (change)="onfileChange($event)" class="btn btn-warning">
+      <div id="ModalEncargadoAE" class="modal">
+        <div class="modal-content">
+          <span class="cerrar" (click)="cerrarModalEncargadoAE(false)">&times;</span>
+          <div class="roww">
+            <div class="col-md-10">
+              <div *ngIf="!tipoModalEncargadoAE">
+                <h1>Editar encargado de aula</h1>
+                <div style="display: flex; align-items: center; justify-content: center;">
+                  <h2>{{EncargadosSelecionado.NomUsuario}} {{EncargadosSelecionado.ApeUsuario}}</h2>
+                </div>
+              </div>
+              <div *ngIf="tipoModalEncargadoAE">
+                <h2>Agregar Encargado de aula </h2>
+              </div>
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                      <form [formGroup]="formularioEncargado">
+                        <div class="form-group" id="fotoM"
+                          style="display: flex; align-items: center; justify-content: center;">
+                          <label for="Nombre">Foto de perfil:</label>
+                          <div class="cargando" *ngIf="cargandoFotografia">
+                            <span class="loader"></span>
+                          </div>
+                          <img *ngIf="!cargandoFotografia && !tipoModalEncargadoAE" id="foto" src={{imageUrl}}
+                            class="mx-auto">
+                          <img *ngIf="!cargandoFotografia && tipoModalEncargadoAE" id="foto"
+                            src='../../assets/Imagenes/perfil.png' class="mx-auto">
+                          <div id="fotoS">
+                            <input type="file" (change)="onfileChange($event)" class="btn btn-warning">
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="Nombre">Nombre del encargado:</label>
+                          <input type="text" id="Nombre" formControlName="Nombre">
+                          <div
+                            *ngIf="formularioEncargado.get('Nombre')?.hasError('required') && formularioEncargado.get('Nombre')?.touched">
+                            El Nombre del encargado es obligatorio.
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="Apellido">Apellido del encargado:</label>
+                          <input type="text" id="Apellido" formControlName="Apellido">
+                          <div
+                            *ngIf="formularioEncargado.get('Apellido')?.hasError('required') && formularioEncargado.get('Apellido')?.touched">
+                            El Apellido del encargado es obligatorio.
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="Mail">Correo Electrónico</label>
+                          <input type="email" id="Mail" formControlName="Mail" class="form-control form-control-sm">
+                          <div
+                            *ngIf="formularioEncargado.get('Mail')?.hasError('required') && formularioEncargado.get('Mail')?.touched">
+                            El correo electrónico es obligatorio.
+                          </div>
+                          <div
+                            *ngIf="formularioEncargado.get('Mail')?.hasError('Mail') && formularioEncargado.get('Mail')?.touched">
+                            Ingresa un correo electrónico válido.
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="Contrasenia">Contraseña</label>
+                          <input type="text" id="Contrasenia" formControlName="Contrasenia"
+                            class="form-control form-control-sm">
+                          <div
+                            *ngIf="formularioEncargado.get('Contrasenia')?.hasError('required') && formularioEncargado.get('Contrasenia')?.touched">
+                            La contraseña es obligatoria.
+                          </div>
+                          <div
+                            *ngIf="formularioEncargado.get('Contrasenia')?.hasError('minlength') && formularioEncargado.get('Contrasenia')?.touched">
+                            La contraseña debe tener al menos 8 caracteres.
+                          </div>
+                        </div>
+                        <button *ngIf="!tipoModalEncargadoAE" (click)="cerrarModalEncargadoAE(true)"
+                          [disabled]="formularioEncargado.invalid" class="btn btn-info">Editar Encargado</button>
+                        <button *ngIf="tipoModalEncargadoAE" (click)="cerrarModalEncargadoAE(true)"
+                          [disabled]="formularioEncargado.invalid" class="btn btn-info">Crear Encargado</button>
+                      </form>
                     </div>
                   </div>
-
-                  <div class="form-group">
-                    <label for="Nombre">Nombre del encargado:</label>
-                    <input type="text" id="Nombre" formControlName="Nombre">
-                    <div
-                      *ngIf="formularioEncargado.get('Nombre')?.hasError('required') && formularioEncargado.get('Nombre')?.touched">
-                      El Nombre del encargado es obligatorio.
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="Apellido">Apellido del encargado:</label>
-                    <input type="text" id="Apellido" formControlName="Apellido">
-                    <div
-                      *ngIf="formularioEncargado.get('Apellido')?.hasError('required') && formularioEncargado.get('Apellido')?.touched">
-                      El Apellido del encargado es obligatorio.
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="Mail">Correo Electrónico</label>
-                    <input type="email" id="Mail" formControlName="Mail" class="form-control form-control-sm">
-                    <div
-                      *ngIf="formularioEncargado.get('Mail')?.hasError('required') && formularioEncargado.get('Mail')?.touched">
-                      El correo electrónico es obligatorio.
-                    </div>
-                    <div
-                      *ngIf="formularioEncargado.get('Mail')?.hasError('Mail') && formularioEncargado.get('Mail')?.touched">
-                      Ingresa un correo electrónico válido.
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="Contrasenia">Contraseña</label>
-                    <input type="text" id="Contrasenia" formControlName="Contrasenia"
-                      class="form-control form-control-sm">
-                    <div
-                      *ngIf="formularioEncargado.get('Contrasenia')?.hasError('required') && formularioEncargado.get('Contrasenia')?.touched">
-                      La contraseña es obligatoria.
-                    </div>
-                    <div
-                      *ngIf="formularioEncargado.get('Contrasenia')?.hasError('minlength') && formularioEncargado.get('Contrasenia')?.touched">
-                      La contraseña debe tener al menos 8 caracteres.
-                    </div>
-                  </div>
-                  <button *ngIf="!tipoModalEncargadoAE" (click)="cerrarModalEncargadoAE(true)"
-                    [disabled]="formularioEncargado.invalid" class="btn btn-info">Editar Encargado</button>
-                  <button *ngIf="tipoModalEncargadoAE" (click)="cerrarModalEncargadoAE(true)"
-                    [disabled]="formularioEncargado.invalid" class="btn btn-info">Crear Encargado</button>
-                </form>
+                </div>
               </div>
             </div>
           </div>
@@ -256,6 +270,7 @@
       </div>
     </div>
   </div>
+  <app-notificacion></app-notificacion>
 </div>
-<app-notificacion></app-notificacion>
+
 <app-footer></app-footer>

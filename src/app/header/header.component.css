@@ -143,6 +143,10 @@ align-items: center; /* Centra horizontalmente el contenido */
   animation: rotation 1s linear infinite;
   }
 
+  .backgroundcolor{
+    background-color: #438EB9;
+  }
+
   .cargando{
     padding-top: 35%;
     padding-bottom: 35%;
@@ -155,5 +159,5 @@ align-items: center; /* Centra horizontalmente el contenido */
   100% {
       transform: rotate(360deg);
   }
-  } 
+  }
 

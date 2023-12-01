@@ -1,7 +1,8 @@
-.fondo{
-  background-image: url('../../assets/Imagenes/FondoUBB.png');
-  background-size: 100% 100%; 
+.fondo {
+  background-image: url('../../assets/Imagenes/tiled_background_image.png');
+  background-size: 100% 100%;
 }
+
 .container {
   display: flex;
   justify-content: center;
@@ -11,10 +12,15 @@
 
 form {
   width: 30%;
-  text-align: center; 
+  text-align: center;
   margin: auto;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #F7F7F7;
 }
-img{
-  width:80%;
-  height:80%;
+
+img {
+  width: 80%;
+  height: 80%;
 }

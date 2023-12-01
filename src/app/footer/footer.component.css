@@ -1,12 +1,28 @@
-.container{
-    background-color: #E9ECEF
-}
+
 
 .vinculos{
     color: rgb(76, 76, 76);
-    transition: color 0.3s ease; 
+    transition: color 0.3s ease;
   }
 
 .vinculos:hover {
     color: rgb(0, 0, 0);
+}
+
+
+
+/* Añade estas reglas a tu archivo CSS */
+.background {
+  position: relative;
+
+  background-color: #E2DEDE
+  /* Debes ajustar este valor al alto de tu footer */
+}
+
+footer {
+  position: initial;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
 }

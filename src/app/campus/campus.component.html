@@ -5,7 +5,7 @@
         <div class="card mb-4">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
-              <h5 class="card-title">Sede de {{ this.campusService.NomCiudad}}</h5>
+              <h3 class="card-title">Sede de {{ this.campusService.NomCiudad}}</h3>
               <div>
                 <button *ngFor="let sede of this.campusService.sedes" class="btn btn-primary m-1"
                   (click)="CambiarSede(sede.NomSede,sede.IdSede,sede.Acronimo)">Campus {{sede.Acronimo}}</button>
