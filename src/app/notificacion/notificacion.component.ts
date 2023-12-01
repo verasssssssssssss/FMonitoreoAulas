@@ -117,27 +117,36 @@ export class NotificacionComponent {
   }
 
   obtenerRangoTiempo(hora: number, minuto: number) {
+    let i;
     this.fecha = (hora - 3) + (minuto / 100);
-    for (let i = 0; i < this.rangosDeTiempo.length; i++) {
+    for (i = 0; i < this.rangosDeTiempo.length; i++) {
       if (this.rangosDeTiempo[i].inicio <= this.fecha && this.fecha < this.rangosDeTiempo[i].fin) {
-        i + 1;
         this.notificacionService.getDatosAulaDesuso(1, this.notificacion.IdAula, (i + 1)).subscribe((response) => {
-          this.reserva = response.data[0];
-          this.formularioCorreo.patchValue({
-            NomCoordinador: this.datosCorreo.NomUsuario + " " + this.datosCorreo.ApeUsuario,
-            NomSede: this.datosCorreo.NomSede,
-            NomAula: this.notificacion.NomAula,
-            Fecha: this.fechaFormateada,
-            Codigo: this.reserva.Codigo,
-            NomCurso: this.reserva.NomCurso,
-            NomCarrera: this.reserva.NomCarrera,
-            CapturaFotografica: this.notificacion.CapturaFotografica,
-            IdUsuario: this.homeService.datoLocalStorage.IdUsuario,
-          });
+          if(response.dataLenghy>=1){
+            this.reserva = response.data[0];
+            this.formularioCorreo.patchValue({
+              NomCoordinador: this.datosCorreo.NomUsuario + " " + this.datosCorreo.ApeUsuario,
+              NomSede: this.datosCorreo.NomSede,
+              NomAula: this.notificacion.NomAula,
+              Fecha: this.fechaFormateada,
+              Codigo: this.reserva.Codigo,
+              NomCurso: this.reserva.NomCurso,
+              NomCarrera: this.reserva.NomCarrera,
+              CapturaFotografica: this.notificacion.CapturaFotografica,
+              IdUsuario: this.homeService.datoLocalStorage.IdUsuario,
+            });
+            this.alertaDesusoDeAula(this.notificacion.NomAula, this.notificacion.CapturaFotografica);
+          }else{
+            this.notificacionService.validarAlerta(this.notificacion.IdDatos, 0).subscribe();
+            this.recibitNotificacion = !this.recibitNotificacion;
+          }
         });
-        i = this.rangosDeTiempo.length;
-        this.alertaDesusoDeAula(this.notificacion.NomAula, this.notificacion.CapturaFotografica);
+        i = 500;
       }
+    }
+    if(i == this.rangosDeTiempo.length){
+      this.notificacionService.validarAlerta(this.notificacion.IdDatos, 0).subscribe();
+      this.recibitNotificacion = !this.recibitNotificacion;
     }
   }
 
@@ -174,7 +183,6 @@ export class NotificacionComponent {
     });
   }
 
-
   EnviarCorreo() {
     this.enviandoCorreo();
     this.notificacionService.enviarCorreo(this.datosCorreo.Mail, this.datosCorreo.NomUsuario, this.datosCorreo.ApeUsuario, this.datosCorreo.NomSede,
@@ -190,7 +198,6 @@ export class NotificacionComponent {
   }
 
   enviandoCorreo() {
-
     Swal.fire({
       html: 'Enviando correo generado <b></b> milisegundos.',
       timer: 2000,
