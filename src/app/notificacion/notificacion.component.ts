@@ -36,28 +36,19 @@ export class NotificacionComponent {
   rangosDeTiempo = [
     { inicio: 8.10, fin: 8.50 },
     { inicio: 8.50, fin: 9.30 },
-
     { inicio: 9.40, fin: 10.20 },
     { inicio: 10.20, fin: 11.00 },
-
     { inicio: 11.10, fin: 11.50 },
     { inicio: 11.50, fin: 12.30 },
-
     { inicio: 12.40, fin: 13.20 },
     { inicio: 13.20, fin: 14.00 },
 
     { inicio: 14.10, fin: 14.50 },
     { inicio: 14.50, fin: 15.30 },
-
-    { inicio: 15.40, fin: 16.20 },
-    { inicio: 16.20, fin: 15.30 },
-
     { inicio: 15.40, fin: 16.20 },
     { inicio: 16.20, fin: 17.00 },
-
     { inicio: 17.10, fin: 17.50 },
     { inicio: 17.50, fin: 18.30 },
-
     { inicio: 18.40, fin: 19.20 },
     { inicio: 19.20, fin: 20.00 },
   ];
