@@ -8,13 +8,17 @@ import { URL_ENDPOINT } from 'src/Config/config';
 })
 export class dashboardService {
   
-  constructor(private http: HttpClient) { }
-
   idAula!:number;
   NomAula!:string;
 
+  Temperatura:number=0
+  Humedad:number=0;
+  co2:number=0;
+
+  constructor(private http: HttpClient) {}
+
   getTempHumedad(): Observable<any> {
-    return this.http.get<any>(URL_ENDPOINT + 'datos/tempHumedad/'+this.idAula);
+    return this.http.get<any>(URL_ENDPOINT + 'datos/tempHum/'+this.idAula);
   }
 
   getco2tvoc(): Observable<any> {
@@ -22,6 +26,6 @@ export class dashboardService {
   }
 
   getIntensidadLuminica(): Observable<any> {
-    return this.http.get<any>(URL_ENDPOINT + 'datos/inteisdadluminica/'+this.idAula);
+    return this.http.get<any>(URL_ENDPOINT + 'datos/Iluminica/'+this.idAula);
   }
 }

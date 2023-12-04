@@ -13,12 +13,12 @@ export class NotificacionService {
 
   getNotifiacionDesuso(IdSede: number): Observable<any> {
     const body = {IdSede:IdSede };
-    return this.http.post(URL_ENDPOINT + 'reporte/obtener/?token='+this.loginService.datoLocalStorage.token,body);
+    return this.http.post(URL_ENDPOINT + 'alerta/obtener/?token='+this.loginService.datoLocalStorage.token,body);
   }
 
   getDatosAulaDesuso(Dia: number,IdAula: number,IdBloque: number): Observable<any> {
     const body = {Dia:Dia, IdAula:IdAula, IdBloque:IdBloque};
-    return this.http.get(URL_ENDPOINT + 'reporte/obtener/datos/?token='+this.loginService.datoLocalStorage.token,{params:body});
+    return this.http.get(URL_ENDPOINT + 'reporte/datos/?token='+this.loginService.datoLocalStorage.token,{params:body});
   }
 
   getDatosCorreo(IdSede: number): Observable<any> {

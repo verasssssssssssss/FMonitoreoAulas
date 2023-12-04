@@ -44,7 +44,7 @@ export class Co2Component {
   chart1Data!: any[];
   chart2Data!: any[];
  
-  constructor(private co2tvocService:dashboardService) {}
+  constructor(public co2tvocService:dashboardService) {}
 
   ngOnInit(): void {
     this.getCt();
@@ -76,6 +76,7 @@ export class Co2Component {
         this.commonOptions.xaxis
 
         this.crearchar();
+        this.co2tvocService.co2=this.Datos[0].NivelesDeCO2;
       });
   }
 
