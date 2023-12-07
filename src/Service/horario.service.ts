@@ -18,7 +18,7 @@ export class HorarioService {
 
   getReservas(IdAula: number): Observable<any> {
     const body = { IdAula:IdAula};
-    return this.http.get<any>(URL_ENDPOINT + 'reserva/obtener/poraula/?token='+this.loginService.datoLocalStorage.token,{params:body});
+    return this.http.get<any>(URL_ENDPOINT + 'reserva/poraula/?token='+this.loginService.datoLocalStorage.token,{params:body});
   }
 
   getBloques(IdReserva: number): Observable<any> {

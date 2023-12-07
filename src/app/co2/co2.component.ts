@@ -10,7 +10,7 @@ import {
   ApexTooltip,
   ApexStroke
 } from "ng-apexcharts";
-import { timer } from "rxjs";
+import { filter, interval, timer } from "rxjs";
 import { DatosCo2Tvoc } from "src/Clases/Datos";
 import { dashboardService } from "src/Service/dashboard/dashboard.service";
 
@@ -44,14 +44,35 @@ export class Co2Component {
   chart1Data!: any[];
   chart2Data!: any[];
  
-  constructor(private co2tvocService:dashboardService) {}
-
-  ngOnInit(): void {
+  constructor(public co2tvocService:dashboardService) {}
+  ngOnInit() {
+    const startTime = 8 * 60 + 10;
+    const endTime = 23 * 60; 
+    const currentTime = new Date().getHours() * 60 + new Date().getMinutes(); 
+    let initialDelay = 0;
+    if (currentTime < startTime) {
+      initialDelay = (startTime - currentTime) * 60 * 1000; 
+    } else {
+      initialDelay = (5 - (currentTime % 5)) * 60 * 1000;
+    }
     this.getCt();
+    interval(60 * 1000) 
+      .subscribe(() => {
+        const current = new Date().getHours() * 60 + new Date().getMinutes();
+        if (current >= startTime && current <= endTime && current % 5 === 0) {
+          this.getCt();
+        }
+      });
+  
+    setTimeout(() => {
+      this.getCt();
+    }, initialDelay);
   }
 
   getCt(){
     this.co2tvocService.getco2tvoc().subscribe((response) => {
+        this.chart1options = {};
+        this.chart2options = {};
         this.Datos = response.data;
         this.chart1Data = [
           [this.Datos[0].Fecha, this.Datos[0].NivelesDeCO2],
@@ -76,17 +97,17 @@ export class Co2Component {
         this.commonOptions.xaxis
 
         this.crearchar();
+        this.co2tvocService.co2=this.Datos[0].NivelesDeCO2;
       });
   }
 
 
   crearchar() {
-    // Use this.chart1Data and this.chart2Data to set the data for your charts
     this.chart1options = {
       series: [
         {
           name: "chart1",
-          data: this.chart1Data // Use the data from chart1Data
+          data: this.chart1Data 
         }
       ],
       chart: {
@@ -108,7 +129,7 @@ export class Co2Component {
       series: [
         {
           name: "chart2",
-          data: this.chart2Data // Use the data from chart2Data
+          data: this.chart2Data 
         }
       ],
       chart: {
@@ -125,12 +146,6 @@ export class Co2Component {
         }
       }
     };
-    
-    timer(8000).subscribe(() => {
-      this.chart1options = {};
-      this.chart2options = {};
-      this.getCt();
-    });
   }
 
   public commonOptions: Partial<ChartOptions> = {

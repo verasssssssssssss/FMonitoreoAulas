@@ -36,28 +36,19 @@ export class NotificacionComponent {
   rangosDeTiempo = [
     { inicio: 8.10, fin: 8.50 },
     { inicio: 8.50, fin: 9.30 },
-
     { inicio: 9.40, fin: 10.20 },
     { inicio: 10.20, fin: 11.00 },
-
     { inicio: 11.10, fin: 11.50 },
     { inicio: 11.50, fin: 12.30 },
-
     { inicio: 12.40, fin: 13.20 },
     { inicio: 13.20, fin: 14.00 },
 
     { inicio: 14.10, fin: 14.50 },
     { inicio: 14.50, fin: 15.30 },
-
-    { inicio: 15.40, fin: 16.20 },
-    { inicio: 16.20, fin: 15.30 },
-
     { inicio: 15.40, fin: 16.20 },
     { inicio: 16.20, fin: 17.00 },
-
     { inicio: 17.10, fin: 17.50 },
     { inicio: 17.50, fin: 18.30 },
-
     { inicio: 18.40, fin: 19.20 },
     { inicio: 19.20, fin: 20.00 },
   ];
@@ -117,27 +108,36 @@ export class NotificacionComponent {
   }
 
   obtenerRangoTiempo(hora: number, minuto: number) {
+    let i;
     this.fecha = (hora - 3) + (minuto / 100);
-    for (let i = 0; i < this.rangosDeTiempo.length; i++) {
+    for (i = 0; i < this.rangosDeTiempo.length; i++) {
       if (this.rangosDeTiempo[i].inicio <= this.fecha && this.fecha < this.rangosDeTiempo[i].fin) {
-        i + 1;
-        this.notificacionService.getDatosAulaDesuso(1, this.notificacion.IdAula, (i + 1)).subscribe((response) => {
-          this.reserva = response.data[0];
-          this.formularioCorreo.patchValue({
-            NomCoordinador: this.datosCorreo.NomUsuario + " " + this.datosCorreo.ApeUsuario,
-            NomSede: this.datosCorreo.NomSede,
-            NomAula: this.notificacion.NomAula,
-            Fecha: this.fechaFormateada,
-            Codigo: this.reserva.Codigo,
-            NomCurso: this.reserva.NomCurso,
-            NomCarrera: this.reserva.NomCarrera,
-            CapturaFotografica: this.notificacion.CapturaFotografica,
-            IdUsuario: this.homeService.datoLocalStorage.IdUsuario,
-          });
+        this.notificacionService.getDatosAulaDesuso(new Date().getDay(), this.notificacion.IdAula, (i + 1)).subscribe((response) => {
+          if(response.dataLenghy>=1){
+            this.reserva = response.data[0];
+            this.formularioCorreo.patchValue({
+              NomCoordinador: this.datosCorreo.NomUsuario + " " + this.datosCorreo.ApeUsuario,
+              NomSede: this.datosCorreo.NomSede,
+              NomAula: this.notificacion.NomAula,
+              Fecha: this.fechaFormateada,
+              Codigo: this.reserva.Codigo,
+              NomCurso: this.reserva.NomCurso,
+              NomCarrera: this.reserva.NomCarrera,
+              CapturaFotografica: this.notificacion.CapturaFotografica,
+              IdUsuario: this.homeService.datoLocalStorage.IdUsuario,
+            });
+            this.alertaDesusoDeAula(this.notificacion.NomAula, this.notificacion.CapturaFotografica);
+          }else{
+            this.notificacionService.validarAlerta(this.notificacion.IdDatos, 0).subscribe();
+            this.recibitNotificacion = !this.recibitNotificacion;
+          }
         });
-        i = this.rangosDeTiempo.length;
-        this.alertaDesusoDeAula(this.notificacion.NomAula, this.notificacion.CapturaFotografica);
+        i = 500;
       }
+    }
+    if(i == this.rangosDeTiempo.length){
+      this.notificacionService.validarAlerta(this.notificacion.IdDatos, 0).subscribe();
+      this.recibitNotificacion = !this.recibitNotificacion;
     }
   }
 
@@ -174,7 +174,6 @@ export class NotificacionComponent {
     });
   }
 
-
   EnviarCorreo() {
     this.enviandoCorreo();
     this.notificacionService.enviarCorreo(this.datosCorreo.Mail, this.datosCorreo.NomUsuario, this.datosCorreo.ApeUsuario, this.datosCorreo.NomSede,
@@ -190,7 +189,6 @@ export class NotificacionComponent {
   }
 
   enviandoCorreo() {
-
     Swal.fire({
       html: 'Enviando correo generado <b></b> milisegundos.',
       timer: 2000,

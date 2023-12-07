@@ -35,7 +35,7 @@ export class CampusService {
 
   getSedes(IdCiudad: number): Observable<any> {
     const body = { IdCiudad: IdCiudad };
-    return this.http.get<any>(URL_ENDPOINT + 'sede/listado/?token='+this.loginService.datoLocalStorage.token,{params:body});
+    return this.http.get<any>(URL_ENDPOINT + 'campus/listado/?token='+this.loginService.datoLocalStorage.token,{params:body});
   }
 
   cambiarSedeEncargado(IdUsuario: number,IdSede: number): Observable<any> {
@@ -43,7 +43,7 @@ export class CampusService {
       IdUsuario:IdUsuario,
       IdSede:IdSede
     };
-    return this.http.put(URL_ENDPOINT + 'usuario/cambiar/sede/?token='+this.loginService.datoLocalStorage.token, body);
+    return this.http.put(URL_ENDPOINT + 'cambiarde/sede/?token='+this.loginService.datoLocalStorage.token, body);
   }
 
   campusActivar(IdCampus: number): Observable<any> {
@@ -62,6 +62,6 @@ export class CampusService {
 
   getEstado(IdCampus: number): Observable<any> {
     const body = { IdCampus:IdCampus };
-    return this.http.get<any>(URL_ENDPOINT + 'campus/Obtener/Estado/?token='+this.loginService.datoLocalStorage.token,{params:body});
+    return this.http.get<any>(URL_ENDPOINT + 'campus/estado/?token='+this.loginService.datoLocalStorage.token,{params:body});
   }
 }

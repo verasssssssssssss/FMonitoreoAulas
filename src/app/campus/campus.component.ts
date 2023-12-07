@@ -14,19 +14,19 @@ export class CampusComponent {
 
   ngOnInit(): void {
     this.getCiudad(this.homeService.datoLocalStorage.IdCiudad);
-    this.getSedes(this.homeService.datoLocalStorage.IdCiudad);
   }
 
 
   getCiudad(IdCiudad: number) {
-    this.campusService.getCiudad(IdCiudad).subscribe(async (response) => {
-      this.campusService.NomCiudad =await response.data[0].NomCiudad;
+    this.campusService.getCiudad(IdCiudad).subscribe((response) => {
+      this.campusService.NomCiudad = response.data[0].NomCiudad;
+      this.getSedes(this.homeService.datoLocalStorage.IdCiudad);
     });
   }
 
   getSedes(IdCiudad: number) {
-    this.campusService.getSedes(IdCiudad).subscribe(async (response) => {
-      this.campusService.sedes =  await response.data;
+    this.campusService.getSedes(IdCiudad).subscribe( (response) => {
+      this.campusService.sedes =  response.data;
       this.campusService.NomSedeActual = response.data[0].NomSede;
       this.campusService.IdSede  = response.data[0].IdSede;
       this.campusService.AcroSedeActual=  response.data[0].Acronimo;

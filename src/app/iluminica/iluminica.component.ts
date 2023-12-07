@@ -11,7 +11,7 @@ import {
   ApexStroke,
   ApexGrid
 } from "ng-apexcharts";
-import { timer } from "rxjs";
+import { interval, timer } from "rxjs";
 import { DatosIntensidadLuminica } from "src/Clases/Datos";
 import { dashboardService } from "src/Service/dashboard/dashboard.service";
 
@@ -44,16 +44,38 @@ export class IluminicaComponent {
   
   constructor(private LuzService:dashboardService) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    const startTime = 8 * 60 + 10;
+    const endTime = 20 * 60;
+    const currentTime = new Date().getHours() * 60 + new Date().getMinutes();
+    let initialDelay = 0;
+    if (currentTime < startTime) {
+      initialDelay = (startTime - currentTime) * 60 * 1000; 
+    } else {
+      initialDelay = (5 - (currentTime % 5)) * 60 * 1000;
+    }
     this.getLux();
+
+    interval(60 * 1000)
+      .subscribe(() => {
+        const current = new Date().getHours() * 60 + new Date().getMinutes();
+        if (current >= startTime && current <= endTime && current % 5 === 0) {
+          this.getLux();
+        }
+      });
+  
+    setTimeout(() => {
+      this.getLux();
+    }, initialDelay);
   }
 
   getLux(){
     this.LuzService.getIntensidadLuminica().subscribe((response) => {
+      this.chartOptions={};
         this.Datos = response.data;
         this.transform();
-        this.Fechas= [this.Datos[0].Fecha,this.Datos[1].Fecha,this.Datos[2].Fecha,this.Datos[3].Fecha,this.Datos[4].Fecha,this.Datos[5].Fecha,this.Datos[6].Fecha,this.Datos[7].Fecha,this.Datos[8].Fecha,this.Datos[9].Fecha];
-        this.Lux=[this.Datos[0].IntensidadLuminica,this.Datos[1].IntensidadLuminica,this.Datos[2].IntensidadLuminica,this.Datos[3].IntensidadLuminica,this.Datos[4].IntensidadLuminica,this.Datos[5].IntensidadLuminica,this.Datos[6].IntensidadLuminica,this.Datos[7].IntensidadLuminica,this.Datos[8].IntensidadLuminica,this.Datos[9].IntensidadLuminica];
+        this.Fechas = this.Datos.slice(0, 10).map(item => item.Fecha).reverse();
+        this.Lux = this.Datos.slice(0, 10).map(item => item.IntensidadLuminica).reverse();
         this.crearchar();
       });
   }
@@ -113,10 +135,6 @@ export class IluminicaComponent {
         }
       }
     };
-    timer(8000).subscribe(() => {
-      this.chartOptions={};
-      this.getLux();
-    });
   }
 
 

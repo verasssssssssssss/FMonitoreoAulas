@@ -24,3 +24,5 @@
   [xaxis]="commonOptions.xaxis!"
   [tooltip]="commonOptions.tooltip!"
 ></apx-chart>
+<div *ngIf="co2tvocService.co2>1000" [ngClass]="'alert alert-danger mt-3'" style="display: flex; justify-content: center; align-items: center;">Se deben tomar acciones para disminuir los niveles de CO2</div>
+<div *ngIf=" co2tvocService.co2<1000 " [ngClass]="'alert alert-success mt-3'" style="display: flex; justify-content: center; align-items: center;">Los nivles de CO2 dentro del aula son adecuados</div>
