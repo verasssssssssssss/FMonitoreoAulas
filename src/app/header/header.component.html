@@ -9,28 +9,34 @@
     <a class="navbar-brand" *ngIf="this.homeService.datoLocalStorage.IdRol==0">
       <h1>Sistema de monitoreo de aulas universidad del BÍO-BÍO</h1>
     </a>
-    <ul class="navbar-nav me-auto nav-pills" *ngIf="this.homeService.datoLocalStorage.IdRol!=0">
+    <ul class="navbar-nav me-auto nav-pills">
       <li class="nav-item">
-        <a class="nav-link active text-white fs-4" aria-current="page" routerLink="/home">Inicio</a>
+        <a class="nav-link fs-5"
+           routerLinkActive="active"
+           routerLink="/home">Inicio</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link fs-4" routerLink="/reportes">Listado de reportes</a>
+        <a class="nav-link fs-5"
+           routerLinkActive="active"
+           routerLink="/reportes">Listado de reportes</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link fs-4" routerLink="/horario">Horario</a>
+        <a class="nav-link fs-5"
+           routerLinkActive="active"
+           routerLink="/horario">Horario</a>
       </li>
     </ul>
     <div *ngIf="this.homeService.datoLocalStorage.IdRol==1">
-      <button class="btn btn-primary fs-4 m-1" (click)="abrirModalAdministrarCampus()">Administrar Campus</button>
+      <button class="btn btn-primary fs-5 m-1" (click)="abrirModalAdministrarCampus()">Administrar Campus</button>
     </div>
     <div *ngIf="this.homeService.datoLocalStorage.IdRol!=0">
-      <button class="btn btn-info fs-4 m-1" (click)="abrirModalAdministrarCuenta()">Administrar cuenta</button>
+      <button class="btn btn-warning fs-5 m-1" (click)="abrirModalAdministrarCuenta()">Administrar cuenta</button>
     </div>
     <div *ngIf="this.homeService.datoLocalStorage.IdRol!=0">
-      <button class="btn btn-danger fs-4" (click)="eliminarDatoDelLocalStorage(true)">Cerrar sesión</button>
+      <button class="btn btn-danger fs-5" (click)="eliminarDatoDelLocalStorage(true)">Cerrar sesión</button>
     </div>
     <div *ngIf="this.homeService.datoLocalStorage.IdRol==0">
-      <button class="btn btn-danger fs-4" (click)="eliminarDatoDelLocalStorage(false)">Login</button>
+      <button class="btn btn-danger fs-5" (click)="eliminarDatoDelLocalStorage(false)">Login</button>
     </div>
   </div>
 </nav>

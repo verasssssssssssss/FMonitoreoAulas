@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Usuarios } from 'src/Clases/Usuarios';
 import { HomeService } from 'src/Service/home/home.service';
-import {AngularFireStorage} from '@angular/fire/compat/storage'
+import { AngularFireStorage } from '@angular/fire/compat/storage'
 import Swal from 'sweetalert2';
 import { __await } from 'tslib';
 import { LoginService } from 'src/Service/login/login.service';
@@ -19,11 +19,19 @@ export class HeaderComponent {
 
   formularioUsuario: FormGroup;
 
-  cargandoFotografia:boolean=false;
+  cargandoFotografia: boolean = false;
 
-  imageUrl!: string; 
+  imageUrl!: string;
 
-  constructor(private loginService: LoginService,private fb: FormBuilder,public campusService: CampusService, private router: Router, public homeService: HomeService,private fireStorage:AngularFireStorage) {
+  rutaActiva: string = '';
+
+
+  setRutaActiva(ruta: string) {
+    this.rutaActiva = ruta;
+  }
+
+  constructor(private loginService: LoginService, private fb: FormBuilder, public campusService: CampusService, private router: Router, public homeService: HomeService, private fireStorage: AngularFireStorage) {
+    
     this.formularioUsuario = this.fb.group({
       Nombre: ['', [Validators.required]],
       Apellido: ['', [Validators.required]],
@@ -35,7 +43,7 @@ export class HeaderComponent {
 
     if (objetoAlmacenado) {
       this.loginService.datoLocalStorage = JSON.parse(objetoAlmacenado);
-    } 
+    }
   }
 
   async ngOnInit(): Promise<void> {
@@ -44,18 +52,18 @@ export class HeaderComponent {
     this.obtenerDatos();
   }
 
-  eliminarDatoDelLocalStorage(cerrar:boolean) {
-    if(cerrar){
+  eliminarDatoDelLocalStorage(cerrar: boolean) {
+    if (cerrar) {
       localStorage.removeItem('UsuarioLogueado');
-      this.homeService.datoLocalStorage={IdUsuario:0,NomUsuario:"0",ApeUsuario:"0",Mail:"0",IdRol:0,IdSede:0,IdCarrera:0,IdCiudad:0,token:"0"};
+      this.homeService.datoLocalStorage = { IdUsuario: 0, NomUsuario: "0", ApeUsuario: "0", Mail: "0", IdRol: 0, IdSede: 0, IdCarrera: 0, IdCiudad: 0, token: "0" };
     }
     this.router.navigate(['/login']);
   }
 
-  obtenerDatos(){
+  obtenerDatos() {
     this.homeService.getusuario(this.homeService.datoLocalStorage.IdUsuario).subscribe((response) => {
       if (response.data[0] != undefined) {
-        if(response.data[0].Fotografia!=undefined && response.data[0].Fotografia!=null) {
+        if (response.data[0].Fotografia != undefined && response.data[0].Fotografia != null) {
           this.formularioUsuario.patchValue({
             Fotografia: response.data[0].Fotografia,
           });
@@ -66,7 +74,7 @@ export class HeaderComponent {
           Mail: response.data[0].Mail,
           Contrasenia: response.data[0].Contrasenia,
         });
-        this.imageUrl =  this.formularioUsuario.get('Fotografia')?.value;
+        this.imageUrl = this.formularioUsuario.get('Fotografia')?.value;
       }
     });
   }
@@ -81,7 +89,7 @@ export class HeaderComponent {
         denyButtonText: `No`,
       }).then((result) => {
         if (result.isConfirmed) {
-          this.homeService.editarUsuario(this.homeService.datoLocalStorage.IdUsuario, this.formularioUsuario.get('Nombre')?.value, this.formularioUsuario.get('Apellido')?.value,this.formularioUsuario.get('Fotografia')?.value, this.formularioUsuario.get('Mail')?.value, this.formularioUsuario.get('Contrasenia')?.value).subscribe((response) => {
+          this.homeService.editarUsuario(this.homeService.datoLocalStorage.IdUsuario, this.formularioUsuario.get('Nombre')?.value, this.formularioUsuario.get('Apellido')?.value, this.formularioUsuario.get('Fotografia')?.value, this.formularioUsuario.get('Mail')?.value, this.formularioUsuario.get('Contrasenia')?.value).subscribe((response) => {
             this.successSwal("Los datos de tu cuenta fueron actualizados correctamente");
             const modal = document.getElementById('ModalAdministrarCuenta');
             if (modal != null) {
@@ -103,7 +111,7 @@ export class HeaderComponent {
   abrirModalAdministrarCampus() {
     this.campusService.getSedes(this.homeService.datoLocalStorage.IdCiudad).subscribe((response) => {
       console.log(response.data);
-      this.campusService.sedes= response.data;
+      this.campusService.sedes = response.data;
       this.transformm(this.campusService.sedes);
     });
     const modal = document.getElementById('ModalAdministrarCampus');
@@ -122,7 +130,7 @@ export class HeaderComponent {
         denyButtonText: `No`,
       }).then((result) => {
         if (result.isConfirmed) {
-          this.homeService.editarUsuario(this.homeService.datoLocalStorage.IdUsuario, this.formularioUsuario.get('Nombre')?.value, this.formularioUsuario.get('Apellido')?.value,this.formularioUsuario.get('Fotografia')?.value, this.formularioUsuario.get('Mail')?.value, this.formularioUsuario.get('Contrasenia')?.value).subscribe((response) => {
+          this.homeService.editarUsuario(this.homeService.datoLocalStorage.IdUsuario, this.formularioUsuario.get('Nombre')?.value, this.formularioUsuario.get('Apellido')?.value, this.formularioUsuario.get('Fotografia')?.value, this.formularioUsuario.get('Mail')?.value, this.formularioUsuario.get('Contrasenia')?.value).subscribe((response) => {
             this.successSwal("Los datos de tu cuenta fueron actualizados correctamente");
             const modal = document.getElementById('ModalAdministrarCuenta');
             if (modal != null) {
@@ -148,17 +156,17 @@ export class HeaderComponent {
     }
   }
 
-  editarCampus(tipo:boolean, idCampus:number,nomCampus:string) {
-    if(tipo){
+  editarCampus(tipo: boolean, idCampus: number, nomCampus: string) {
+    if (tipo) {
       this.campusService.campusActivar(idCampus).subscribe(() => {
         this.campusService.getSedes(this.homeService.datoLocalStorage.IdCiudad).subscribe((response) => {
-          this.campusService.sedes= response.data;
+          this.campusService.sedes = response.data;
           this.transformm(this.campusService.sedes);
         });
       });
-    }else{
+    } else {
       Swal.fire({
-        title: '¿Estas seguro de desactivar las notificaciones del campus '+nomCampus+' ?',
+        title: '¿Estas seguro de desactivar las notificaciones del campus ' + nomCampus + ' ?',
         showDenyButton: true,
         showCancelButton: true,
         confirmButtonText: 'Si',
@@ -167,8 +175,8 @@ export class HeaderComponent {
         if (result.isConfirmed) {
           this.campusService.campusDesactivar(idCampus).subscribe(() => {
             this.campusService.getSedes(this.homeService.datoLocalStorage.IdCiudad).subscribe((response) => {
-              this.successSwal('las notificaciones del campus '+nomCampus+' fue desactivada correctamente');
-              this.campusService.sedes= response.data;
+              this.successSwal('las notificaciones del campus ' + nomCampus + ' fue desactivada correctamente');
+              this.campusService.sedes = response.data;
               this.transformm(this.campusService.sedes);
             });
           });
@@ -177,24 +185,24 @@ export class HeaderComponent {
     }
   }
 
-  transformm(sede:  Sedes[]) {
+  transformm(sede: Sedes[]) {
     sede.forEach(element => {
       this.transform(element);
     });
   }
 
-  transform(sede:  Sedes) {
-    if(sede.FechaActivacion!=null){
+  transform(sede: Sedes) {
+    if (sede.FechaActivacion != null) {
       const parts = sede.FechaActivacion.split('T');
       const parts1 = parts[1].split('Z');
-      sede.FechaActivacion = parts[0] +" "+ parts1[0].substring(0, parts1[0].length - 4);
+      sede.FechaActivacion = parts[0] + " " + parts1[0].substring(0, parts1[0].length - 4);
     }
   }
 
-  async onfileChange(event:any){
-    this.cargandoFotografia=true;
+  async onfileChange(event: any) {
+    this.cargandoFotografia = true;
     const file = event.target.files[0];
-    if(file){
+    if (file) {
       const path = `Referencias/${file.name}`
       const uploadTask = await this.fireStorage.upload(path, file);
       const url = await uploadTask.ref.getDownloadURL()
@@ -202,7 +210,7 @@ export class HeaderComponent {
         Fotografia: url,
       });
       this.imageUrl = url;
-      this.cargandoFotografia=false;
+      this.cargandoFotografia = false;
     }
   }
 

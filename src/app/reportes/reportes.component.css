@@ -4,6 +4,22 @@
   align-items: center;
 }
 
+.fondocrema{
+  background-color: #F5F5F5;
+}
+
+.btn-danger{
+  background-color: #D15B47;
+}
+
+.btn-warning{
+  background-color: #FF893C;
+}
+.btn-info{
+  background-color: #6FB3E0;
+}
+
+
 
 .modal {
   display: none;

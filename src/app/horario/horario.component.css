@@ -1,43 +1,59 @@
 table {
-    border-collapse: collapse;
-    width: 80%;
-    margin: 20px auto;
-  }
+  border-collapse: collapse;
+  width: 80%;
+  margin: 20px auto;
+}
 
-  th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-    width: 14.2857%; /* Distribuir el ancho en partes iguales para 7 columnas */
-  }
+.fondocrema{
+  background-color: #F5F5F5;
+}
 
-  th {
-    background-color: #f2f2f2;
-  }
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+  width: 14.2857%;
+  /* Distribuir el ancho en partes iguales para 7 columnas */
+}
 
-  .date-column {
-    width: 14.2857%; /* Mismo ancho para la columna de fechas */
-  }
+th {
+  background-color: #f2f2f2;
+}
 
-  .encargado{
-    text-align: center;
+.date-column {
+  width: 14.2857%;
+  /* Mismo ancho para la columna de fechas */
+}
+
+.encargado {
+  text-align: center;
 }
 
 
 .button-container {
-  display: flex; /* Muestra los botones en una fila horizontal */
-  flex-wrap: wrap; /* Permite que los botones se envuelvan cuando no caben en la pantalla */
-  justify-content: center; /* Centra los botones horizontalmente */
+  display: flex;
+  /* Muestra los botones en una fila horizontal */
+  flex-wrap: wrap;
+  /* Permite que los botones se envuelvan cuando no caben en la pantalla */
+  justify-content: center;
+  /* Centra los botones horizontalmente */
 }
 
 .responsive-button {
-  margin: 5px; /* Agrega un margen entre los botones para separarlos */
-  padding: 10px 20px; /* Ajusta el relleno (padding) según tus preferencias */
-  background-color: #007bff; /* Cambia el color de fondo según tus preferencias */
-  color: white; /* Cambia el color de texto según tus preferencias */
-  border: none; /* Quita el borde del botón */
+  margin: 5px;
+  /* Agrega un margen entre los botones para separarlos */
+  padding: 10px 20px;
+  /* Ajusta el relleno (padding) según tus preferencias */
+  background-color: #007bff;
+  /* Cambia el color de fondo según tus preferencias */
+  color: white;
+  /* Cambia el color de texto según tus preferencias */
+  border: none;
+  /* Quita el borde del botón */
   cursor: pointer;
-  white-space: nowrap; /* Evita que el texto se desborde */
+  white-space: nowrap;
+  /* Evita que el texto se desborde */
 }
 
 /* Agrega estilos responsivos aquí, por ejemplo, para cambiar el tamaño de los botones en pantallas pequeñas */
@@ -48,9 +64,11 @@ table {
 }
 
 
-.button-container,.encargado{
+.button-container,
+.encargado {
   text-align: center;
 }
-td{
-    font-weight: bold;
+
+td {
+  font-weight: bold;
 }
