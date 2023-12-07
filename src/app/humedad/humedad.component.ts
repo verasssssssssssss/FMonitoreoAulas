@@ -9,6 +9,7 @@ import {
   ApexTooltip,
   ApexStroke
 } from "ng-apexcharts";
+import { interval } from "rxjs";
 import { DatosHumedadTemperatura } from "src/Clases/Datos";
 import { dashboardService } from "src/Service/dashboard/dashboard.service";
 import { LoginService } from "src/Service/login/login.service";
@@ -60,10 +61,32 @@ export class HumedadComponent {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.crearchar();
+    const startTime = 8 * 60 + 10;
+    const endTime = 20 * 60; 
+    const currentTime = new Date().getHours() * 60 + new Date().getMinutes();
+    let initialDelay = 0;
+    if (currentTime < startTime) {
+      initialDelay = (startTime - currentTime) * 60 * 1000;
+    } else {
+      initialDelay = (5 - (currentTime % 5)) * 60 * 1000; 
+    }
+  
+    this.getTempHumedad();
+  
+    interval(60 * 1000) 
+      .subscribe(() => {
+        const current = new Date().getHours() * 60 + new Date().getMinutes();
+        if (current >= startTime && current <= endTime && current % 5 === 0) {
+          this.getTempHumedad();
+        }
+      });
+  
+    setTimeout(() => {
+      this.getTempHumedad();
+    }, initialDelay);
   }
-
 
   crearchar(){
     this.chartOptions = {
@@ -97,10 +120,6 @@ export class HumedadComponent {
         }
       }
     };
-    this.getTempHumedad();
-    setInterval(() => {
-        this.getTempHumedad();
-    }, 8000); // 300.000 milisegundos = 5 minutos
   }
 
 }
