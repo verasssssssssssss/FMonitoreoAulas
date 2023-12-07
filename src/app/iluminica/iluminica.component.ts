@@ -41,7 +41,8 @@ export class IluminicaComponent {
   Lux:number[]=[0,0,0,0,0,0,0,0,0,0];
   Fechas:string[]=["1","2","3","4","5","6","7","8","9","10"];
   obtener:boolean=true;
-  
+  booleanIntensidadLuminica: boolean = false;
+
   constructor(private LuzService:dashboardService) {}
 
   ngOnInit() {
@@ -77,6 +78,7 @@ export class IluminicaComponent {
         this.Fechas = this.Datos.slice(0, 10).map(item => item.Fecha).reverse();
         this.Lux = this.Datos.slice(0, 10).map(item => item.IntensidadLuminica).reverse();
         this.crearchar();
+        this.booleanIntensidadLuminica=true;
       });
   }
 

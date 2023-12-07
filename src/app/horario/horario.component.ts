@@ -26,6 +26,10 @@ export class HorarioComponent {
   prueba: string = "...";
   color!: string;
 
+  contador: number = 0;
+
+  booleanhorario: number = 0;
+
   constructor(private renderer: Renderer2,public campusService: CampusService,private horarioService:HorarioService,private homeService:HomeService) {}
   ngOnInit(): void {
     this.homeService.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
@@ -44,17 +48,23 @@ export class HorarioComponent {
   
 
   selecionarAula(nom:string,id:number){
+    this.contador=0;
+    this.booleanhorario=1;
     this.Nomaula=nom;
     this.Idaula=id;
     this.getReservas();
     timer(1000).subscribe(() => {
       this.limpiarContenidosTabla();
       this.reserva.forEach((item) => {
+        this.contador=this.contador+1;
         this.color = this.obtenerColorFondoClaro();
         item.bloque.forEach((item1) => {
           this.modificarContenido(item1.IdBloque+''+item.DiaClases,item.NomCurso,item.Codigo);
         });
       });
+      if(this.contador===this.reserva.length){
+          this.booleanhorario=2; 
+      }
     });
   }
 

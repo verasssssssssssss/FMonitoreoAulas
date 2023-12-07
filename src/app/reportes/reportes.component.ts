@@ -24,6 +24,7 @@ export class ReportesComponent implements OnInit {
   CodigoCorreo!:number;
   modal = true;
 
+  booleanreprote: boolean = false;
 
 
   constructor(public campusService: CampusService,private sreportes: ReportesService,public homeService:HomeService){}
@@ -46,8 +47,7 @@ export class ReportesComponent implements OnInit {
       this.reportes.forEach(element => {
         this.transform(element);
       });
-
-      // Aplicar el filtro por curso
+      this.booleanreprote=true;
       if (this.filtroCurso) {
         this.reportes = this.reportes.filter(reporte =>
           reporte.NomCurso.toLowerCase().includes(this.filtroCurso.toLowerCase())

@@ -153,8 +153,9 @@ span {
 }
 
 .cargando {
-  padding-top: 35%;
+  padding-top: 15%;
   padding-bottom: 35%;
+  padding-left: 50%;
 }
 
 @keyframes rotation {

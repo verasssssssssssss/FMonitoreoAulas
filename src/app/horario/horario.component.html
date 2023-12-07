@@ -27,13 +27,15 @@
           </div>
         </div>
       </div>
-
+      <div class="cargando" *ngIf="this.booleanhorario==1">
+        <span class="loader"></span>
+      </div>
       <div class="container pt-4">
         <div class="row">
           <div class="col-md-12">
             <div class="card mb-4">
-              <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
+              <div class="card-body" >
+                <div class="d-flex align-items-center justify-content-between"  [hidden]="this.booleanhorario==2">
                   <table id="tabla" #tabla>
                     <thead>
                       <tr>

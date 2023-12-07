@@ -33,20 +33,16 @@ export class HumedadComponent {
   public chartOptions!: Partial<ChartOptions>;
 
   Datos!:DatosHumedadTemperatura[];
-  obtener:boolean=true;
-
-  constructor(public humedadService:dashboardService, private loginService:LoginService) {}
+  booleanTempHumedad: boolean =false;
+  
+  constructor(public humedadService:dashboardService) {}
 
   getTempHumedad(){
-    this.humedadService.getTempHumedad().subscribe(async (response) => {
-        this.Datos = await response.data;
-        this.chart.updateOptions({
-          xaxis: {
-            type: "datetime",
-            categories: [this.Datos[0].Fecha,this.Datos[1].Fecha,this.Datos[2].Fecha,this.Datos[3].Fecha,this.Datos[4].Fecha,this.Datos[5].Fecha,this.Datos[6].Fecha,this.Datos[7].Fecha,this.Datos[8].Fecha,this.Datos[9].Fecha]
-          },
-        });
-        this.humedadService.Temperatura
+  this.humedadService.getTempHumedad().subscribe(
+    (response) => {
+      this.Datos=response;
+      if(this.Datos.length!=0){
+        console.log('Datos disponibles. Actualizando gráfico...');
         this.chart.updateSeries([{
           name: "Temperatura",
           data:[this.Datos[0].Temperatura,this.Datos[1].Temperatura,this.Datos[2].Temperatura,this.Datos[3].Temperatura,this.Datos[4].Temperatura,this.Datos[5].Temperatura,this.Datos[6].Temperatura,this.Datos[7].Temperatura,this.Datos[8].Temperatura,this.Datos[9].Temperatura]
@@ -55,12 +51,27 @@ export class HumedadComponent {
           name: "Humedad",
           data: [this.Datos[0].Humedad,this.Datos[1].Humedad,this.Datos[2].Humedad,this.Datos[3].Humedad,this.Datos[4].Humedad,this.Datos[5].Humedad,this.Datos[6].Humedad,this.Datos[7].Humedad,this.Datos[8].Humedad,this.Datos[9].Humedad]
         }
+        
       ],true);
+        this.chart.updateOptions({
+          xaxis: {
+            type: "datetime",
+            categories: [this.Datos[0].Fecha,this.Datos[1].Fecha,this.Datos[2].Fecha,this.Datos[3].Fecha,this.Datos[4].Fecha,this.Datos[5].Fecha,this.Datos[6].Fecha,this.Datos[7].Fecha,this.Datos[8].Fecha,this.Datos[9].Fecha]
+          },
+          dataLabels: {
+            enabled: true
+          },
+        });
+      this.booleanTempHumedad = true; // Verificar si se alcanza este punto
       this.humedadService.Temperatura = this.Datos[0].Temperatura;
       this.humedadService.Humedad = this.Datos[0].Humedad;
-    });
+      }
+    },
+    (error) => {
+      console.error('Error al obtener datos:', error);
+    }
+  );
   }
-
   ngOnInit() {
     this.crearchar();
     const startTime = 8 * 60 + 10;
@@ -72,7 +83,6 @@ export class HumedadComponent {
     } else {
       initialDelay = (5 - (currentTime % 5)) * 60 * 1000; 
     }
-  
     this.getTempHumedad();
   
     interval(60 * 1000) 

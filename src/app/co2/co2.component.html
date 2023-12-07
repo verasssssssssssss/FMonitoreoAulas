@@ -1,28 +1,35 @@
-<h5>Niveles de CO2</h5>
-<apx-chart
-  [series]="chart1options.series!"
-  [chart]="chart1options.chart!"
-  [colors]="chart1options.colors!"
-  [yaxis]="chart1options.yaxis!"
-  [dataLabels]="commonOptions.dataLabels!"
-  [markers]="commonOptions.markers!"
-  [stroke]="commonOptions.stroke!"
-  [grid]="commonOptions.grid!"
-  [xaxis]="commonOptions.xaxis!"
-  [tooltip]="commonOptions.tooltip!"
-></apx-chart>
-<h5>Niveles de tvoc</h5>
-<apx-chart
-  [series]="chart2options.series!"
-  [chart]="chart2options.chart!"
-  [colors]="chart2options.colors!"
-  [yaxis]="chart2options.yaxis!"
-  [dataLabels]="commonOptions.dataLabels!"
-  [markers]="commonOptions.markers!"
-  [stroke]="commonOptions.stroke!"
-  [grid]="commonOptions.grid!"
-  [xaxis]="commonOptions.xaxis!"
-  [tooltip]="commonOptions.tooltip!"
-></apx-chart>
-<div *ngIf="co2tvocService.co2>1000" [ngClass]="'alert alert-danger mt-3'" style="display: flex; justify-content: center; align-items: center;">Se deben tomar acciones para disminuir los niveles de CO2</div>
-<div *ngIf=" co2tvocService.co2<1000 " [ngClass]="'alert alert-success mt-3'" style="display: flex; justify-content: center; align-items: center;">Los nivles de CO2 dentro del aula son adecuados</div>
+<div>
+  <div class="cargando" *ngIf="!this.booleanco2tvoc">
+    <span class="loader"></span>
+  </div>
+  <div *ngIf="this.booleanco2tvoc" >
+  <h5>Niveles de CO2</h5>
+  <apx-chart
+    [series]="chart1options.series!"
+    [chart]="chart1options.chart!"
+    [colors]="chart1options.colors!"
+    [yaxis]="chart1options.yaxis!"
+    [dataLabels]="commonOptions.dataLabels!"
+    [markers]="commonOptions.markers!"
+    [stroke]="commonOptions.stroke!"
+    [grid]="commonOptions.grid!"
+    [xaxis]="commonOptions.xaxis!"
+    [tooltip]="commonOptions.tooltip!"
+  ></apx-chart>
+  <h5>Niveles de tvoc</h5>
+  <apx-chart
+    [series]="chart2options.series!"
+    [chart]="chart2options.chart!"
+    [colors]="chart2options.colors!"
+    [yaxis]="chart2options.yaxis!"
+    [dataLabels]="commonOptions.dataLabels!"
+    [markers]="commonOptions.markers!"
+    [stroke]="commonOptions.stroke!"
+    [grid]="commonOptions.grid!"
+    [xaxis]="commonOptions.xaxis!"
+    [tooltip]="commonOptions.tooltip!"
+  ></apx-chart>
+  <div *ngIf="co2tvocService.co2>1000" [ngClass]="'alert alert-danger mt-3'" style="display: flex; justify-content: center; align-items: center;">Se deben tomar acciones para disminuir los niveles de CO2</div>
+  <div *ngIf=" co2tvocService.co2<1000 " [ngClass]="'alert alert-success mt-3'" style="display: flex; justify-content: center; align-items: center;">Los nivles de CO2 dentro del aula son adecuados</div>
+</div>
+  </div>

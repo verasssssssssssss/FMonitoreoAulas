@@ -17,6 +17,8 @@ export class CampusService {
   NomCiudad!: string;
   IdSede!: number;
   
+  booleanhome: boolean = false;
+
   constructor(private http: HttpClient, private loginService:LoginService) { }
 
 

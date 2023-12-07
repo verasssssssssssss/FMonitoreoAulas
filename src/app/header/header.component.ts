@@ -61,22 +61,24 @@ export class HeaderComponent {
   }
 
   obtenerDatos() {
-    this.homeService.getusuario(this.homeService.datoLocalStorage.IdUsuario).subscribe((response) => {
-      if (response.data[0] != undefined) {
-        if (response.data[0].Fotografia != undefined && response.data[0].Fotografia != null) {
+    if(this.homeService.datoLocalStorage.IdUsuario!=0){
+      this.homeService.getusuario(this.homeService.datoLocalStorage.IdUsuario).subscribe((response) => {
+        if (response.data[0] != undefined) {
+          if (response.data[0].Fotografia != undefined && response.data[0].Fotografia != null) {
+            this.formularioUsuario.patchValue({
+              Fotografia: response.data[0].Fotografia,
+            });
+          }
           this.formularioUsuario.patchValue({
-            Fotografia: response.data[0].Fotografia,
+            Nombre: response.data[0].NomUsuario,
+            Apellido: response.data[0].ApeUsuario,
+            Mail: response.data[0].Mail,
+            Contrasenia: response.data[0].Contrasenia,
           });
+          this.imageUrl = this.formularioUsuario.get('Fotografia')?.value;
         }
-        this.formularioUsuario.patchValue({
-          Nombre: response.data[0].NomUsuario,
-          Apellido: response.data[0].ApeUsuario,
-          Mail: response.data[0].Mail,
-          Contrasenia: response.data[0].Contrasenia,
-        });
-        this.imageUrl = this.formularioUsuario.get('Fotografia')?.value;
-      }
-    });
+      });
+    }
   }
 
   cerrarModalAdministrarCuenta(accion: boolean) {

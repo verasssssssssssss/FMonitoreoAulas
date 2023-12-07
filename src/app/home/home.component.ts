@@ -41,7 +41,7 @@ export class HomeComponent {
 
   formularioEncargado: FormGroup;
 
-  constructor(private loginService: LoginService,private router: Router,private dashboardService: dashboardService,public campusService: CampusService,private fb: FormBuilder, public homeService: HomeService,private fireStorage:AngularFireStorage) {
+  constructor(private router: Router,private dashboardService: dashboardService,public campusService: CampusService,private fb: FormBuilder, public homeService: HomeService,private fireStorage:AngularFireStorage) {
     this.formularioEncargado = this.fb.group({
       Fotografia: ['',],
       Nombre: ['', [Validators.required]],
@@ -79,6 +79,7 @@ export class HomeComponent {
     this.AreasDeTrabajo.forEach(AreaT => {
       this.homeService.getAulas(AreaT.IdArea).subscribe((response) => {
         AreaT.Aulas = response.data;
+        this.campusService.booleanhome=true;
       });
     });
   }
