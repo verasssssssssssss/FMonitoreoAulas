@@ -3,7 +3,7 @@ export class DatosReserva{
     DiaClases!:number;
     IdAula!:number;
     IdCurso!:number;
-    FechaLimite!:string;
+    FechaLimite!:Date;
     NomCurso!:string;
     NomProfesor!:string;
     Codigo!:string;
@@ -11,5 +11,5 @@ export class DatosReserva{
 }
 
 export class Datosbloque{
-    IdBloque!:number[];
+    IdBloque!:number;
 }

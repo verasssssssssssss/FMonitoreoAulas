@@ -29,6 +29,9 @@
     <div *ngIf="this.homeService.datoLocalStorage.IdRol==1">
       <button class="btn btn-primary fs-5 m-1" (click)="abrirModalAdministrarCampus()">Administrar Campus</button>
     </div>
+    <div *ngIf="this.homeService.datoLocalStorage.IdRol==1">
+      <button class="btn btn-primary fs-5 m-1" (click)="abrirModalAdministrarSensores()">Administrar Sensores</button>
+    </div>
     <div *ngIf="this.homeService.datoLocalStorage.IdRol!=0">
       <button class="btn btn-warning fs-5 m-1" (click)="abrirModalAdministrarCuenta()">Administrar cuenta</button>
     </div>
@@ -163,5 +166,56 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<div id="abrirModalAdministrarSensores" class="modal">
+  <div class="modal-content">
+    <span class="cerrar" (click)="cerrarModalAdministrarSensores()">&times;</span>
+    <h2>Listado de Sensores</h2>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+              <h5 class="card-title">Sensores del campus {{this.campusService.NomSedeActual}}</h5>
+            </div>
+            <div class="col-md-12">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">N° Sensor</th>
+                    <th scope="col">Ubicado en</th>
+                    <th scope="col">Ultima recopilación</th>
+                    <th scope="col">Intensidad Luminica</th>
+                    <th scope="col">CO2</th>
+                    <th scope="col">Tvoc</th>
+                    <th scope="col">Temperatura</th>
+                    <th scope="col">Humedad</th>
+                    <th scope="col">Movimiento</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let Sensor of this.datosSensores">
+                    <td>{{Sensor.IdSensor}}</td>
+                    <td>{{Sensor.NomAula}}</td>
+                    <td>{{Sensor.Fecha}}</td>
+                    <td> <img *ngIf="Sensor.IntensidadLuminica!=null" src="../../assets/Imagenes/si.png"> <img *ngIf="Sensor.IntensidadLuminica==null" src="../../assets/Imagenes/no.png"></td>
+                    <td> <img *ngIf="Sensor.NivelesDeCO2!=null" src="../../assets/Imagenes/si.png"> <img *ngIf="Sensor.NivelesDeCO2==null" src="../../assets/Imagenes/no.png"></td>
+                    <td> <img *ngIf="Sensor.Tvoc!=null" src="../../assets/Imagenes/si.png"> <img *ngIf="Sensor.Tvoc==null" src="../../assets/Imagenes/no.png"></td>
+                    <td> <img *ngIf="Sensor.Temperatura!=null" src="../../assets/Imagenes/si.png"> <img *ngIf="Sensor.Temperatura==null" src="../../assets/Imagenes/no.png"></td>
+                    <td> <img *ngIf="Sensor.Humedad!=null" src="../../assets/Imagenes/si.png"> <img *ngIf="Sensor.Humedad==null" src="../../assets/Imagenes/no.png"></td>
+                    <td> <img *ngIf="Sensor.Movimiento!=null" src="../../assets/Imagenes/si.png"> <img *ngIf="Sensor.Movimiento==null" src="../../assets/Imagenes/no.png"></td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <a class="btn btn-info" (click)="cerrarModalAdministrarSensores()">OK</a>
   </div>
 </div>
