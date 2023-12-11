@@ -61,7 +61,7 @@
                               <td>{{Aulas.NomAula}}</td>
                               <td>{{Aulas.CantidadAlumnos}}</td>
                               <td>
-                                <button *ngIf="Aulas.IdArea == 28" type="button" class="btn btn-info m-1"
+                                <button  [disabled]="Aulas.IdSensor===null" type="button" class="btn btn-info m-1"
                                   (click)="Visualizar(Aulas.IdAula,Aulas.NomAula)">Visualizar</button>
                                 <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button"
                                   class="btn btn-warning m-1"
@@ -122,7 +122,7 @@
                 [value]="AulaS.NomAula" required>
             </div>
             <div class="form-group">
-              <label for="edad">Cantidad de alumnos:</label>
+              <label for="edad">Capacidad de Alumnos:</label>
               <input (input)="edadInputChange($event)" min="0" #cantidad type="number" id="cantidad" name="cantidad"
                 [value]="AulaS.CantidadAlumnos" required>
             </div>

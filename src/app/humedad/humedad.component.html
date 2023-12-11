@@ -1,7 +1,4 @@
-<div class="cargando" [hidden]="!this.booleanTempHumedad">
-  <span class="loader"></span>
-</div>
-<div [hidden]="this.booleanTempHumedad">
+<div>
   <h5>Temperatura y humedad</h5>
   <div>
     <apx-chart #realchart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [xaxis]="chartOptions.xaxis!"
