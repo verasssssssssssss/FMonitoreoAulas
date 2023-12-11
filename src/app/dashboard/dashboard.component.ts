@@ -6,6 +6,7 @@ import {dashboardService} from 'src/Service/dashboard/dashboard.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class dashboardComponent {
+  
   constructor(public dashboardService: dashboardService) {
   }
 }

@@ -39,7 +39,10 @@
                             <pagination-controls (pageChange)="p = $event" previousLabel="Anterior"
                               nextLabel="Siguiente"></pagination-controls>
                           </div>
-                          <table class="table table-striped table-hover">
+                          <div class="cargando" *ngIf="!this.booleanreprote">
+                            <span class="loader"></span>
+                          </div>
+                          <table class="table table-striped table-hover" *ngIf="this.booleanreprote">
                             <thead>
                               <tr>
                                 <th scope="col">#</th>

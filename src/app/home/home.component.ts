@@ -41,7 +41,7 @@ export class HomeComponent {
 
   formularioEncargado: FormGroup;
 
-  constructor(private loginService: LoginService,private router: Router,private dashboardService: dashboardService,public campusService: CampusService,private fb: FormBuilder, public homeService: HomeService,private fireStorage:AngularFireStorage) {
+  constructor(private router: Router,private dashboardService: dashboardService,public campusService: CampusService,private fb: FormBuilder, public homeService: HomeService,private fireStorage:AngularFireStorage) {
     this.formularioEncargado = this.fb.group({
       Fotografia: ['',],
       Nombre: ['', [Validators.required]],
@@ -79,6 +79,8 @@ export class HomeComponent {
     this.AreasDeTrabajo.forEach(AreaT => {
       this.homeService.getAulas(AreaT.IdArea).subscribe((response) => {
         AreaT.Aulas = response.data;
+        console.log(AreaT.Aulas);
+        this.campusService.booleanhome=true;
       });
     });
   }
@@ -142,7 +144,7 @@ export class HomeComponent {
       this.AulaSeleccionada.push(Aula);
     } else {
       this.AreasDeTrabajoSeleccionado = Area.IdArea;
-      let Aaula: Aulas = { IdAula: 0, NomAula: Area.NomArea, CantidadAlumnos: 0, Visible: 1, IdArea: 0 };
+      let Aaula: Aulas = { IdAula: 0, NomAula: Area.NomArea, CantidadAlumnos: 0, IdSensor:-1, IdArea: 0 };
       this.AulaSeleccionada.push(Aaula);
     }
     this.tipoModalAula = tipoModal;

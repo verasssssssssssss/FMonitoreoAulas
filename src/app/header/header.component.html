@@ -9,7 +9,7 @@
     <a class="navbar-brand" *ngIf="this.homeService.datoLocalStorage.IdRol==0">
       <h1>Sistema de monitoreo de aulas universidad del BÍO-BÍO</h1>
     </a>
-    <ul class="navbar-nav me-auto nav-pills">
+    <ul class="navbar-nav me-auto nav-pills" *ngIf="this.homeService.datoLocalStorage.IdRol!=0">
       <li class="nav-item">
         <a class="nav-link fs-5"
            routerLinkActive="active"
@@ -28,6 +28,9 @@
     </ul>
     <div *ngIf="this.homeService.datoLocalStorage.IdRol==1">
       <button class="btn btn-primary fs-5 m-1" (click)="abrirModalAdministrarCampus()">Administrar Campus</button>
+    </div>
+    <div *ngIf="this.homeService.datoLocalStorage.IdRol==1">
+      <button class="btn btn-primary fs-5 m-1" (click)="abrirModalAdministrarSensores()">Administrar Sensores</button>
     </div>
     <div *ngIf="this.homeService.datoLocalStorage.IdRol!=0">
       <button class="btn btn-warning fs-5 m-1" (click)="abrirModalAdministrarCuenta()">Administrar cuenta</button>
@@ -120,93 +123,13 @@
   </div>
 </div>
 
-
-<div id="ModalAdministrarCuenta" class="modal">
-  <div class="modal-content">
-    <span class="cerrar" (click)="cerrarModalAdministrarCuenta(false)">&times;</span>
-    <div class="row">
-      <div class="col-md-10">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <form [formGroup]="formularioUsuario">
-                  <div class="form-group" id="fotoM"
-                    style="display: flex; align-items: center; justify-content: center;">
-                    <label for="Nombre">Foto de perfil:</label>
-                    <div class="cargando" *ngIf="cargandoFotografia">
-                      <span class="loader"></span>
-                    </div>
-                    <img *ngIf="!cargandoFotografia" id="foto" src={{imageUrl}} class="mx-auto">
-                    <div id="fotoS">
-                      <input type="file" (change)="onfileChange($event)" class="btn btn-warning">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="Nombre">Nombre:</label>
-                    <input type="text" id="Nombre" formControlName="Nombre">
-                    <div
-                      *ngIf="formularioUsuario.get('Nombre')?.hasError('required') && formularioUsuario.get('Nombre')?.touched">
-                      El Nombre es obligatorio.
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="Apellido">Apellido:</label>
-                    <input type="text" id="Apellido" formControlName="Apellido">
-                    <div
-                      *ngIf="formularioUsuario.get('Apellido')?.hasError('required') && formularioUsuario.get('Apellido')?.touched">
-                      El Apellido es obligatorio.
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="Mail">Correo Electrónico:</label>
-                    <input type="email" id="Mail" formControlName="Mail" class="form-control form-control-sm">
-                    <div
-                      *ngIf="formularioUsuario.get('Mail')?.hasError('required') && formularioUsuario.get('Mail')?.touched">
-                      El correo electrónico es obligatorio.
-                    </div>
-                    <div
-                      *ngIf="formularioUsuario.get('Mail')?.hasError('Mail') && formularioUsuario.get('Mail')?.touched">
-                      Ingresa un correo electrónico válido.
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="Contrasenia">Contraseña:</label>
-                    <input type="text" id="Contrasenia" formControlName="Contrasenia"
-                      class="form-control form-control-sm">
-                    <div
-                      *ngIf="formularioUsuario.get('Contrasenia')?.hasError('required') && formularioUsuario.get('Contrasenia')?.touched">
-                      La contraseña es obligatoria.
-                    </div>
-                    <div
-                      *ngIf="formularioUsuario.get('Contrasenia')?.hasError('minlength') && formularioUsuario.get('Contrasenia')?.touched">
-                      La contraseña debe tener al menos 8 caracteres.
-                    </div>
-                  </div>
-                  <div id="editar">
-                    <button [disabled]="formularioUsuario.invalid" class="btn btn-info" id="editar"
-                      (click)="cerrarModalAdministrarCuenta(true)">Editar datos</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div id="ModalAdministrarCampus" class="modal">
   <div class="modal-content">
     <span class="cerrar" (click)="cerrarModalAdministrarCampus(false)">&times;</span>
     <br>
     <br>
     <div class="d-flex align-items-center justify-content-between">
-      <h5 class="card-title">Encargados de la sede {{this.campusService.NomSedeActual}}</h5>
+      <h5 class="card-title">Campus de la sede {{this.campusService.NomCiudad}}</h5>
     </div>
     <div class="row">
       <div class="col-md-12">
@@ -243,5 +166,56 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<div id="abrirModalAdministrarSensores" class="modal">
+  <div class="modal-content">
+    <span class="cerrar" (click)="cerrarModalAdministrarSensores()">&times;</span>
+    <h2>Listado de Sensores</h2>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+              <h5 class="card-title">Sensores del campus {{this.campusService.NomSedeActual}}</h5>
+            </div>
+            <div class="col-md-12">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">N° Sensor</th>
+                    <th scope="col">Ubicado en</th>
+                    <th scope="col">Ultima recopilación</th>
+                    <th scope="col">Intensidad Luminica</th>
+                    <th scope="col">CO2</th>
+                    <th scope="col">Tvoc</th>
+                    <th scope="col">Temperatura</th>
+                    <th scope="col">Humedad</th>
+                    <th scope="col">Movimiento</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let Sensor of this.datosSensores">
+                    <td>{{Sensor.IdSensor}}</td>
+                    <td>{{Sensor.NomAula}}</td>
+                    <td>{{Sensor.Fecha}}</td>
+                    <td> <img *ngIf="Sensor.IntensidadLuminica!=null" src="../../assets/Imagenes/si.png"> <img *ngIf="Sensor.IntensidadLuminica==null" src="../../assets/Imagenes/no.png"></td>
+                    <td> <img *ngIf="Sensor.NivelesDeCO2!=null" src="../../assets/Imagenes/si.png"> <img *ngIf="Sensor.NivelesDeCO2==null" src="../../assets/Imagenes/no.png"></td>
+                    <td> <img *ngIf="Sensor.Tvoc!=null" src="../../assets/Imagenes/si.png"> <img *ngIf="Sensor.Tvoc==null" src="../../assets/Imagenes/no.png"></td>
+                    <td> <img *ngIf="Sensor.Temperatura!=null" src="../../assets/Imagenes/si.png"> <img *ngIf="Sensor.Temperatura==null" src="../../assets/Imagenes/no.png"></td>
+                    <td> <img *ngIf="Sensor.Humedad!=null" src="../../assets/Imagenes/si.png"> <img *ngIf="Sensor.Humedad==null" src="../../assets/Imagenes/no.png"></td>
+                    <td> <img *ngIf="Sensor.Movimiento!=null" src="../../assets/Imagenes/si.png"> <img *ngIf="Sensor.Movimiento==null" src="../../assets/Imagenes/no.png"></td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <a class="btn btn-info" (click)="cerrarModalAdministrarSensores()">OK</a>
   </div>
 </div>

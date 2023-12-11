@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { URL_ENDPOINT } from 'src/Config/config';
+import { LoginService } from '../login/login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class dashboardService {
   Humedad:number=0;
   co2:number=0;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private loginService:LoginService) {}
 
   getTempHumedad(): Observable<any> {
     return this.http.get<any>(URL_ENDPOINT + 'datos/tempHum/'+this.idAula);
@@ -27,5 +28,10 @@ export class dashboardService {
 
   getIntensidadLuminica(): Observable<any> {
     return this.http.get<any>(URL_ENDPOINT + 'datos/Iluminica/'+this.idAula);
+  }
+
+  getMonitoreoSensor(IdSede:number): Observable<any> {
+    const body = { IdSede:IdSede};
+    return this.http.get<any>(URL_ENDPOINT + 'sensores/monitorear/?token='+this.loginService.datoLocalStorage.token,{params:body});
   }
 }

@@ -26,4 +26,22 @@ export class HorarioService {
     return this.http.get<any>(URL_ENDPOINT + 'bloque/obtener/?token='+this.loginService.datoLocalStorage.token,{params:body});
   }
 
+  getCursos(IdSede: number): Observable<any> {
+    const body = { IdSede:IdSede};
+    return this.http.get<any>(URL_ENDPOINT + 'curso/obtener/xsede/?token='+this.loginService.datoLocalStorage.token,{params:body});
+  }
+
+  crearReserva( DiaClases:number,FechaLimite:Date,IdCurso:number,IdAula:number,IdSede:number,IdBloqueInicio:number,IdBloqueFin:number): Observable<any> {
+    const body = { DiaClases	: DiaClases, FechaLimite: FechaLimite, IdCurso: IdCurso, IdAula: IdAula, IdSede: IdSede, IdBloqueInicio:IdBloqueInicio, IdBloqueFin:IdBloqueFin};
+    return this.http.post(URL_ENDPOINT + 'reserva/crear/?token='+this.loginService.datoLocalStorage.token, body);
+  }
+
+  eliminarReservaBloque(IdReserva: number,IdBloque: number): Observable<any> {
+    const body = { IdReserva:IdReserva,IdBloque:IdBloque};
+    return this.http.delete(URL_ENDPOINT + 'reserva/eliminar/bloque/?token='+this.loginService.datoLocalStorage.token, {params:body});
+  }
+  eliminarReserva(IdReserva: number): Observable<any> {
+    const body = { IdReserva:IdReserva};
+    return this.http.delete(URL_ENDPOINT + 'reserva/eliminar/?token='+this.loginService.datoLocalStorage.token, {params:body});
+  }
 }

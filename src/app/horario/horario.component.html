@@ -27,13 +27,15 @@
           </div>
         </div>
       </div>
-
+      <div class="cargando" *ngIf="this.booleanhorario==1">
+        <span class="loader"></span>
+      </div>
       <div class="container pt-4">
         <div class="row">
           <div class="col-md-12">
             <div class="card mb-4">
-              <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between">
+              <div class="card-body" >
+                <div class="d-flex align-items-center justify-content-between"  [hidden]="this.booleanhorario==2">
                   <table id="tabla" #tabla>
                     <thead>
                       <tr>
@@ -187,6 +189,66 @@
       </div>
     </div>
 
+  </div>
+
+  <div id="ModalHorario" class="modal">
+    <div class="modal-content">
+      <span class="cerrar" (click)="cerrarrModalHorario()">&times;</span>
+      <div class="roww">
+        <div class="col-md-10">
+          <div>
+            <h1>Agregar Reserva de clases</h1>
+            <div style="display: flex; align-items: center; justify-content: center;">
+            </div>
+          </div>
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <form [formGroup]="formularioReserva">
+
+                    <div class="form-group">
+                      <label for="carrera">Nombre de la carrera:</label>
+                      <select id="carrera" formControlName="carrera">
+                        <option *ngFor="let carrera of CarrerasSede" [value]="carrera.IdCarrera">{{ carrera.NomCarrera }}</option>
+                      </select>
+                      <div *ngIf="formularioReserva.get('carrera')?.hasError('required') && formularioReserva.get('carrera')?.touched">
+                        Seleccionar una carrera es obligatorio.
+                      </div>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="Curso">Nombre del curso:</label>
+                      <select id="Curso" formControlName="Curso">
+                        <option *ngFor="let curso of cursosSelect" [value]="curso.IdCurso">{{ curso.NomCurso }}</option>
+                      </select>
+                      <div *ngIf="formularioReserva.get('Curso')?.hasError('required') && formularioReserva.get('Curso')?.touched">
+                        Seleccionar un curso es obligatorio.
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="FechaLimite">Fecha límite:</label>
+                      <input type="date" id="FechaLimite" formControlName="FechaLimite" [min]="getTodayDate()">
+                      <div *ngIf="formularioReserva.get('FechaLimite')?.hasError('required') && formularioReserva.get('FechaLimite')?.touched">
+                        Seleccionar una fecha límite es obligatorio.
+                      </div>
+                    </div>
+
+                    <div class="form-group" *ngIf="this.rango!=0">
+                      <label for="rango">Número de bloques:</label>
+                      <input type="number" id="rango" formControlName="rango" min="1" max={{rango}}>
+                    </div>
+
+                    <button  [disabled]="formularioReserva.invalid" (click)="agregarReserva()">Agregar reserva</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <app-footer></app-footer>

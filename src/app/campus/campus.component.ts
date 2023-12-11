@@ -36,6 +36,7 @@ export class CampusComponent {
   }
 
   CambiarSede(NomSede: string, IdSede: number, AcronimoSede:string) {
+    this.campusService.booleanhome=false
     if(this.homeService.datoLocalStorage.IdRol!=1){
       Swal.fire({
         title: '¿Estas seguro de cambiarte de campus?',
@@ -56,6 +57,7 @@ export class CampusComponent {
       this.campusService.AcroSedeActual= AcronimoSede;
       this.campusService.NomSedeActual = NomSede;
       this.campusService.IdSede = IdSede;
+      console.log(this.campusService.IdSede);
       this.campusService.triggerMethod();
     }
   }

@@ -44,6 +44,8 @@ export class Co2Component {
   chart1Data!: any[];
   chart2Data!: any[];
  
+  booleanco2tvoc: boolean = false;
+
   constructor(public co2tvocService:dashboardService) {}
   ngOnInit() {
     const startTime = 8 * 60 + 10;
@@ -93,11 +95,9 @@ export class Co2Component {
           [this.Datos[5].Fecha, this.Datos[5].Tvoc],
           [this.Datos[6].Fecha, this.Datos[6].Tvoc],
         ];
-
-        this.commonOptions.xaxis
-
         this.crearchar();
         this.co2tvocService.co2=this.Datos[0].NivelesDeCO2;
+        this.booleanco2tvoc=true;
       });
   }
 

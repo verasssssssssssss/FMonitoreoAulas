@@ -44,8 +44,8 @@ export class LoginComponent {
       IdCiudad:0,
       token:"0",
   }
-    this.dashboardService.idAula=33;
-    this.dashboardService.NomAula="D1FM"
+    this.dashboardService.idAula=29;
+    this.dashboardService.NomAula="A1FM"
     localStorage.setItem('UsuarioLogueado', JSON.stringify(this.loginService.datoLocalStorage))
     this.router.navigate(['/dashboard']);
   }

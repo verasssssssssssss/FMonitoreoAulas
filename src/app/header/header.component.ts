@@ -9,6 +9,8 @@ import { __await } from 'tslib';
 import { LoginService } from 'src/Service/login/login.service';
 import { CampusService } from 'src/Service/campus/campus.service';
 import { Sedes } from 'src/Clases/Sedes';
+import { dashboardService } from 'src/Service/dashboard/dashboard.service';
+import { DatosSensores } from 'src/Clases/Sensores';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +22,7 @@ export class HeaderComponent {
   formularioUsuario: FormGroup;
 
   cargandoFotografia: boolean = false;
-
+  datosSensores!:DatosSensores[];
   imageUrl!: string;
 
   rutaActiva: string = '';
@@ -30,7 +32,7 @@ export class HeaderComponent {
     this.rutaActiva = ruta;
   }
 
-  constructor(private loginService: LoginService, private fb: FormBuilder, public campusService: CampusService, private router: Router, public homeService: HomeService, private fireStorage: AngularFireStorage) {
+  constructor(private dashboardService:dashboardService,private loginService: LoginService, private fb: FormBuilder, public campusService: CampusService, private router: Router, public homeService: HomeService, private fireStorage: AngularFireStorage) {
     
     this.formularioUsuario = this.fb.group({
       Nombre: ['', [Validators.required]],
@@ -61,22 +63,24 @@ export class HeaderComponent {
   }
 
   obtenerDatos() {
-    this.homeService.getusuario(this.homeService.datoLocalStorage.IdUsuario).subscribe((response) => {
-      if (response.data[0] != undefined) {
-        if (response.data[0].Fotografia != undefined && response.data[0].Fotografia != null) {
+    if(this.homeService.datoLocalStorage.IdUsuario!=0){
+      this.homeService.getusuario(this.homeService.datoLocalStorage.IdUsuario).subscribe((response) => {
+        if (response.data[0] != undefined) {
+          if (response.data[0].Fotografia != undefined && response.data[0].Fotografia != null) {
+            this.formularioUsuario.patchValue({
+              Fotografia: response.data[0].Fotografia,
+            });
+          }
           this.formularioUsuario.patchValue({
-            Fotografia: response.data[0].Fotografia,
+            Nombre: response.data[0].NomUsuario,
+            Apellido: response.data[0].ApeUsuario,
+            Mail: response.data[0].Mail,
+            Contrasenia: response.data[0].Contrasenia,
           });
+          this.imageUrl = this.formularioUsuario.get('Fotografia')?.value;
         }
-        this.formularioUsuario.patchValue({
-          Nombre: response.data[0].NomUsuario,
-          Apellido: response.data[0].ApeUsuario,
-          Mail: response.data[0].Mail,
-          Contrasenia: response.data[0].Contrasenia,
-        });
-        this.imageUrl = this.formularioUsuario.get('Fotografia')?.value;
-      }
-    });
+      });
+    }
   }
 
   cerrarModalAdministrarCuenta(accion: boolean) {
@@ -110,7 +114,6 @@ export class HeaderComponent {
 
   abrirModalAdministrarCampus() {
     this.campusService.getSedes(this.homeService.datoLocalStorage.IdCiudad).subscribe((response) => {
-      console.log(response.data);
       this.campusService.sedes = response.data;
       this.transformm(this.campusService.sedes);
     });
@@ -118,6 +121,24 @@ export class HeaderComponent {
     if (modal != null) {
       modal.style.display = 'block';
     }
+  }
+
+  abrirModalAdministrarSensores() {
+    this.dashboardService.getMonitoreoSensor(this.campusService.IdSede).subscribe((response) => {
+      this.datosSensores = response.data;
+      this.transformmm(this.datosSensores);
+      const modal = document.getElementById('abrirModalAdministrarSensores');
+      if (modal != null) {
+        modal.style.display = 'block';
+      }
+    });
+  }
+
+  cerrarModalAdministrarSensores() {
+      const modal = document.getElementById('abrirModalAdministrarSensores');
+      if (modal != null) {
+        modal.style.display = 'none';
+      }
   }
 
   cerrarModalAdministrarCampus(accion: boolean) {
@@ -191,11 +212,25 @@ export class HeaderComponent {
     });
   }
 
+  transformmm(datosSensores:DatosSensores[]) {
+    datosSensores.forEach(element => {
+      this.transformn(element);
+    });
+  }
+
   transform(sede: Sedes) {
     if (sede.FechaActivacion != null) {
       const parts = sede.FechaActivacion.split('T');
       const parts1 = parts[1].split('Z');
       sede.FechaActivacion = parts[0] + " " + parts1[0].substring(0, parts1[0].length - 4);
+    }
+  }
+
+  transformn(datosSensores:DatosSensores) {
+    if (datosSensores.Fecha != null) {
+      const parts = datosSensores.Fecha.split('T');
+      const parts1 = parts[1].split('Z');
+      datosSensores.Fecha= parts[0] + " " + parts1[0].substring(0, parts1[0].length - 4);
     }
   }
 

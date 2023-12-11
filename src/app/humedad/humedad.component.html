@@ -1,17 +1,26 @@
-<h5>Temperatura y humedad</h5>
 <div>
-  <apx-chart
-  #realchart
-    [series]="chartOptions.series!"
-    [chart]="chartOptions.chart!"
-    [xaxis]="chartOptions.xaxis!"
-    [stroke]="chartOptions.stroke!"
-    [tooltip]="chartOptions.tooltip!"
-    [dataLabels]="chartOptions.dataLabels!"
-  ></apx-chart>
-  <div *ngIf="humedadService.Temperatura>30 && humedadService.Humedad > 30 &&  humedadService.Humedad < 60" [ngClass]="'alert alert-danger mt-3'" style="display: flex; justify-content: center; align-items: center;">Se deben tomar acciones para bajar la tempretura del aula</div>
-  <div *ngIf="humedadService.Temperatura<20 && humedadService.Humedad > 30 &&  humedadService.Humedad < 60" [ngClass]="'alert alert-danger mt-3'" style="display: flex; justify-content: center; align-items: center;">Se deben tomar acciones para subir la tempretura del aula</div>
-    <div *ngIf="(humedadService.Temperatura<20 || humedadService.Temperatura > 30) &&  ( humedadService.Humedad < 30 ||  humedadService.Humedad > 60)" [ngClass]="'alert alert-danger mt-3'" style="display: flex; justify-content: center; align-items: center;">Se deben tomar acciones para regular la tempretura y humedad en el aula</div>
-  <div *ngIf="humedadService.Temperatura>20 && humedadService.Temperatura<30 && ( humedadService.Humedad < 30 ||  humedadService.Humedad > 60)" [ngClass]="'alert alert-danger mt-3'" style="display: flex; justify-content: center; align-items: center;">Se deben tomar acciones para regular la humedad del aula</div>
-  <div *ngIf="humedadService.Temperatura>20 && humedadService.Temperatura<30 && humedadService.Humedad > 30 &&  humedadService.Humedad < 60" [ngClass]="'alert alert-success mt-3'" style="display: flex; justify-content: center; align-items: center;">La temperatura y humedad del aula es adecuada</div>
+  <h5>Temperatura y humedad</h5>
+  <div>
+    <apx-chart #realchart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [xaxis]="chartOptions.xaxis!"
+      [stroke]="chartOptions.stroke!" [tooltip]="chartOptions.tooltip!"
+      [dataLabels]="chartOptions.dataLabels!"></apx-chart>
+    <div *ngIf="humedadService.Temperatura>30 && humedadService.Humedad > 30 &&  humedadService.Humedad < 60"
+      [ngClass]="'alert alert-danger mt-3'" style="display: flex; justify-content: center; align-items: center;">Se
+      deben tomar acciones para bajar la tempretura del aula</div>
+    <div *ngIf="humedadService.Temperatura<20 && humedadService.Humedad > 30 &&  humedadService.Humedad < 60"
+      [ngClass]="'alert alert-danger mt-3'" style="display: flex; justify-content: center; align-items: center;">Se
+      deben tomar acciones para subir la tempretura del aula</div>
+    <div
+      *ngIf="(humedadService.Temperatura<20 || humedadService.Temperatura > 30) &&  ( humedadService.Humedad < 30 ||  humedadService.Humedad > 60)"
+      [ngClass]="'alert alert-danger mt-3'" style="display: flex; justify-content: center; align-items: center;">Se
+      deben tomar acciones para regular la tempretura y humedad en el aula</div>
+    <div
+      *ngIf="humedadService.Temperatura>20 && humedadService.Temperatura<30 && ( humedadService.Humedad < 30 ||  humedadService.Humedad > 60)"
+      [ngClass]="'alert alert-danger mt-3'" style="display: flex; justify-content: center; align-items: center;">Se
+      deben tomar acciones para regular la humedad del aula</div>
+    <div
+      *ngIf="humedadService.Temperatura>20 && humedadService.Temperatura<30 && humedadService.Humedad > 30 &&  humedadService.Humedad < 60"
+      [ngClass]="'alert alert-success mt-3'" style="display: flex; justify-content: center; align-items: center;">La
+      temperatura y humedad del aula es adecuada</div>
+  </div>
 </div>
