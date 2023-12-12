@@ -229,7 +229,9 @@ export class HeaderComponent {
 
   transformn(datosSensores:DatosSensores) {
     if (datosSensores.Fecha != null) {
-      const parts = datosSensores.Fecha.split('T');
+      let fechaOriginal: Date = new Date(datosSensores.Fecha);
+      fechaOriginal.setHours(fechaOriginal.getHours() - 3);
+      const parts = fechaOriginal.toISOString().split('T');
       const parts1 = parts[1].split('Z');
       datosSensores.Fecha= parts[0] + " " + parts1[0].substring(0, parts1[0].length - 4);
     }
