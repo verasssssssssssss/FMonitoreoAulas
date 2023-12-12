@@ -22,8 +22,15 @@
             </div>
           </div>
           <div class="encargado">
-            <h2 *ngIf="Idaula==-1" class="card-title mb-4">Selecione un aula</h2>
-            <h2 *ngIf="Idaula!=-1" class="card-title mb-4">Horario del aula {{Nomaula}}</h2>
+
+            <div *ngIf="Idaula==-1" class="alert alert-warning card-title mb-4" >
+              <h2>Selecione un aula</h2>
+            </div>
+
+            <div *ngIf="Idaula!=-1" class="alert alert-primary card-title mb-4" >
+              <h2>Horario del aula {{Nomaula}}</h2>
+            </div>
+
           </div>
         </div>
       </div>
@@ -216,7 +223,7 @@
                         Seleccionar una carrera es obligatorio.
                       </div>
                     </div>
-                    
+
                     <div class="form-group">
                       <label for="Curso">Nombre del curso:</label>
                       <select id="Curso" formControlName="Curso">

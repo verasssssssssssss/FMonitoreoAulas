@@ -3,11 +3,11 @@
 <div class="fondocrema">
   <app-campus></app-campus>
 
-  <div class="tabla">
-    <div class="container pt-4">
+  <div class="mt-4 mb-4">
+    <div class="container">
       <div class="row">
-        <div class="center">
-          <h2 class="card-title">Listados de reportes de la sede {{this.campusService.NomSedeActual}}</h2>
+        <div class="center ">
+          <h2 class="">Listados de reportes de la sede {{this.campusService.NomSedeActual}}</h2>
         </div>
       </div>
     </div>
@@ -16,7 +16,7 @@
 
   <div>
     <div class="tabla1">
-      <div class="container pt-12">
+      <div class="container">
         <div class="row">
           <div class="form-group col-md-3">
             <input type="text" class="form-control" [(ngModel)]="filtroCurso" (ngModelChange)="onBuscarCurso()"
@@ -67,10 +67,10 @@
                                 <td>{{repor.NomAula}}</td>
                                 <td>{{repor.NomUsuario}} {{repor.ApeUsuario}}</td>
                                 <td>
-                                  <button class="btn btn-info mb-1" type="button"
+                                  <button class="btn btn-info mb-1 me-1" type="button"
                                     (click)="abrirModal(repor.IdDatos,repor.NomAula,repor.CapturaFotografica)">Visualizar</button>
                                   <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button"
-                                    class="btn btn-danger" (click)="eliminarReporte(repor.IdReporte)">Eliminar</button>
+                                    class="btn btn-danger" (click)="eliminarReporte(repor.IdReporte)"><i class="fa-regular fa-trash-can"></i></button>
                                 </td>
                               </tr>
                             </tbody>
