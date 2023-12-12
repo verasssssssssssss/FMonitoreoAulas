@@ -15,7 +15,7 @@ export class LoginComponent {
 
   hoverColor: string = 'black';
 
-  constructor(private router: Router, private loginService: LoginService,private dashboardService: dashboardService) { }
+  constructor(private router: Router, private loginService: LoginService) { }
 
   IniciarSesion(Mail: string, Contrasenia: string) {
     if (Mail != "" && Contrasenia != "") {
@@ -43,9 +43,9 @@ export class LoginComponent {
       IdCarrera:0,
       IdCiudad:0,
       token:"0",
+      Idsafsasau:0,
+      Nosafsasio:"0",
   }
-    this.dashboardService.idAula=29;
-    this.dashboardService.NomAula="A1FM"
     localStorage.setItem('UsuarioLogueado', JSON.stringify(this.loginService.datoLocalStorage))
     this.router.navigate(['/dashboard']);
   }

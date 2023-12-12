@@ -32,7 +32,7 @@ export class HeaderComponent {
     this.rutaActiva = ruta;
   }
 
-  constructor(private dashboardService:dashboardService,private loginService: LoginService, private fb: FormBuilder, public campusService: CampusService, private router: Router, public homeService: HomeService, private fireStorage: AngularFireStorage) {
+  constructor(private dashboardService:dashboardService,public loginService: LoginService, private fb: FormBuilder, public campusService: CampusService, private router: Router, public homeService: HomeService, private fireStorage: AngularFireStorage) {
     
     this.formularioUsuario = this.fb.group({
       Nombre: ['', [Validators.required]],
@@ -49,7 +49,7 @@ export class HeaderComponent {
   }
 
   async ngOnInit(): Promise<void> {
-    this.homeService.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
+    this.loginService.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
     this.imageUrl = this.formularioUsuario.get('Fotografia')?.value;
     this.obtenerDatos();
   }
@@ -57,14 +57,15 @@ export class HeaderComponent {
   eliminarDatoDelLocalStorage(cerrar: boolean) {
     if (cerrar) {
       localStorage.removeItem('UsuarioLogueado');
-      this.homeService.datoLocalStorage = { IdUsuario: 0, NomUsuario: "0", ApeUsuario: "0", Mail: "0", IdRol: 0, IdSede: 0, IdCarrera: 0, IdCiudad: 0, token: "0" };
+      this.loginService.datoLocalStorage= { IdUsuario: 0, NomUsuario: "0", ApeUsuario: "0", Mail: "0", IdRol: 0, IdSede: 0, IdCarrera: 0, IdCiudad: 0, token: "0",      Idsafsasau:0,
+      Nosafsasio:"0" };
     }
     this.router.navigate(['/login']);
   }
 
   obtenerDatos() {
-    if(this.homeService.datoLocalStorage.IdUsuario!=0){
-      this.homeService.getusuario(this.homeService.datoLocalStorage.IdUsuario).subscribe((response) => {
+    if(this.loginService.datoLocalStorage.IdUsuario!=0){
+      this.homeService.getusuario(this.loginService.datoLocalStorage.IdUsuario).subscribe((response) => {
         if (response.data[0] != undefined) {
           if (response.data[0].Fotografia != undefined && response.data[0].Fotografia != null) {
             this.formularioUsuario.patchValue({
@@ -93,7 +94,7 @@ export class HeaderComponent {
         denyButtonText: `No`,
       }).then((result) => {
         if (result.isConfirmed) {
-          this.homeService.editarUsuario(this.homeService.datoLocalStorage.IdUsuario, this.formularioUsuario.get('Nombre')?.value, this.formularioUsuario.get('Apellido')?.value, this.formularioUsuario.get('Fotografia')?.value, this.formularioUsuario.get('Mail')?.value, this.formularioUsuario.get('Contrasenia')?.value).subscribe((response) => {
+          this.homeService.editarUsuario(this.loginService.datoLocalStorage.IdUsuario, this.formularioUsuario.get('Nombre')?.value, this.formularioUsuario.get('Apellido')?.value, this.formularioUsuario.get('Fotografia')?.value, this.formularioUsuario.get('Mail')?.value, this.formularioUsuario.get('Contrasenia')?.value).subscribe((response) => {
             this.successSwal("Los datos de tu cuenta fueron actualizados correctamente");
             const modal = document.getElementById('ModalAdministrarCuenta');
             if (modal != null) {
@@ -113,7 +114,7 @@ export class HeaderComponent {
   }
 
   abrirModalAdministrarCampus() {
-    this.campusService.getSedes(this.homeService.datoLocalStorage.IdCiudad).subscribe((response) => {
+    this.campusService.getSedes(this.loginService.datoLocalStorage.IdCiudad).subscribe((response) => {
       this.campusService.sedes = response.data;
       this.transformm(this.campusService.sedes);
     });
@@ -151,7 +152,7 @@ export class HeaderComponent {
         denyButtonText: `No`,
       }).then((result) => {
         if (result.isConfirmed) {
-          this.homeService.editarUsuario(this.homeService.datoLocalStorage.IdUsuario, this.formularioUsuario.get('Nombre')?.value, this.formularioUsuario.get('Apellido')?.value, this.formularioUsuario.get('Fotografia')?.value, this.formularioUsuario.get('Mail')?.value, this.formularioUsuario.get('Contrasenia')?.value).subscribe((response) => {
+          this.homeService.editarUsuario(this.loginService.datoLocalStorage.IdUsuario, this.formularioUsuario.get('Nombre')?.value, this.formularioUsuario.get('Apellido')?.value, this.formularioUsuario.get('Fotografia')?.value, this.formularioUsuario.get('Mail')?.value, this.formularioUsuario.get('Contrasenia')?.value).subscribe((response) => {
             this.successSwal("Los datos de tu cuenta fueron actualizados correctamente");
             const modal = document.getElementById('ModalAdministrarCuenta');
             if (modal != null) {
@@ -180,7 +181,7 @@ export class HeaderComponent {
   editarCampus(tipo: boolean, idCampus: number, nomCampus: string) {
     if (tipo) {
       this.campusService.campusActivar(idCampus).subscribe(() => {
-        this.campusService.getSedes(this.homeService.datoLocalStorage.IdCiudad).subscribe((response) => {
+        this.campusService.getSedes(this.loginService.datoLocalStorage.IdCiudad).subscribe((response) => {
           this.campusService.sedes = response.data;
           this.transformm(this.campusService.sedes);
         });
@@ -195,7 +196,7 @@ export class HeaderComponent {
       }).then((result) => {
         if (result.isConfirmed) {
           this.campusService.campusDesactivar(idCampus).subscribe(() => {
-            this.campusService.getSedes(this.homeService.datoLocalStorage.IdCiudad).subscribe((response) => {
+            this.campusService.getSedes(this.loginService.datoLocalStorage.IdCiudad).subscribe((response) => {
               this.successSwal('las notificaciones del campus ' + nomCampus + ' fue desactivada correctamente');
               this.campusService.sedes = response.data;
               this.transformm(this.campusService.sedes);

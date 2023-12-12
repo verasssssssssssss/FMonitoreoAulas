@@ -8,10 +8,10 @@
       <div class="row">
         <div class="encargado">
           <h2 class="card-title mb-4">Áreas de trabajo del campus {{this.campusService.NomSedeActual}}</h2>
-          <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-info m-2"
+          <button *ngIf="this.loginService.datoLocalStorage.IdRol==1" class="btn btn-info m-2"
             (click)="abrirModalAreaDeTrabajo(true,'',0)">
             <i class="fa-solid fa-plus"></i> Agregar áreas de trabajo</button>
-          <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-warning"
+          <button *ngIf="this.loginService.datoLocalStorage.IdRol==1" class="btn btn-warning"
             (click)="abrirModalEncargado()">
             <i class="fa-solid fa-people-roof"></i> Administrar Encargados</button>
         </div>
@@ -29,10 +29,10 @@
               <div class="d-flex align-items-center justify-content-between">
                 <h5 class="card-title">{{AreasT.NomArea}}</h5>
                 <div>
-                  <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-warning m-2"
+                  <button *ngIf="this.loginService.datoLocalStorage.IdRol==1" class="btn btn-warning m-2"
                     (click)="abrirModalAreaDeTrabajo(false,AreasT.NomArea,AreasT.IdArea)">
                     <i class="fa-regular fa-pen-to-square"></i> Editar</button>
-                  <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-danger"
+                  <button *ngIf="this.loginService.datoLocalStorage.IdRol==1" class="btn btn-danger"
                     (click)="eliminarAreasDeTrabajo(AreasT.IdArea,AreasT.NomArea)">
                     <i class="fa-regular fa-trash-can"></i> Eliminar</button>
                 </div>
@@ -45,7 +45,7 @@
                       <div class="d-flex align-items-center justify-content-between">
                         <h5 class="card-title">Aulas dentro del área</h5>
                         <div>
-                          <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" class="btn btn-info"
+                          <button *ngIf="this.loginService.datoLocalStorage.IdRol==1" class="btn btn-info"
                             (click)="abrirModalAula(null,false,AreasT)">
                             <i class="fa-solid fa-plus"></i> Agregar aula</button>
                         </div>
@@ -68,11 +68,11 @@
                               <td>
                                 <button [disabled]="Aulas.IdSensor===null" type="button" class="btn btn-info m-1"
                                   (click)="Visualizar(Aulas.IdAula,Aulas.NomAula)">Datos ambientales</button>
-                                <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button" class="btn btn-warning m-1"
+                                <button *ngIf="this.loginService.datoLocalStorage.IdRol==1" type="button" class="btn btn-warning m-1"
                                   (click)="abrirModalAula(Aulas,true,AreasT)">
                                   <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
-                                <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button" class="btn btn-danger"
+                                <button *ngIf="this.loginService.datoLocalStorage.IdRol==1" type="button" class="btn btn-danger"
                                   (click)="eliminarAula(Aulas.IdAula,Aulas.NomAula)">
                                   <i class="fa-regular fa-trash-can"></i>
                                 </button>

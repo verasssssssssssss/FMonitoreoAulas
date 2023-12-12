@@ -30,6 +30,10 @@ export class dashboardService {
     return this.http.get<any>(URL_ENDPOINT + 'datos/Iluminica/'+this.idAula);
   }
 
+  getAulasConSensores(): Observable<any> {
+    return this.http.get<any>(URL_ENDPOINT + 'aula/listado/todos/');
+  }
+
   getMonitoreoSensor(IdSede:number): Observable<any> {
     const body = { IdSede:IdSede};
     return this.http.get<any>(URL_ENDPOINT + 'sensores/monitorear/?token='+this.loginService.datoLocalStorage.token,{params:body});

@@ -40,9 +40,7 @@ export class HumedadComponent {
   getTempHumedad(){
   this.humedadService.getTempHumedad().subscribe(
     (response) => {
-      this.Datos=response;
-      if(this.Datos.length!=0){
-        console.log('Datos disponibles. Actualizando gráfico...');
+      this.Datos=response.data;
         this.chart.updateSeries([{
           name: "Temperatura",
           data:[this.Datos[0].Temperatura,this.Datos[1].Temperatura,this.Datos[2].Temperatura,this.Datos[3].Temperatura,this.Datos[4].Temperatura,this.Datos[5].Temperatura,this.Datos[6].Temperatura,this.Datos[7].Temperatura,this.Datos[8].Temperatura,this.Datos[9].Temperatura]
@@ -58,14 +56,9 @@ export class HumedadComponent {
             type: "datetime",
             categories: [this.Datos[0].Fecha,this.Datos[1].Fecha,this.Datos[2].Fecha,this.Datos[3].Fecha,this.Datos[4].Fecha,this.Datos[5].Fecha,this.Datos[6].Fecha,this.Datos[7].Fecha,this.Datos[8].Fecha,this.Datos[9].Fecha]
           },
-          dataLabels: {
-            enabled: true
-          },
-        });
-      this.booleanTempHumedad = true; // Verificar si se alcanza este punto
+        });     
       this.humedadService.Temperatura = this.Datos[0].Temperatura;
       this.humedadService.Humedad = this.Datos[0].Humedad;
-      }
     },
     (error) => {
       console.error('Error al obtener datos:', error);

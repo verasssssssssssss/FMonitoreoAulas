@@ -8,4 +8,6 @@ export class Usuarios{
     IdCarrera!:number;
     IdCiudad!:number;
     token!:string;
+    Idsafsasau!:number;
+    Nosafsasio!:string;
 }

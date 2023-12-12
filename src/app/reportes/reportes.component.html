@@ -69,7 +69,7 @@
                                 <td>
                                   <button class="btn btn-info mb-1 me-1" type="button"
                                     (click)="abrirModal(repor.IdDatos,repor.NomAula,repor.CapturaFotografica)">Visualizar</button>
-                                  <button *ngIf="this.homeService.datoLocalStorage.IdRol==1" type="button"
+                                  <button *ngIf="this.loginService.datoLocalStorage.IdRol==1" type="button"
                                     class="btn btn-danger" (click)="eliminarReporte(repor.IdReporte)"><i class="fa-regular fa-trash-can"></i></button>
                                 </td>
                               </tr>

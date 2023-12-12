@@ -1,8 +1,64 @@
 <app-header></app-header>
 <div class="container pt-4">
+  <div *ngIf="this.loginService.datoLocalStorage.token=='0'" class="row">
+    <div class="col-md-12">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div>
+            <div style="display: flex; align-items: center; justify-content: center;">
+              <button *ngFor="let aula of Aulas" class="btn btn-info fs-4 m-1"
+                (click)="selecionarAula(aula.NomAula,aula.IdAula)">
+                {{ aula.NomAula }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <h1 style="padding-left: 37%;">Datos del aula {{dashboardService.NomAula}}</h1>
 
-  <div class="row">
+  <div class="row" *ngIf="this.loginService.datoLocalStorage.token=='0'">
+    <div class="col-md-12">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card mb-12">
+                <div class="card-body">
+                  <ng-template #dynamicComponenthumedad></ng-template>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card mb-12">
+                <div class="card-body">
+                  <div>
+                    <ng-template #dynamicComponentco2></ng-template>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-1">
+                <div style="height:  370px; width: 0.1px; background-color: rgb(255, 255, 255);"></div>
+              </div>
+              <div class="col-md-10 ">
+                <div class="card mb-12">
+                  <ng-template #dynamicComponentiluminica></ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="this.loginService.datoLocalStorage.token!='0'">
     <div class="col-md-12">
       <div class="card mb-4">
         <div class="card-body">
@@ -17,7 +73,7 @@
             <div class="col-md-6">
               <div class="card mb-12">
                 <div class="card-body">
-                  <div >
+                  <div>
                     <app-co2></app-co2>
                   </div>
                 </div>

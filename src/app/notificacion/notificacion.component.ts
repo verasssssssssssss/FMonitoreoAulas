@@ -53,7 +53,7 @@ export class NotificacionComponent {
     { inicio: 19.20, fin: 20.00 },
   ];
 
-  constructor(private loginService: LoginService, public campusService: CampusService, public homeService: HomeService, private fb: FormBuilder, private notificacionService: NotificacionService, private datePipe: DatePipe) {
+  constructor(public loginService: LoginService, public campusService: CampusService, public homeService: HomeService, private fb: FormBuilder, private notificacionService: NotificacionService, private datePipe: DatePipe) {
     this.fechaActual = new Date();
     this.fechaFormateada = this.datePipe.transform(this.fechaActual, 'dd/MM/yyyy HH:mm:ss') || 'Fecha inválida';
 
@@ -72,15 +72,15 @@ export class NotificacionComponent {
 
   ngOnInit(): void {
     setInterval(() => {
-      if (this.recibitNotificacion && this.homeService.datoLocalStorage.IdRol == 2) {
-        this.campusService.getEstado(this.homeService.datoLocalStorage.IdSede).subscribe((response) => {
+      if (this.recibitNotificacion && this.loginService.datoLocalStorage.IdRol == 2) {
+        this.campusService.getEstado(this.loginService.datoLocalStorage.IdSede).subscribe((response) => {
           if (response.data[0].Activa == 1 && this.recibitNotificacion) {
             this.recibitNotificacion = !this.recibitNotificacion;
             this.getNotifiacionDesuso();
           }
         });
       }
-    }, 6000); // 10000 milisegundos = 10 segundos
+    }, 200000); // 10000 milisegundos = 10 segundos
   }
 
   getNotifiacionDesuso() {
@@ -90,7 +90,7 @@ export class NotificacionComponent {
     this.notificacionService.getCarrerasSede(this.loginService.datoLocalStorage.IdSede).subscribe((response) => {
       this.carrerasSede = response.data;
     });
-    this.notificacionService.getNotifiacionDesuso(this.homeService.datoLocalStorage.IdSede).subscribe((response) => {
+    this.notificacionService.getNotifiacionDesuso(this.loginService.datoLocalStorage.IdSede).subscribe((response) => {
       if (response.dataLenghy != 0) {
         this.notificacion = response.data[0];
         this.obtenerBloque(this.notificacion.Fecha);
@@ -124,7 +124,7 @@ export class NotificacionComponent {
               NomCurso: this.reserva.NomCurso,
               NomCarrera: this.reserva.NomCarrera,
               CapturaFotografica: this.notificacion.CapturaFotografica,
-              IdUsuario: this.homeService.datoLocalStorage.IdUsuario,
+              IdUsuario: this.loginService.datoLocalStorage.IdUsuario,
             });
             this.alertaDesusoDeAula(this.notificacion.NomAula, this.notificacion.CapturaFotografica);
           }else{
@@ -178,9 +178,9 @@ export class NotificacionComponent {
     this.enviandoCorreo();
     this.notificacionService.enviarCorreo(this.datosCorreo.Mail, this.datosCorreo.NomUsuario, this.datosCorreo.ApeUsuario, this.datosCorreo.NomSede,
       this.formularioCorreo.get('NomCurso')?.value, this.formularioCorreo.get('Codigo')?.value, this.fechaFormateada, this.formularioCorreo.get('NomCarrera')?.value,
-      this.homeService.datoLocalStorage.NomUsuario + "" + this.homeService.datoLocalStorage.ApeUsuario, this.notificacion.NomAula, this.notificacion.CapturaFotografica).subscribe((response) => {
+      this.loginService.datoLocalStorage.NomUsuario + "" + this.loginService.datoLocalStorage.ApeUsuario, this.notificacion.NomAula, this.notificacion.CapturaFotografica).subscribe((response) => {
       });
-    this.notificacionService.agregarReporte(this.reserva.IdCurso, this.reserva.IdCarrera, this.homeService.datoLocalStorage.IdUsuario, this.notificacion.IdAula, this.notificacion.IdDatos).subscribe((response) => {
+    this.notificacionService.agregarReporte(this.reserva.IdCurso, this.reserva.IdCarrera, this.loginService.datoLocalStorage.IdUsuario, this.notificacion.IdAula, this.notificacion.IdDatos).subscribe((response) => {
       this.cerrarrModalCorreoPre();
       this.cerrarrModalCorreo(false, true);
     }, (error) => {

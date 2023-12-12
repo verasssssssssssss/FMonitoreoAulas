@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HomeService } from 'src/Service/home/home.service';
+import { LoginService } from 'src/Service/login/login.service';
 
 @Component({
   selector: 'app-footer',
@@ -8,6 +9,6 @@ import { HomeService } from 'src/Service/home/home.service';
 })
 export class FooterComponent {
 
-  constructor(public homeService:HomeService) {}
+  constructor(public loginService: LoginService) {}
 
 }

@@ -1,15 +1,15 @@
 <nav class="navbar navbar-expand-lg backgroundcolor">
   <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/home" *ngIf="this.homeService.datoLocalStorage.IdRol!=0">
+    <a class="navbar-brand" routerLink="/home" *ngIf="this.loginService.datoLocalStorage.IdRol!=0">
       <img src="assets\Imagenes\isotipo.png" alt="Logo" width="75" height="100">
     </a>
-    <a class="navbar-brand" *ngIf="this.homeService.datoLocalStorage.IdRol==0">
+    <a class="navbar-brand" *ngIf="this.loginService.datoLocalStorage.IdRol==0">
       <img src="assets\Imagenes\isotipo.png" alt="Logo" width="75" height="100">
     </a>
-    <a class="navbar-brand" *ngIf="this.homeService.datoLocalStorage.IdRol==0">
+    <a class="navbar-brand" *ngIf="this.loginService.datoLocalStorage.IdRol==0">
       <h1>Sistema de monitoreo de aulas universidad del BÍO-BÍO</h1>
     </a>
-    <ul class="navbar-nav me-auto nav-pills" *ngIf="this.homeService.datoLocalStorage.IdRol!=0">
+    <ul class="navbar-nav me-auto nav-pills" *ngIf="this.loginService.datoLocalStorage.IdRol!=0">
       <li class="nav-item">
         <a class="nav-link fs-5 blanco"
            routerLinkActive="active"
@@ -29,24 +29,24 @@
            <i class="fa-regular fa-clock"></i> Horario</a>
       </li>
     </ul>
-    <div *ngIf="this.homeService.datoLocalStorage.IdRol==1">
+    <div *ngIf="this.loginService.datoLocalStorage.IdRol==1">
       <button class="btn btn-primary fs-6 m-1" (click)="abrirModalAdministrarCampus()">
         <i class="fa-solid fa-list-check"></i> Administrar Campus</button>
     </div>
-    <div *ngIf="this.homeService.datoLocalStorage.IdRol==1">
+    <div *ngIf="this.loginService.datoLocalStorage.IdRol==1">
       <button class="btn btn-primary fs-6 m-1" (click)="abrirModalAdministrarSensores()">
         <i class="fa-solid fa-satellite-dish"></i> Administrar Sensores</button>
     </div>
-    <div *ngIf="this.homeService.datoLocalStorage.IdRol!=0">
+    <div *ngIf="this.loginService.datoLocalStorage.IdRol!=0">
       <button class="btn btn-primary fs-6 m-1" (click)="abrirModalAdministrarCuenta()">
         <i class="fa-regular fa-user"></i> Administrar cuenta</button>
 
     </div>
-    <div *ngIf="this.homeService.datoLocalStorage.IdRol!=0">
+    <div *ngIf="this.loginService.datoLocalStorage.IdRol!=0">
       <button class="btn btn-danger fs-6" (click)="eliminarDatoDelLocalStorage(true)">
         <i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión</button>
     </div>
-    <div *ngIf="this.homeService.datoLocalStorage.IdRol==0">
+    <div *ngIf="this.loginService.datoLocalStorage.IdRol==0">
       <button class="btn btn-danger fs-5" (click)="eliminarDatoDelLocalStorage(false)">Login</button>
     </div>
   </div>

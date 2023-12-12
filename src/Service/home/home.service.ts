@@ -9,8 +9,6 @@ import { LoginService } from '../login/login.service';
   providedIn: 'root'
 })
 export class HomeService {
-
-  datoLocalStorage!: Usuarios;
   
   constructor(private http: HttpClient, private loginService:LoginService) { }
 

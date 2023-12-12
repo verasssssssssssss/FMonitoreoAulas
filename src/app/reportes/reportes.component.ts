@@ -3,6 +3,7 @@ import { Sedes } from 'src/Clases/Sedes';
 import { reporte } from 'src/Clases/reportes';
 import { CampusService } from 'src/Service/campus/campus.service';
 import { HomeService } from 'src/Service/home/home.service';
+import { LoginService } from 'src/Service/login/login.service';
 import { ReportesService } from 'src/Service/reportes/reportes.service';
 import Swal from 'sweetalert2';
 
@@ -27,10 +28,10 @@ export class ReportesComponent implements OnInit {
   booleanreprote: boolean = false;
 
 
-  constructor(public campusService: CampusService,private sreportes: ReportesService,public homeService:HomeService){}
+  constructor(public loginService: LoginService,public campusService: CampusService,private sreportes: ReportesService,public homeService:HomeService){}
   ngOnInit() {
-    this.homeService.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
-    this.getRepoertes(this.homeService.datoLocalStorage.IdSede);
+    this.loginService.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
+    this.getRepoertes(this.loginService.datoLocalStorage .IdSede);
     this.campusService.triggerMethod$.subscribe(() => {
       this.getRepoertes(this.campusService.IdSede);
     });
@@ -88,7 +89,7 @@ export class ReportesComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.sreportes.eliminarReporte(Idreporte).subscribe(  (response) => {
-          this.getRepoertes(this.homeService.datoLocalStorage.IdSede);
+          this.getRepoertes(this.loginService.datoLocalStorage.IdSede);
         }, (error) => {
           this.errorSwal("Ocurrio un error al intentar eliminar el reporte");
         });

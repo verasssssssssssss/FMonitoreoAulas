@@ -10,6 +10,7 @@ import { NotificacionService } from 'src/Service/Notificacion/notificacion.servi
 import { CampusService } from 'src/Service/campus/campus.service';
 import { HomeService } from 'src/Service/home/home.service';
 import { HorarioService } from 'src/Service/horario.service';
+import { LoginService } from 'src/Service/login/login.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -60,7 +61,7 @@ export class HorarioComponent {
     { indice: 16, tiempo: '19:20 a 20:00' },
   ];
 
-  constructor(private fb: FormBuilder, private notificacionService: NotificacionService, public campusService: CampusService, private horarioService: HorarioService, private homeService: HomeService) {
+  constructor(private loginService: LoginService,private fb: FormBuilder, private notificacionService: NotificacionService, public campusService: CampusService, private horarioService: HorarioService, private homeService: HomeService) {
     this.formularioReserva = this.fb.group({
       Curso: ['', [Validators.required]],
       carrera: ['', [Validators.required]],
@@ -81,10 +82,10 @@ export class HorarioComponent {
   }
 
   ngOnInit(): void {
-    this.homeService.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
-    this.getAulas(this.homeService.datoLocalStorage.IdSede);
+    this.loginService.datoLocalStorage = JSON.parse(localStorage.getItem('UsuarioLogueado')!);
+    this.getAulas(this.loginService.datoLocalStorage.IdSede);
     this.campusService.triggerMethod$.subscribe(() => {
-      this.getAulas(this.homeService.datoLocalStorage.IdSede);
+      this.getAulas(this.loginService.datoLocalStorage.IdSede);
     });
   }
 
