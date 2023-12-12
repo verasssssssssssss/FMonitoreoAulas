@@ -76,6 +76,13 @@ export class Co2Component {
         this.chart1options = {};
         this.chart2options = {};
         this.Datos = response.data;
+        this.Datos.forEach(element => {
+          let fechaString: string = element.Fecha; // Tu fecha en formato de cadena
+          let fechaOriginal: Date = new Date(fechaString); // Convertir la cadena a un objeto Date
+          fechaOriginal.setHours(fechaOriginal.getHours() - 3);
+          const parts = fechaOriginal.toISOString().split('T');
+          element.Fecha=parts[0]+" "+parts[1];
+        });
         this.chart1Data = [
           [this.Datos[0].Fecha, this.Datos[0].NivelesDeCO2],
           [this.Datos[1].Fecha, this.Datos[1].NivelesDeCO2],
@@ -190,11 +197,4 @@ export class Co2Component {
       type: "datetime"
     }
   };
-
-  transform() {
-    this.Datos.forEach(element => {
-      const parts = element.Fecha.split('T');
-      element.Fecha=parts[1].slice(0, -5);
-    });
-  }
 }

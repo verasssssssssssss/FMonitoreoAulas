@@ -144,8 +144,12 @@ export class IluminicaComponent {
 
   transform() {
     this.Datos.forEach(element => {
-      const parts = element.Fecha.split('T');
+      let fechaString: string = element.Fecha; // Tu fecha en formato de cadena
+      let fechaOriginal: Date = new Date(fechaString); // Convertir la cadena a un objeto Date
+      fechaOriginal.setHours(fechaOriginal.getHours() - 3);
+      const parts = fechaOriginal.toISOString().split('T');
       element.Fecha=parts[1].slice(0, -5);
     });
   }
 }
+

@@ -41,6 +41,12 @@ export class HumedadComponent {
   this.humedadService.getTempHumedad().subscribe(
     (response) => {
       this.Datos=response.data;
+      this.Datos.forEach(element => {
+        let fechaString: string = element.Fecha; // Tu fecha en formato de cadena
+        let fechaOriginal: Date = new Date(fechaString); // Convertir la cadena a un objeto Date
+        fechaOriginal.setHours(fechaOriginal.getHours() - 3);
+        element.Fecha=fechaOriginal.toISOString();
+      });
         this.chart.updateSeries([{
           name: "Temperatura",
           data:[this.Datos[0].Temperatura,this.Datos[1].Temperatura,this.Datos[2].Temperatura,this.Datos[3].Temperatura,this.Datos[4].Temperatura,this.Datos[5].Temperatura,this.Datos[6].Temperatura,this.Datos[7].Temperatura,this.Datos[8].Temperatura,this.Datos[9].Temperatura]
@@ -124,5 +130,4 @@ export class HumedadComponent {
       }
     };
   }
-
 }
