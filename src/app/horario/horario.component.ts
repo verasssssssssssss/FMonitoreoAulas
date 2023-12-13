@@ -31,6 +31,8 @@ export class HorarioComponent {
   cursosSede!: Cursos[];
   cursosSelect!: Cursos[];
 
+  busqueda: string = '';
+
   Nomaula: string = "...";
   Idaula: number = -1;
   prueba: string = "...";
