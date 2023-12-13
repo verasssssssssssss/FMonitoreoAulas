@@ -45,7 +45,7 @@ export class HomeComponent {
       Nombre: ['', [Validators.required]],
       Apellido: ['', [Validators.required]],
       Mail: ['', [Validators.required, Validators.email]],
-      Contrasenia: ['', [Validators.required, Validators.minLength(8)]],
+      Contrasenia: ['',],
     });
   }
 
@@ -283,7 +283,7 @@ export class HomeComponent {
           Nombre: this.EncargadosSelecionado.NomUsuario,
           Apellido: this.EncargadosSelecionado.ApeUsuario,
           Mail: this.EncargadosSelecionado.Mail,
-          Contrasenia: this.EncargadosSelecionado.Contrasenia,
+          Contrasenia: '',
           Fotografia: this.EncargadosSelecionado.Fotografia,
         });
         if(this.EncargadosSelecionado.Fotografia!=null){
