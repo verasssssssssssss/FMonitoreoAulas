@@ -217,7 +217,7 @@
                     <div class="form-group">
                       <label for="carrera">Nombre de la carrera:</label>
                       <select id="carrera" formControlName="carrera">
-                        <option *ngFor="let carrera of CarrerasSede" [value]="carrera.IdCarrera">{{ carrera.NomCarrera }}</option>
+                        <option *ngFor="let carrera of CarrerasSede" [value]="carrera.IdCarrera">{{ carrera.Codigo}} {{ carrera.NomCarrera }}</option>
                       </select>
                       <div *ngIf="formularioReserva.get('carrera')?.hasError('required') && formularioReserva.get('carrera')?.touched">
                         Seleccionar una carrera es obligatorio.
@@ -227,7 +227,7 @@
                     <div class="form-group">
                       <label for="Curso">Nombre del curso:</label>
                       <select id="Curso" formControlName="Curso">
-                        <option *ngFor="let curso of cursosSelect" [value]="curso.IdCurso">{{ curso.NomCurso }}</option>
+                        <option *ngFor="let curso of cursosSelect" [value]="curso.IdCurso">{{ curso.Codigo }}  {{ curso.NomCurso }}</option>
                       </select>
                       <div *ngIf="formularioReserva.get('Curso')?.hasError('required') && formularioReserva.get('Curso')?.touched">
                         Seleccionar un curso es obligatorio.
