@@ -11,39 +11,39 @@
     </a>
     <ul class="navbar-nav me-auto nav-pills" *ngIf="this.loginService.datoLocalStorage.IdRol!=0">
       <li class="nav-item">
-        <a class="nav-link fs-5 blanco"
+        <a class="nav-link fs-4 blanco"
            routerLinkActive="active"
            routerLink="/home">
            <i class="fa-solid fa-house"></i> Inicio</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link fs-5 blanco"
+        <a class="nav-link fs-4 blanco"
            routerLinkActive="active"
            routerLink="/reportes">
            <i class="fa-regular fa-flag"></i> Listado de reportes</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link fs-5 blanco"
+        <a class="nav-link fs-4 blanco"
            routerLinkActive="active"
            routerLink="/horario">
            <i class="fa-regular fa-clock"></i> Horario</a>
       </li>
     </ul>
     <div *ngIf="this.loginService.datoLocalStorage.IdRol==1">
-      <button class="btn btn-primary fs-6 m-1" (click)="abrirModalAdministrarCampus()">
-        <i class="fa-solid fa-list-check"></i> Administrar Campus</button>
+      <button class="btn btn-primary fs-5 m-1" (click)="abrirModalAdministrarCampus()">
+        <i class="fa-solid fa-list-check"></i> Activar/desactivar alertas</button>
     </div>
     <div *ngIf="this.loginService.datoLocalStorage.IdRol==1">
-      <button class="btn btn-primary fs-6 m-1" (click)="abrirModalAdministrarSensores()">
-        <i class="fa-solid fa-satellite-dish"></i> Administrar Sensores</button>
+      <button class="btn btn-primary fs-5 m-1" (click)="abrirModalAdministrarSensores()">
+        <i class="fa-solid fa-satellite-dish"></i> Ver estado de Sensores</button>
     </div>
     <div *ngIf="this.loginService.datoLocalStorage.IdRol!=0">
-      <button class="btn btn-primary fs-6 m-1" (click)="abrirModalAdministrarCuenta()">
+      <button class="btn btn-primary fs-5 m-1" (click)="abrirModalAdministrarCuenta()">
         <i class="fa-regular fa-user"></i> Administrar cuenta</button>
 
     </div>
     <div *ngIf="this.loginService.datoLocalStorage.IdRol!=0">
-      <button class="btn btn-danger fs-6" (click)="eliminarDatoDelLocalStorage(true)">
+      <button class="btn btn-danger fs-5" (click)="eliminarDatoDelLocalStorage(true)">
         <i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión</button>
     </div>
     <div *ngIf="this.loginService.datoLocalStorage.IdRol==0">
@@ -180,7 +180,7 @@
 <div id="abrirModalAdministrarSensores" class="modal">
   <div class="modal-content" style="width: 90vw; max-width: none;">
     <span class="cerrar" (click)="cerrarModalAdministrarSensores()">&times;</span>
-    <h2>Listado de Sensores</h2>
+    <h2>Estado de Sensores </h2>
     <div class="row">
       <div class="col-md-12">
         <div class="card mb-4">

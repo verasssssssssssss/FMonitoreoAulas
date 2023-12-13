@@ -3,7 +3,7 @@
     <span class="loader"></span>
   </div>
   <div *ngIf="this.booleanco2tvoc" >
-  <h5>Niveles de CO2</h5>
+  <h5>Niveles de CO2 (ppm)</h5>
   <apx-chart
     [series]="chart1options.series!"
     [chart]="chart1options.chart!"
@@ -16,7 +16,7 @@
     [xaxis]="commonOptions.xaxis!"
     [tooltip]="commonOptions.tooltip!"
   ></apx-chart>
-  <h5>Niveles de tvoc</h5>
+  <h5>Niveles de TVOC (ppb)</h5>
   <apx-chart
     [series]="chart2options.series!"
     [chart]="chart2options.chart!"

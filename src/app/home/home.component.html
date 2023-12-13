@@ -2,6 +2,10 @@
 
 <div class="fondocrema">
 
+  <div class="d-flex justify-content-center align-items-center align-text-center pt-5 mb-5">
+    <h1>Bienvenid@ al Sistema de Monitoreo de aulas UBB</h1>
+  </div>
+
   <app-campus></app-campus>
   <div class="contiene">
     <div class="container pt-4">
@@ -35,7 +39,7 @@
                 <div>
                   <button *ngIf="this.loginService.datoLocalStorage.IdRol==1" class="btn btn-warning m-2"
                     (click)="abrirModalAreaDeTrabajo(false,AreasT.NomArea,AreasT.IdArea)">
-                    <i class="fa-regular fa-pen-to-square"></i> Editar</button>
+                    <i class="fa-regular fa-pen-to-square"></i> Cambiar nombre</button>
                   <button *ngIf="this.loginService.datoLocalStorage.IdRol==1" class="btn btn-danger"
                     (click)="eliminarAreasDeTrabajo(AreasT.IdArea,AreasT.NomArea)">
                     <i class="fa-regular fa-trash-can"></i> Eliminar</button>
