@@ -23,7 +23,6 @@ import { dashboardComponent } from './dashboard/dashboard.component';
 import { HumedadComponent } from './humedad/humedad.component';
 import { Co2Component } from './co2/co2.component';
 import { IluminicaComponent } from './iluminica/iluminica.component';
-import { MatIconModule } from '@angular/material/icon';
 import { CampusComponent } from './campus/campus.component';
 import { FooterComponent } from './footer/footer.component';
 

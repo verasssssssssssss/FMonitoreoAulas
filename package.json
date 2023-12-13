@@ -23,6 +23,7 @@
     "@angular/router": "^15.1.0",
     "apexcharts": "^3.43.0",
     "bootstrap": "^5.3.1",
+    "material": "^0.7.8",
     "netlify-cli": "^16.8.0",
     "ng-apexcharts": "^1.8.0",
     "ngx-pagination": "^6.0.3",
