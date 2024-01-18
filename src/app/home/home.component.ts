@@ -56,13 +56,17 @@ export class HomeComponent {
   }
   
   cambiarSedeEncargado(IdUsuario: number,IdSede: number){
-    this.homeService.cambiarSedeEncargado(IdUsuario,IdSede).subscribe((response) => {});
+    this.homeService.cambiarSedeEncargado(IdUsuario,IdSede).subscribe();
   }
 
   getAreasDeTrabajo(IdSede: number) {
     this.homeService.getAreasDeTrabajo(IdSede).subscribe(async (response) => {
       this.AreasDeTrabajo = await response.data;
-      this.getAulas();
+      if(this.AreasDeTrabajo.length==0){
+        this.campusService.booleanhome=true;
+      }else{
+        this.getAulas();
+      }
       this.getEncargados(this.loginService.datoLocalStorage.IdSede);
     });
   }

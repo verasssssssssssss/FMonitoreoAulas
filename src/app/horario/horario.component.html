@@ -12,6 +12,7 @@
               <div class="card-body">
                 <div>
                   <div style="display: flex; align-items: center; justify-content: center;">
+                    <h3 *ngIf="this.Aulas.length==0" class="card-title">No existen aulas registradas dentro de la sede</h3>
                     <button *ngFor="let aula of Aulas" class="btn btn-info fs-4 m-1"
                       (click)="selecionarAula(aula.NomAula,aula.IdAula)">
                       {{ aula.NomAula }}
@@ -216,7 +217,7 @@
 
                     <div class="form-group">
                       <label for="carrera">Nombre de la carrera:</label>
-                      <select id="carrera" formControlName="carrera">
+                      <select id="carrera" formControlName="carrera" style="width: 110%;">
                         <option *ngFor="let carrera of CarrerasSede" [value]="carrera.IdCarrera">{{ carrera.Codigo}} {{ carrera.NomCarrera }}</option>
                       </select>
                       <div *ngIf="formularioReserva.get('carrera')?.hasError('required') && formularioReserva.get('carrera')?.touched">
@@ -226,7 +227,7 @@
 
                     <div class="form-group">
                       <label for="Curso">Nombre del curso:</label>
-                      <select id="Curso" formControlName="Curso">
+                      <select id="Curso" formControlName="Curso"  style="width: 110%;">
                         <option *ngFor="let curso of cursosSelect" [value]="curso.IdCurso">{{ curso.Codigo }}  {{ curso.NomCurso }}</option>
                       </select>
                       <div *ngIf="formularioReserva.get('Curso')?.hasError('required') && formularioReserva.get('Curso')?.touched">
@@ -236,7 +237,7 @@
 
                     <div class="form-group">
                       <label for="FechaLimite">Fecha límite:</label>
-                      <input type="date" id="FechaLimite" formControlName="FechaLimite" [min]="getTodayDate()">
+                      <input type="date" id="FechaLimite" formControlName="FechaLimite" [min]="getTodayDate()"  style="width: 110%;">
                       <div *ngIf="formularioReserva.get('FechaLimite')?.hasError('required') && formularioReserva.get('FechaLimite')?.touched">
                         Seleccionar una fecha límite es obligatorio.
                       </div>
@@ -244,7 +245,7 @@
 
                     <div class="form-group" *ngIf="this.rango!=0">
                       <label for="rango">Número de bloques:</label>
-                      <input type="number" id="rango" formControlName="rango" min="1" max={{rango}}>
+                      <input type="number" id="rango"   #cantidad type="number" formControlName="rango" min="1" max={{rango}}  style="width: 110%;">
                     </div>
 
                     <button  [disabled]="formularioReserva.invalid" (click)="agregarReserva()">Agregar reserva</button>

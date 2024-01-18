@@ -58,7 +58,7 @@ export class CampusComponent {
       this.campusService.AcroSedeActual= AcronimoSede;
       this.campusService.NomSedeActual = NomSede;
       this.campusService.IdSede = IdSede;
-      console.log(this.campusService.IdSede);
+      this.loginService.datoLocalStorage.IdSede=IdSede;
       this.campusService.triggerMethod();
     }
   }

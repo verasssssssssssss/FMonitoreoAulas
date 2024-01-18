@@ -27,6 +27,7 @@ export class CampusService {
   triggerMethod$ = this.triggerMethodSubject.asObservable();
 
   triggerMethod() {   
+    console.log(this.IdSede)
     this.triggerMethodSubject.next();
   }
 

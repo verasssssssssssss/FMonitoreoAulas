@@ -94,6 +94,7 @@ export class HorarioComponent {
   getAulas(IdSede: number) {
     this.horarioService.getAulas(IdSede).subscribe((response) => {
       this.Aulas = response.data;
+      console.log(this.Aulas)
     });
   }
 

@@ -76,7 +76,7 @@ export class HeaderComponent {
             Nombre: response.data[0].NomUsuario,
             Apellido: response.data[0].ApeUsuario,
             Mail: response.data[0].Mail,
-            Contrasenia: response.data[0].Contrasenia,
+            Contrasenia: "",
           });
           this.imageUrl = this.formularioUsuario.get('Fotografia')?.value;
         }

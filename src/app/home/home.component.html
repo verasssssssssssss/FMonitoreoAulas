@@ -29,6 +29,18 @@
       <span class="loader"></span>
     </div>
 
+    <div class="col-md-12" *ngIf="this.campusService.booleanhome && AreasDeTrabajo.length==0">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div>
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 22%;">
+              <h3 class="card-title">No existen áreas registradas dentro de la sede</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="container pt-4">
       <div class="row"  *ngIf="this.campusService.booleanhome">
         <div class="col-md-6" *ngFor="let AreasT of AreasDeTrabajo">
