@@ -239,7 +239,8 @@ export class HorarioComponent {
           this.getReservas();
           this.crearTabla();
         }, (error) => {
-          this.errorSwal("Ocurrio un error al intentar eliminar al encargado");
+          console.log(error)
+          this.errorSwal("Ocurrio un error al intentar agregar una reserva");
         });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         this.cerrarrModalHorario();
